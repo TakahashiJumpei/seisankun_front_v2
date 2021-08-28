@@ -1,4 +1,4 @@
-# seisankun_v2_front
+# seisankun_front_v2
 
 > A Vue.js project
 ## 環境
