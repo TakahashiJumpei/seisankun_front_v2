@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="start-button-wrapper">
-        <button class="start-button">
+        <button class="start-button" @click="toCreateGroup">
           <span>はじめる</span>
         </button>
       </div>
@@ -24,7 +24,7 @@
         <hr />
         <div class="past-groups">
           <!-- ダミーデータを作成して表示中 -->
-          <div class="past-group">
+          <div class="past-group" @click="toGroup">
             <div class="past-group-date">
               <span>2021/08/24</span>
             </div>
@@ -32,7 +32,7 @@
               <span>渡韓ごっこin新大久保</span>
             </div>
           </div>
-          <div class="past-group">
+          <div class="past-group" @click="toGroup">
             <div class="past-group-date">
               <span>2020/07/31</span>
             </div>
@@ -258,7 +258,19 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    toCreateGroup() {
+      console.log("clicked toCreateGroup()");
+      //グループの作成ページを表示
+      this.$router.push({ path: "/CreateGroup/" });
+    },
+    toGroup() {
+      console.log("clicked toGroup()");
+      //どのグループかを特定する必要あり
+      //グループページを表示
+      this.$router.push({ path: "/Group/" });
+    },
+  },
   beforeCreate: function() {
     console.log("Top.vue beforeCreate");
   },

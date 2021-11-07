@@ -2,13 +2,13 @@
   <footer>
     <div class="footer-1">
       <div>
-        <span>利用規約</span>
+        <span @click="toTos">利用規約</span>
       </div>
       <div>
-        <span>プライバシーポリシー</span>
+        <span @click="toPrivacyPolicy">プライバシーポリシー</span>
       </div>
       <div>
-        <span>お問い合わせ</span>
+        <span @click="toInquiry">お問い合わせ</span>
       </div>
     </div>
     <div class="footer-2">
@@ -41,3 +41,55 @@ footer {
   }
 }
 </style>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    toTos() {
+      console.log("clicked toTos()");
+      //利用規約ページを表示
+      this.$router.push({ path: "/Tos/" });
+    },
+    toPrivacyPolicy(){
+      console.log("clicked toPrivacyPolicy()");
+      //プライバシーポリシーページを表示
+      this.$router.push({ path: "/PrivacyPolicy/" });
+    },
+    toInquiry(){
+      console.log("clicked toInquiry()");
+      //お問い合わせページを表示
+      //11/07v1の問い合わせフォームに遷移、仕様確定後実装
+      const url = 'https://docs.google.com/forms/d/e/1FAIpQLSdcaHWXI4n_lgJXaD4yrGft3_G8-OFI_tqdYhBobbPX8j5j9Q/viewform'
+      window.open(url, '_blank')
+    },
+
+  },
+  beforeCreate: function() {
+    console.log("Footer.vue beforeCreate");
+  },
+  created: function() {
+    console.log("Footer.vue created");
+  },
+  beforeMount: function() {
+    console.log("Footer.vue beforeMount");
+  },
+  mounted: function() {
+    console.log("Footer.vue mounted");
+  },
+  beforeUpdate: function() {
+    console.log("Footer.vue beforeUpdate");
+  },
+  updated: function() {
+    console.log("Footer.vue updated");
+  },
+  beforeDestroy: function() {
+    console.log("Footer.vue beforeDestroy");
+  },
+  destroyed: function() {
+    console.log("Footer.vue destroyed");
+  },
+};
+</script>

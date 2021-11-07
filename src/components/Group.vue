@@ -3,7 +3,7 @@
 
     <div class="inner">
       <div class="title">
-        <span>グループの作成</span>
+        <span>渡韓ごっこin新大久保</span>
       </div>
     </div>
   </div>
@@ -19,28 +19,28 @@ export default {
     
   },
   beforeCreate: function () {
-    console.log("CreateGroup.vue beforeCreate");
+    console.log("Group.vue beforeCreate");
   },
   created: function () {
-    console.log("CreateGroup.vue created");
+    console.log("Group.vue created");
   },
   beforeMount: function () {
-    console.log("CreateGroup.vue beforeMount");
+    console.log("Group.vue beforeMount");
   },
   mounted: function () {
-    console.log("CreateGroup.vue mounted");
+    console.log("Group.vue mounted");
   },
   beforeUpdate: function () {
-    console.log("CreateGroup.vue beforeUpdate");
+    console.log("Group.vue beforeUpdate");
   },
   updated: function () {
-    console.log("CreateGroup.vue updated");
+    console.log("Group.vue updated");
   },
   beforeDestroy: function () {
-    console.log("CreateGroup.vue beforeDestroy");
+    console.log("Group.vue beforeDestroy");
   },
   destroyed: function () {
-    console.log("CreateGroup.vue destroyed");
+    console.log("Group.vue destroyed");
   },
 };
 </script>
