@@ -21,9 +21,10 @@
 
 <style scoped lang="scss">
 $light_blue: #1cb7f0;
+$footer-h: 120px;
 footer {
   width: 100%;
-  height: 120px;
+  height: $footer-h;
   background-color: $light_blue;
   color: white;
   font-weight: normal;

@@ -1,9 +1,6 @@
 <template>
   <nav>
     <div class="title-wrapper">
-      <div class="sub-title-box">
-        <span class="sub-title">〜旅行時の面倒な立替計算からオサラバ〜</span>
-      </div>
       <div class="title-box">
         <span class="title">精算くん</span>
       </div>
@@ -13,9 +10,10 @@
 
 <style scoped lang="scss">
 $light_blue: #1cb7f0;
+$header-h: 48px;
 nav {
   width: 100%;
-  height: 120px;
+  height: $header-h;
   background-color: $light_blue;
   color: white;
   font-weight: bold;
@@ -23,18 +21,11 @@ nav {
   justify-content: center;
   align-items: center;
   .title-wrapper {
-    .sub-title-box{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 16px;
-    }
     .title-box {
-      margin-top: 8px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 32px;
+      font-size: 20px;
     }
   }
 }

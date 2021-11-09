@@ -5,7 +5,8 @@ const CreateGroup = () => import(/* webpackChunkName: "CreateGroup" */ "./compon
 const Group = () => import(/* webpackChunkName: "Group" */ "./components/Group.vue");
 const Tos = () => import(/* webpackChunkName: "Tos" */ "./components/Tos.vue");
 const PrivacyPolicy = () => import(/* webpackChunkName: "PrivacyPolicy" */ "./components/PrivacyPolicy.vue");
-const Header = () => import(/* webpackChunkName: "Header" */ "./components/Header.vue");
+const HeaderTop = () => import(/* webpackChunkName: "HeaderTop" */ "./components/HeaderTop.vue");
+const HeaderCommon = () => import(/* webpackChunkName: "HeaderCommon" */ "./components/HeaderCommon.vue");
 const Footer = () => import(/* webpackChunkName: "Footer" */ "./components/Footer.vue");
 
 Vue.use(Router);
@@ -17,7 +18,7 @@ export default new Router({
       path: "/",
       components: {
         default: Top,
-        header: Header,
+        header: HeaderTop,
         footer: Footer
       }
     },
@@ -25,7 +26,7 @@ export default new Router({
       path: "/CreateGroup/",
       components: {
         default: CreateGroup,
-        header: Header,
+        header: HeaderCommon,
         footer: Footer
       }
     },
@@ -33,7 +34,7 @@ export default new Router({
       path: "/Group/",
       components: {
         default: Group,
-        header: Header,
+        header: HeaderCommon,
         footer: Footer
       }
     },
@@ -45,7 +46,7 @@ export default new Router({
       path: "/tos/",
       components: {
         default: Tos,
-        header: Header,
+        header: HeaderCommon,
         footer: Footer
       }
     },
@@ -53,7 +54,7 @@ export default new Router({
       path: "/PrivacyPolicy/",
       components: {
         default: PrivacyPolicy,
-        header: Header,
+        header: HeaderCommon,
         footer: Footer
       }
     },

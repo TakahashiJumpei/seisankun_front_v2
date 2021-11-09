@@ -54,8 +54,10 @@ $yellow: #fff0bf;
 $padding-tb: 32px;
 $padding-lr: 48px;
 $theme-title-size: 16px;
+$header-h: 48px;
+$footer-h: 120px;
 .main {
-  min-height: calc(100vh - 120px - 120px);
+  min-height: calc(100vh - $header-h - $footer-h);
   padding: $padding-tb $padding-lr;
   .inner {
   }

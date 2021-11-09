@@ -128,8 +128,10 @@ $yellow: #fff0bf;
 $padding-tb: 32px;
 $padding-lr: 48px;
 $theme-title-size: 16px;
+$headerTop-h: 120px;
+$footer-h: 120px;
 .main {
-  min-height: calc(100vh - 120px - 120px);
+  min-height: calc(100vh - $headerTop-h - $footer-h);
   padding: $padding-tb $padding-lr;
   .inner {
     .explain-wrapper {
