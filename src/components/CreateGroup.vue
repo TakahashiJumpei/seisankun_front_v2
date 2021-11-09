@@ -9,7 +9,7 @@
       <div class="input-form-wrapper">
         <div class="input-group-name-form">
           <p>グループ名</p>
-          <input type="text" id="group-name" placeholder="グループ名を入力" />
+          <input type="text" v-model="inputGroupName" id="group-name" placeholder="グループ名を入力" />
           <span>※1文字以上20文字以内でご記入ください</span>
         </div>
         <div class="input-member-form">
@@ -18,100 +18,147 @@
             <input
               type="text"
               id="member-name"
-              placeholder="メンバー１を入力"
+              placeholder="メンバーの名前を入力"
+              v-model="add_member_name"
             />
-            <div class="add" @click="add_person">
+            <div class="add" @click="add_member">
               <span>+</span>
             </div>
           </div>
-          <span>※1文字以上20文字以内でご記入ください</span>
+          <span v-bind:class="{ red: isAddMemberError }"
+            >※1文字以上20文字以内でご記入ください</span
+          >
         </div>
         <div id="show-member-form-wrapper">
-          <div class="show-member-form">
-            <p>メンバー１</p>
+          <div
+            v-for="(member, index) in members"
+            :key="member"
+            class="show-member-form"
+          >
+            <p>メンバー{{ index + 1 }}</p>
             <div class="member-name-box">
               <div class="member-name">
-                <span>nakazaway</span>
+                <span>{{ member }}</span>
               </div>
-              <div class="delete">
+              <div class="delete" @click="delete_member(index)">
                 <span>-</span>
               </div>
             </div>
           </div>
-          <div class="show-member-form">
-            <p>メンバー２</p>
-            <div class="member-name-box">
-              <div class="member-name">
-                <span>じゅんちゃん</span>
-              </div>
-              <div class="delete">
-                <span>-</span>
-              </div>
-            </div>
-          </div>
-          <div class="show-member-form">
-            <p>メンバー３</p>
-            <div class="member-name-box">
-              <div class="member-name">
-                <span>yseki</span>
-              </div>
-              <div class="delete">
-                <span>-</span>
-              </div>
-            </div>
-          </div>
-          <div class="show-member-form">
-            <p>メンバー４</p>
-            <div class="member-name-box">
-              <div class="member-name">
-                <span>ハマ</span>
-              </div>
-              <div class="delete">
-                <span>-</span>
-              </div>
-            </div>
-          </div>
-          <div class="show-member-form">
-            <p>メンバー５</p>
-            <div class="member-name-box">
-              <div class="member-name">
-                <span>やまぐち</span>
-              </div>
-              <div class="delete">
-                <span>-</span>
-              </div>
-            </div>
-          </div>
-          <div class="show-member-form">
-            <p>メンバー６</p>
-            <div class="member-name-box">
-              <div class="member-name">
-                <span>濱本将</span>
-              </div>
-              <div class="delete" @click="delete_person">
-                <span>-</span>
-              </div>
-            </div>
-          </div>
+        </div>
 
-          <div class="button-wrapper">
-            <div class="create-button-wrapper">
-              <button class="create-button" @click="doValidationCheck">
-                <span>作成</span>
-              </button>
-            </div>
-            <div class="back-button-wrapper">
-              <button class="back-button" @click="toTop">
-                <span>戻る</span>
-              </button>
-            </div>
+        <div class="button-wrapper">
+          <div class="create-button-wrapper">
+            <button v-bind:class="{ isButtonActive: isValidOK }" class="create-button" @click="doValidationCheck">
+              <span>作成</span>
+            </button>
           </div>
-
+          <div class="back-button-wrapper">
+            <button class="back-button" @click="toTop">
+              <span>戻る</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      add_member_name: "",
+      add_member_name_error_message: "",
+      isAddMemberError: false,
+      members: [],
+      isValidOK: false,
+      inputGroupName: ""
+    };
+  },
+  watch: {
+    inputGroupName: function(inputGroupName) {
+      if (
+        inputGroupName.trim().length >=1 &&
+        inputGroupName.trim().length <=20
+      ) {
+        this.isValidOK = true;
+      }else{
+        this.isValidOK = false;
+      }
+    }
+  },
+  methods: {
+    add_member() {
+      console.log("add_member()");
+      if (
+        this.add_member_name.trim().length == 0 ||
+        this.add_member_name.trim().length > 20
+      ) {
+        this.isAddMemberError = true;
+        console.log(this.isAddMemberError);
+        return;
+      }
+      this.isAddMemberError = false;
+      this.members.push(this.add_member_name.trim());
+      this.add_member_name = "";
+    },
+    delete_member(index) {
+      console.log("delete_member(index)");
+      this.members.splice(index, 1);
+    },
+    doValidationCheck() {
+      console.log("clicked create button");
+      console.log("doValidationCheck()");
+
+      let errors = 0;
+      //バリデーション未実装
+
+      if (errors > 0) {
+        console.log("errors > 0");
+      } else {
+        //サーバーにグループデータを登録する処理が未実装
+
+        //グループ画面へ
+        this.toGroup();
+      }
+    },
+    toGroup() {
+      console.log("toGroup()");
+      this.$router.push({ path: "/Group/" });
+    },
+    toTop() {
+      console.log("clicked back button");
+      console.log("toTop()");
+      this.$router.push({ path: "/" });
+    },
+  },
+  beforeCreate: function() {
+    console.log("CreateGroup.vue beforeCreate");
+  },
+  created: function() {
+    console.log("CreateGroup.vue created");
+  },
+  beforeMount: function() {
+    console.log("CreateGroup.vue beforeMount");
+  },
+  mounted: function() {
+    console.log("CreateGroup.vue mounted");
+  },
+  beforeUpdate: function() {
+    console.log("CreateGroup.vue beforeUpdate");
+  },
+  updated: function() {
+    console.log("CreateGroup.vue updated");
+  },
+  beforeDestroy: function() {
+    console.log("CreateGroup.vue beforeDestroy");
+  },
+  destroyed: function() {
+    console.log("CreateGroup.vue destroyed");
+  },
+};
+</script>
 
 <style scoped lang="scss">
 $bace_text_color: #534e4e;
@@ -126,6 +173,7 @@ $footer-h: 120px;
 $form-h: 40px;
 $form-bg: #f4f0f0;
 $form-border: #707070;
+$error_color: #cf5271;
 
 .main {
   min-height: calc(100vh - $header-h - $footer-h);
@@ -208,6 +256,10 @@ $form-border: #707070;
         span {
           color: #a8a8a8;
           font-size: 10px;
+          &.red {
+            color: $error_color;
+            font-weight: bold;
+          }
         }
       }
       #show-member-form-wrapper {
@@ -258,10 +310,10 @@ $form-border: #707070;
           }
         }
       }
-      .button-wrapper{
+      .button-wrapper {
         padding-top: 60px;
         padding-bottom: 28px;
-        .create-button-wrapper{
+        .create-button-wrapper {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -272,15 +324,22 @@ $form-border: #707070;
             width: 188px;
             height: 44px;
             border-radius: 8px;
-            background-color: $light_blue;
+            background-color: #bbbbbb;
             box-shadow: 0 2px 0 0 #cbcecf;
-            span {
+            color: #dddddd;
+            font-size: 16px;
+            &.isButtonActive {
               color: white;
-              font-size: 16px;
+              background-color: $light_blue;
+              cursor: pointer;
+              pointer-events: auto;
+            }
+            &:hover {
+              background-color: #1CB7F0;
             }
           }
         }
-        .back-button-wrapper{
+        .back-button-wrapper {
           margin-top: 16px;
           display: flex;
           justify-content: center;
@@ -306,66 +365,3 @@ $form-border: #707070;
   }
 }
 </style>
-
-<script>
-export default {
-  data() {
-    return {};
-  },
-  methods: {
-    add_person() {
-      console.log("add_person()");
-    },
-    delete_person() {
-      console.log("delete_person()");
-    },
-    doValidationCheck() {
-      console.log("clicked create button");
-      console.log("doValidationCheck()");
-
-      let errors = 0;
-      //バリデーション未実装
-
-      if (errors > 0) {
-        console.log("errors > 0");
-
-      } else {
-        this.toGroup();
-      }
-    },
-    toGroup() {
-      console.log("toGroup()");
-      this.$router.push({ path: "/Group/" });
-    },
-    toTop() {
-      console.log("clicked back button");
-      console.log("toTop()");
-      this.$router.push({ path: "/" });
-    },
-  },
-  beforeCreate: function() {
-    console.log("CreateGroup.vue beforeCreate");
-  },
-  created: function() {
-    console.log("CreateGroup.vue created");
-  },
-  beforeMount: function() {
-    console.log("CreateGroup.vue beforeMount");
-  },
-  mounted: function() {
-    console.log("CreateGroup.vue mounted");
-  },
-  beforeUpdate: function() {
-    console.log("CreateGroup.vue beforeUpdate");
-  },
-  updated: function() {
-    console.log("CreateGroup.vue updated");
-  },
-  beforeDestroy: function() {
-    console.log("CreateGroup.vue beforeDestroy");
-  },
-  destroyed: function() {
-    console.log("CreateGroup.vue destroyed");
-  },
-};
-</script>
