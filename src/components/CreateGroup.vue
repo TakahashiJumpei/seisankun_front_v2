@@ -176,7 +176,7 @@ $form-border: #707070;
 $error_color: #cf5271;
 
 .main {
-  min-height: calc(100vh - $header-h - $footer-h);
+  min-height: calc(100vh - #{$header-h} - #{$footer-h});
   padding: $padding-tb $padding-lr;
 
   .inner {
