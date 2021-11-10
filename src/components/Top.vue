@@ -198,7 +198,7 @@ $footer-h: 120px;
       }
     }
     .feature-wrapper {
-      margin: 0 -48px;
+      margin: 0 calc(-#{$padding-lr});
       margin-top: 32px;
       background-color: $yellow;
       padding: $padding-tb $padding-lr;
@@ -225,7 +225,7 @@ $footer-h: 120px;
       }
     }
     .howto-wrapper {
-      margin: 0 -48px;
+      margin: 0 calc(-#{$padding-lr});
       margin-top: 32px;
       //background-color: $yellow;
       padding: 0 $padding-lr;
