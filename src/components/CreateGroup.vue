@@ -328,6 +328,8 @@ $error_color: #cf5271;
             box-shadow: 0 2px 0 0 #cbcecf;
             color: #dddddd;
             font-size: 16px;
+            cursor: default;
+            pointer-events: none;
             &.isButtonActive {
               color: white;
               background-color: $light_blue;
