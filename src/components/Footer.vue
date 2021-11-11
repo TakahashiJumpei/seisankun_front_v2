@@ -19,30 +19,6 @@
   </footer>
 </template>
 
-<style scoped lang="scss">
-$light_blue: #1cb7f0;
-$footer-h: 120px;
-footer {
-  width: 100%;
-  height: $footer-h;
-  background-color: $light_blue;
-  color: white;
-  font-weight: normal;
-  padding: 0 48px;
-  padding-top: 20px;
-  .footer-1 {
-    font-size: 10px;
-  }
-  .footer-2 {
-    margin-top: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 9px;
-  }
-}
-</style>
-
 <script>
 export default {
   data() {
@@ -94,3 +70,27 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+$light_blue: #1cb7f0;
+$footer-h: 120px;
+footer {
+  width: 100%;
+  height: $footer-h;
+  background-color: $light_blue;
+  color: white;
+  font-weight: normal;
+  padding: 0 48px;
+  padding-top: 20px;
+  .footer-1 {
+    font-size: 10px;
+  }
+  .footer-2 {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 9px;
+  }
+}
+</style>

@@ -31,28 +31,28 @@ export default {
   },
   methods: {},
   beforeCreate: function() {
-    console.log("Top.vue beforeCreate");
+    console.log("Tos.vue beforeCreate");
   },
   created: function() {
-    console.log("Top.vue created");
+    console.log("Tos.vue created");
   },
   beforeMount: function() {
-    console.log("Top.vue beforeMount");
+    console.log("Tos.vue beforeMount");
   },
   mounted: function() {
-    console.log("Top.vue mounted");
+    console.log("Tos.vue mounted");
   },
   beforeUpdate: function() {
-    console.log("Top.vue beforeUpdate");
+    console.log("Tos.vue beforeUpdate");
   },
   updated: function() {
-    console.log("Top.vue updated");
+    console.log("Tos.vue updated");
   },
   beforeDestroy: function() {
-    console.log("Top.vue beforeDestroy");
+    console.log("Tos.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("Top.vue destroyed");
+    console.log("Tos.vue destroyed");
   },
 };
 </script>

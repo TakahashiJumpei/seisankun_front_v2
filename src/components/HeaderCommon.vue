@@ -8,6 +8,40 @@
   </nav>
 </template>
 
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+  },
+  beforeCreate: function() {
+    console.log("HeaderCommon.vue beforeCreate");
+  },
+  created: function() {
+    console.log("HeaderCommon.vue created");
+  },
+  beforeMount: function() {
+    console.log("HeaderCommon.vue beforeMount");
+  },
+  mounted: function() {
+    console.log("HeaderCommon.vue mounted");
+  },
+  beforeUpdate: function() {
+    console.log("HeaderCommon.vue beforeUpdate");
+  },
+  updated: function() {
+    console.log("HeaderCommon.vue updated");
+  },
+  beforeDestroy: function() {
+    console.log("HeaderCommon.vue beforeDestroy");
+  },
+  destroyed: function() {
+    console.log("HeaderCommon.vue destroyed");
+  },
+};
+</script>
+
 <style scoped lang="scss">
 $light_blue: #1cb7f0;
 $header-h: 48px;

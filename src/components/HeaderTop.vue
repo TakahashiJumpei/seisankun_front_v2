@@ -11,6 +11,40 @@
   </nav>
 </template>
 
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+  },
+  beforeCreate: function() {
+    console.log("HeaderTop.vue beforeCreate");
+  },
+  created: function() {
+    console.log("HeaderTop.vue created");
+  },
+  beforeMount: function() {
+    console.log("HeaderTop.vue beforeMount");
+  },
+  mounted: function() {
+    console.log("HeaderTop.vue mounted");
+  },
+  beforeUpdate: function() {
+    console.log("HeaderTop.vue beforeUpdate");
+  },
+  updated: function() {
+    console.log("HeaderTop.vue updated");
+  },
+  beforeDestroy: function() {
+    console.log("HeaderTop.vue beforeDestroy");
+  },
+  destroyed: function() {
+    console.log("HeaderTop.vue destroyed");
+  },
+};
+</script>
+
 <style scoped lang="scss">
 $light_blue: #1cb7f0;
 $headerTop-h: 120px;

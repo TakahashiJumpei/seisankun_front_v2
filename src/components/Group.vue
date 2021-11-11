@@ -12,7 +12,7 @@
             </div>
           </div>
           <div class="group-edit-wrapper">
-            <div class="group-edit">
+            <div class="group-edit" @click="toEditGroup">
               <span>グループの編集</span>
             </div>
           </div>
@@ -21,27 +21,17 @@
           <div class="member-title">
             <span>メンバー</span>
           </div>
-          <div id="members">
-            <span>nakazaway</span>
-            <span>, </span>
-            <span>じゅんちゃん</span>
-            <span>, </span>
-            <span>yseki</span>
-            <span>, </span>
-            <span>ハマ</span>
-            <span>, </span>
-            <span>やまぐち</span>
-            <span>, </span>
-            <span>濱本将</span>
-          </div>
+          <span v-for="(member, index) in members" :key="member.member_id">
+            <span>{{ member }}</span>
+            <span v-if="index != Object.keys(members).length - 1">, </span>
+          </span>
         </div>
-        <hr />
         <div class="share-wrapper">
-          <div class="url">
+          <div class="url" @click="getGroupUrl">
             <img src="../assets/link.png" alt="" />
             <span>リンクをコピー</span>
           </div>
-          <div class="line">
+          <div class="line" @click="shareForLine">
             <img src="../assets/line.gif" alt="" />
             <span>LINEで共有</span>
           </div>
@@ -59,82 +49,24 @@
           <span>支払い内容一覧</span>
         </div>
         <div class="payment-items">
-          <div class="payment-item">
+          <div v-for="payment in payments" :key="payment.payment_id" class="payment-item">
             <div class="payment-item-left">
               <div class="payment-item-name">
-                <span>飛行機代</span>
+                <span>{{ payment.name }}</span>
               </div>
               <div class="payment-item-member">
-                <span>nakazawayが立て替え</span>
+                <span>{{ payment.member }}が立て替え</span>
               </div>
             </div>
             <div class="payment-item-right">
               <div class="payment-item-price">
-                <span>100,000円</span>
+                <span>{{ payment.price | numberFormat }}円</span>
               </div>
-              <div class="payment-item-edit">
+              <div class="payment-item-edit" @click="editPayment">
                 <img src="../assets/edit.png" alt="" />
               </div>
             </div>
           </div>
-          <hr />
-          <div class="payment-item">
-            <div class="payment-item-left">
-              <div class="payment-item-name">
-                <span>ホテル代</span>
-              </div>
-              <div class="payment-item-member">
-                <span>じゅんちゃんが立て替え</span>
-              </div>
-            </div>
-            <div class="payment-item-right">
-              <div class="payment-item-price">
-                <span>80,000円</span>
-              </div>
-              <div class="payment-item-edit">
-                <img src="../assets/edit.png" alt="" />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="payment-item">
-            <div class="payment-item-left">
-              <div class="payment-item-name">
-                <span>夕食代</span>
-              </div>
-              <div class="payment-item-member">
-                <span>nakazawayが立て替え</span>
-              </div>
-            </div>
-            <div class="payment-item-right">
-              <div class="payment-item-price">
-                <span>20,000円</span>
-              </div>
-              <div class="payment-item-edit">
-                <img src="../assets/edit.png" alt="" />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="payment-item">
-            <div class="payment-item-left">
-              <div class="payment-item-name">
-                <span>タクシー代</span>
-              </div>
-              <div class="payment-item-member">
-                <span>ysekiが立て替え</span>
-              </div>
-            </div>
-            <div class="payment-item-right">
-              <div class="payment-item-price">
-                <span>4,000円</span>
-              </div>
-              <div class="payment-item-edit">
-                <img src="../assets/edit.png" alt="" />
-              </div>
-            </div>
-          </div>
-          <hr />
         </div>
       </div>
 
@@ -143,33 +75,16 @@
           <span>精算結果</span>
         </div>
         <div class="seisan-result-items">
-          <div class="seisan-result-item">
+          <div v-for="seisanResult in seisanResults" :key="seisanResult.seisanResult_id" class="seisan-result-item">
             <div class="seisan-result-item-money-flow">
-              <span>じゅんちゃん → nakazaway</span>
+              <span>{{ seisanResult.from }}</span>
+              <span> → </span>
+              <span>{{ seisanResult.to }}</span>
             </div>
             <div class="seisan-result-item-money">
-              <span>100,000円</span>
+              <span>{{ seisanResult.price | numberFormat }}円</span>
             </div>
           </div>
-          <hr />
-          <div class="seisan-result-item">
-            <div class="seisan-result-item-money-flow">
-              <span>じゅんちゃん → yseki</span>
-            </div>
-            <div class="seisan-result-item-money">
-              <span>50,000円</span>
-            </div>
-          </div>
-          <hr />
-          <div class="seisan-result-item">
-            <div class="seisan-result-item-money-flow">
-              <span>yseki → nakazaway</span>
-            </div>
-            <div class="seisan-result-item-money">
-              <span>50,000円</span>
-            </div>
-          </div>
-          <hr />
         </div>
       </div>
 
@@ -178,102 +93,22 @@
           <span>貸し借りの状況</span>
         </div>
         <div class="lending-borrowing-items">
-          <div class="lending-borrowing-item">
+          <div v-for="lendingBorrowingItem in lendingBorrowingItems" :key="lendingBorrowingItem.lendingBorrowingItem_id" class="lending-borrowing-item">
             <div class="lending-borrowing-item-left">
               <div class="lending-borrowing-member">
-                <span>nakazaway</span>
+                <span>{{ lendingBorrowingItem.member }}</span>
               </div>
             </div>
             <div class="lending-borrowing-item-right">
-              <div class="lending-borrowing-member-money plus">
-                <span>+ 36,000円</span>
+              <div class="lending-borrowing-member-money" v-bind:class="{ plus: lendingBorrowingItem.plus, minus: !lendingBorrowingItem.plus}">
+                <span>{{ lendingBorrowingItem.plus ? "+ " : "- " }}</span>
+                <span>{{ lendingBorrowingItem.price | numberFormat }}円</span>
               </div>
-              <div class="lending-borrowing-member-money-detail">
+              <div class="lending-borrowing-member-money-detail" @click="memberLendingBorrowingDetail">
                 <img src="../assets/search.png" alt="" />
               </div>
             </div>
           </div>
-          <hr />
-          <div class="lending-borrowing-item">
-            <div class="lending-borrowing-item-left">
-              <div class="lending-borrowing-member">
-                <span>じゅんちゃん</span>
-              </div>
-            </div>
-            <div class="lending-borrowing-item-right">
-              <div class="lending-borrowing-member-money plus">
-                <span>+ 2,000円</span>
-              </div>
-              <div class="lending-borrowing-member-money-detail">
-                <img src="../assets/search.png" alt="" />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="lending-borrowing-item">
-            <div class="lending-borrowing-item-left">
-              <div class="lending-borrowing-member">
-                <span>yseki</span>
-              </div>
-            </div>
-            <div class="lending-borrowing-item-right">
-              <div class="lending-borrowing-member-money plus">
-                <span>+ 4,000円</span>
-              </div>
-              <div class="lending-borrowing-member-money-detail">
-                <img src="../assets/search.png" alt="" />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="lending-borrowing-item">
-            <div class="lending-borrowing-item-left">
-              <div class="lending-borrowing-member">
-                <span>ハマ</span>
-              </div>
-            </div>
-            <div class="lending-borrowing-item-right">
-              <div class="lending-borrowing-member-money minus">
-                <span>- 300,000円</span>
-              </div>
-              <div class="lending-borrowing-member-money-detail">
-                <img src="../assets/search.png" alt="" />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="lending-borrowing-item">
-            <div class="lending-borrowing-item-left">
-              <div class="lending-borrowing-member">
-                <span>やまぐち</span>
-              </div>
-            </div>
-            <div class="lending-borrowing-item-right">
-              <div class="lending-borrowing-member-money minus">
-                <span>- 12,000円</span>
-              </div>
-              <div class="lending-borrowing-member-money-detail">
-                <img src="../assets/search.png" alt="" />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="lending-borrowing-item">
-            <div class="lending-borrowing-item-left">
-              <div class="lending-borrowing-member">
-                <span>濱本将</span>
-              </div>
-            </div>
-            <div class="lending-borrowing-item-right">
-              <div class="lending-borrowing-member-money minus">
-                <span>- 8,000円</span>
-              </div>
-              <div class="lending-borrowing-member-money-detail">
-                <img src="../assets/search.png" alt="" />
-              </div>
-            </div>
-          </div>
-          <hr />
         </div>
         <div class="lending-borrowing-explain-wrapper">
           <div class="lending-borrowing-explain">
@@ -289,6 +124,132 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      members: [],
+      payments: [],
+      seisanResults: [],
+      lendingBorrowingItems: [],
+    };
+  },
+  filters: {
+    numberFormat: function(num) {
+      return num.toLocaleString();
+    },
+  },
+  methods: {
+    toEditGroup() {
+      console.log("clicked toEditGroup()");
+      //グループの編集ページを表示
+      this.$router.push({ path: "/EditGroup/" });
+    },
+    getGroupUrl() {
+      console.log("clicked getGroupUrl()");
+      //ダミーで開発サイトのURLを取得
+      let dummyUrl = "https://dev-seisan-kun-v2.netlify.app/#/";
+      const element = document.createElement("input");
+      //element.value = location.href;
+      element.value = dummyUrl;
+      document.body.appendChild(element);
+      element.select();
+      document.execCommand("copy");
+      document.body.removeChild(element);
+    },
+    shareForLine() {
+      console.log("clicked shareForLine()");
+      //現在表示中のURLにグループのIDがつく仕組みなので簡単にできそう
+      //ダミーで開発サイトのURLを取得
+      let dummyUrl = "https://dev-seisan-kun-v2.netlify.app/#/";
+      let lineHref =
+        "https://line.me/R/msg/text/?" + encodeURIComponent(dummyUrl);
+      //let lineHref = "https://line.me/R/msg/text/";
+      window.open(lineHref, "_blank");
+    },
+    addPayment() {
+      console.log("addPayment()");
+      //支払いの追加ページを表示
+      this.$router.push({ path: "/AddPayment/" });
+    },
+    editPayment() {
+      console.log("editPayment()");
+      //支払いの編集ページを表示
+      this.$router.push({ path: "/EditPayment/" });
+    },
+    memberLendingBorrowingDetail() {
+      console.log("memberLendingBorrowingDetail()");
+      //支払いの編集ページを表示
+      this.$router.push({ path: "/MemberLendingBorrowingDetail/" });
+    },
+  },
+  beforeCreate: function() {
+    console.log("Group.vue beforeCreate");
+  },
+  created: function() {
+    console.log("Group.vue created");
+  },
+  beforeMount: function() {
+    console.log("Group.vue beforeMount");
+  },
+  mounted: function() {
+    console.log("Group.vue mounted");
+
+    //ダミーメンバーのセット
+    let dummyMembers = [
+      "nakazaway",
+      "じゅんちゃん",
+      "yseki",
+      "ハマ",
+      "やまぐち",
+      "濱本将",
+    ];
+    this.members = dummyMembers;
+
+    //ダミー支払い内容レコードのセット
+    let dummyPayments = [
+      { name: "飛行機代", member: "nakazaway", price: 100000 },
+      { name: "ホテル代", member: "じゅんちゃん", price: 80000 },
+      { name: "夕食代", member: "nakazaway", price: 20000 },
+      { name: "タクシー代", member: "yseki", price: 4000 },
+    ];
+    this.payments = dummyPayments;
+
+    //ダミー精算結果レコードのセット
+    let dummySeisanResults = [
+      { from: "じゅんちゃん", to: "nakazaway", price: 100000 },
+      { from: "じゅんちゃん", to: "yseki", price: 50000 },
+      { from: "yseki", to: "nakazaway", price: 50000 },
+    ];
+    this.seisanResults = dummySeisanResults;
+
+    //ダミー貸し借りの状況レコードのセット
+    let dummyLendingBorrowingItems = [
+      { member: "nakazaway", price: 36000, plus: true},
+      { member: "じゅんちゃん", price: 2000, plus: true},
+      { member: "yseki", price: 4000, plus: true},
+      { member: "ハマ", price: 300000, plus: false},
+      { member: "やまぐち", price: 12000, plus: false},
+      { member: "濱本将", price: 8000, plus: false},
+    ];
+    this.lendingBorrowingItems = dummyLendingBorrowingItems;
+
+  },
+  beforeUpdate: function() {
+    console.log("Group.vue beforeUpdate");
+  },
+  updated: function() {
+    console.log("Group.vue updated");
+  },
+  beforeDestroy: function() {
+    console.log("Group.vue beforeDestroy");
+  },
+  destroyed: function() {
+    console.log("Group.vue destroyed");
+  },
+};
+</script>
 
 <style scoped lang="scss">
 $bace_text_color: #534e4e;
@@ -336,9 +297,9 @@ $minus: #dd4a76;
         margin-bottom: 8px;
         font-size: 10px;
         font-weight: bold;
+        border-bottom: solid 1px $bace_text_color;
+        padding-bottom: 8px;
         .member-title {
-        }
-        #members {
         }
       }
       .share-wrapper {
@@ -420,6 +381,8 @@ $minus: #dd4a76;
           display: flex;
           justify-content: space-between;
           align-items: center;
+          border-bottom: solid 1px $bace_text_color;
+          padding-bottom: 2px;
           .payment-item-left {
             .payment-item-name {
               font-size: 16px;
@@ -479,6 +442,8 @@ $minus: #dd4a76;
           display: flex;
           justify-content: space-between;
           align-items: center;
+          border-bottom: solid 1px $bace_text_color;
+          padding-bottom: 2px;
           .seisan-result-item-money-flow {
             font-size: 12px;
             font-weight: bold;
@@ -509,6 +474,8 @@ $minus: #dd4a76;
           display: flex;
           justify-content: space-between;
           align-items: center;
+          border-bottom: solid 1px $bace_text_color;
+          padding-bottom: 2px;
           .lending-borrowing-item-left {
             display: flex;
             justify-content: center;
@@ -573,40 +540,3 @@ $minus: #dd4a76;
   }
 }
 </style>
-
-<script>
-export default {
-  data() {
-    return {};
-  },
-  methods: {
-    addPayment() {
-      console.log("addPayment()");
-    },
-  },
-  beforeCreate: function() {
-    console.log("Group.vue beforeCreate");
-  },
-  created: function() {
-    console.log("Group.vue created");
-  },
-  beforeMount: function() {
-    console.log("Group.vue beforeMount");
-  },
-  mounted: function() {
-    console.log("Group.vue mounted");
-  },
-  beforeUpdate: function() {
-    console.log("Group.vue beforeUpdate");
-  },
-  updated: function() {
-    console.log("Group.vue updated");
-  },
-  beforeDestroy: function() {
-    console.log("Group.vue beforeDestroy");
-  },
-  destroyed: function() {
-    console.log("Group.vue destroyed");
-  },
-};
-</script>

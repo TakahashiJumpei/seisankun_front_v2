@@ -31,28 +31,28 @@ export default {
   },
   methods: {},
   beforeCreate: function() {
-    console.log("Top.vue beforeCreate");
+    console.log("PrivacyPolicy.vue beforeCreate");
   },
   created: function() {
-    console.log("Top.vue created");
+    console.log("PrivacyPolicy.vue created");
   },
   beforeMount: function() {
-    console.log("Top.vue beforeMount");
+    console.log("PrivacyPolicy.vue beforeMount");
   },
   mounted: function() {
-    console.log("Top.vue mounted");
+    console.log("PrivacyPolicy.vue mounted");
   },
   beforeUpdate: function() {
-    console.log("Top.vue beforeUpdate");
+    console.log("PrivacyPolicy.vue beforeUpdate");
   },
   updated: function() {
-    console.log("Top.vue updated");
+    console.log("PrivacyPolicy.vue updated");
   },
   beforeDestroy: function() {
-    console.log("Top.vue beforeDestroy");
+    console.log("PrivacyPolicy.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("Top.vue destroyed");
+    console.log("PrivacyPolicy.vue destroyed");
   },
 };
 </script>
