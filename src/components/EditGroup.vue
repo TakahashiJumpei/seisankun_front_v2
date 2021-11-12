@@ -21,7 +21,7 @@
               placeholder="メンバーの名前を入力"
               v-model="add_member_name"
             />
-            <div class="add" @click="add_member">
+            <div class="add" @click="addMember()">
               <span>+</span>
             </div>
           </div>
@@ -40,7 +40,7 @@
               <div class="member-name">
                 <span>{{ member }}</span>
               </div>
-              <div class="delete" @click="delete_member(index)">
+              <div class="delete" @click="deleteMember(index)">
                 <span>-</span>
               </div>
             </div>
@@ -94,8 +94,8 @@ export default {
     }
   },
   methods: {
-    add_member() {
-      console.log("add_member()");
+    addMember() {
+      console.log("addMember()");
       if (
         this.add_member_name.trim().length == 0 ||
         this.add_member_name.trim().length > 20
@@ -108,8 +108,8 @@ export default {
       this.members.push(this.add_member_name.trim());
       this.add_member_name = "";
     },
-    delete_member(index) {
-      console.log("delete_member(index)");
+    deleteMember(index) {
+      console.log("deleteMember(index)");
       this.members.splice(index, 1);
     },
     doValidationCheck() {

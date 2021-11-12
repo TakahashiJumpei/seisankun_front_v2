@@ -6,6 +6,84 @@
           <span>支払いの追加</span>
         </div>
       </div>
+
+      <div class="input-form-wrapper">
+        <div class="input-payment-name-form">
+          <p>支払い内容</p>
+          <input
+            type="text"
+            id="payment-name"
+            placeholder="例：飛行機代"
+            v-model="inputPaymentName"
+          />
+          <span v-bind:class="{ red: inputPaymentNameError }">※1文字以上20文字以内でご記入ください</span>
+        </div>
+
+        <div class="input-price-form">
+          <p>支払い金額</p>
+          <div class="price-box">
+            <input
+              type="text"
+              id="price"
+              placeholder="例：1000"
+              v-model="inputPrice"
+            />
+            <div class="yen">
+              <span>円</span>
+            </div>
+          </div>
+          <span v-bind:class="{ red: inputPriceError }"
+            >※半角数字でご記入ください</span
+          >
+        </div>
+
+        <div class="pulldown-payer-form">
+          <p>支払ったメンバー</p>
+          <div class="pulldown-box">
+            <select v-model="payer">
+              <option v-for="member in members" :key="member.member_id">
+                {{ member }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div id="select-payered-wrapper">
+          <p>誰の分を払ったか</p>
+          <div
+            v-for="(member, index) in members"
+            :key="member.member_id"
+            class="select-payered-box"
+          >
+            <p>メンバー{{ index + 1 }}</p>
+            <div class="member-name-box">
+              <div
+                class="member-name"
+                @click="selectPayered(index)"
+                v-bind:class="{ 'select-payered': isSelectPayered[index] }"
+              >
+                <span>{{ member }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-wrapper">
+          <div class="add-payment-button-wrapper">
+            <button
+              class="add-payment-button"
+              @click="doValidationCheck"
+            >
+              <span>追加</span>
+            </button>
+          </div>
+          <div class="back-button-wrapper">
+            <button class="back-button" @click="toGroup">
+              <span>キャンセル</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -14,12 +92,72 @@
 export default {
   data() {
     return {
-      
+      add_member_name: "",
+      add_member_name_error_message: "",
+      members: [],
+      inputPaymentName: "",
+      inputPrice: "",
+      payer: "",
+      isSelectPayered: [],
+      inputPaymentNameError: false,
+      inputPriceError: false,
     };
   },
   watch: {
   },
+  filters: {},
   methods: {
+    selectPayered(index) {
+      console.log("selectPayered(index)");
+      if (this.isSelectPayered[index]) {
+        this.isSelectPayered[index] = false;
+      } else {
+        this.isSelectPayered[index] = true;
+      }
+      this.$forceUpdate(); //強制的にコンポーネントを更新
+    },
+    doValidationCheck() {
+      console.log("clicked add payment button");
+      console.log("doValidationCheck()");
+
+      let errors = 0;
+      //支払い内容のバリデーション
+      if (
+        this.inputPaymentName.trim().length >= 1 &&
+        this.inputPaymentName.trim().length <= 20
+      ) {
+        this.inputPaymentNameError = false;
+      } else {
+        this.inputPaymentNameError = true;
+        errors++;
+      }
+      //支払い金額のバリデーション
+      if (
+        String(this.inputPrice)
+          .trim()
+          .match(/^([1-9]\d*|0)$/)
+      ) {
+        this.inputPriceError = false;
+      } else {
+        this.inputPriceError = true;
+        errors++;
+      }
+      if (errors == 0) {
+        //サーバーに支払いデータを追加する処理が未実装
+
+        //画面から各種データを取得
+        console.log(this.inputPaymentName.trim());
+        console.log(this.inputPrice.trim());//数値型に直す？
+        console.log(this.payer);
+        console.log(this.isSelectPayered);
+        //グループ画面へ
+        this.toGroup();
+      }
+    },
+    toGroup() {
+      console.log("toGroup()");
+      this.$router.push({ path: "/Group/" });
+    },
   },
   beforeCreate: function() {
     console.log("AddPayment.vue beforeCreate");
@@ -32,6 +170,24 @@ export default {
   },
   mounted: function() {
     console.log("AddPayment.vue mounted");
+
+    //ダミーメンバーのセット
+    let dummyMembers = [
+      "nakazaway",
+      "じゅんちゃん",
+      "yseki",
+      "ハマ",
+      "やまぐち",
+      "濱本将",
+    ];
+    this.members = dummyMembers;
+
+    for (let i = 0; i < 6; i++) {
+      this.isSelectPayered.push(true);
+    }
+    console.log(this.isSelectPayered);
+
+    this.payer = this.members[0];
   },
   beforeUpdate: function() {
     console.log("AddPayment.vue beforeUpdate");
@@ -62,6 +218,7 @@ $form-h: 40px;
 $form-bg: #f4f0f0;
 $form-border: #707070;
 $error_color: #cf5271;
+$image_path: "../assets";
 
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});
@@ -78,7 +235,232 @@ $error_color: #cf5271;
         font-weight: bold;
       }
     }
-    
+    .input-form-wrapper {
+      margin-top: 32px;
+      .input-payment-name-form {
+        p {
+          color: $bace_text_color;
+          font-size: 12px;
+        }
+        input {
+          margin-top: 4px;
+          width: 100%;
+          height: $form-h;
+          color: $bace_text_color;
+          font-size: 16px;
+          text-indent: 1em;
+          background-color: $form-bg;
+          border: 1px solid $form-border;
+          border-radius: 4px;
+          box-shadow: 0 2px 0 0 #cbcecf;
+        }
+        span {
+          color: #a8a8a8;
+          font-size: 10px;
+          &.red {
+            color: $error_color;
+            font-weight: bold;
+          }
+        }
+      }
+      .input-price-form {
+        margin-top: 4px;
+        p {
+          color: $bace_text_color;
+          font-size: 12px;
+        }
+        .price-box {
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          margin-top: 4px;
+          input {
+            width: calc(100% - 40px);
+            height: $form-h;
+            color: $bace_text_color;
+            font-size: 16px;
+            text-indent: 1em;
+            background-color: $form-bg;
+            border: 1px solid $form-border;
+            border-radius: 4px;
+            box-shadow: 0 2px 0 0 #cbcecf;
+          }
+          .yen {
+            width: $form-h;
+            height: $form-h;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            span {
+              color: $bace_text_color;
+              font-size: 16px;
+              font-weight: normal;
+            }
+          }
+        }
+        span {
+          color: #a8a8a8;
+          font-size: 10px;
+          &.red {
+            color: $error_color;
+            font-weight: bold;
+          }
+        }
+      }
+      .pulldown-payer-form {
+        margin-top: 4px;
+        p {
+          color: $bace_text_color;
+          font-size: 12px;
+        }
+        .pulldown-box {
+          position: relative;
+          &:before {
+            display: block;
+            content: "";
+            position: absolute;
+            top: -90%;
+            bottom: -100%;
+            margin: auto;
+            right: 18px;
+            width: 18px;
+            height: 18px;
+            background-size: 18px;
+            z-index: 100;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url("#{$image_path}/arrow.png");
+            pointer-events: none;
+          }
+          select {
+            margin-top: 4px;
+            width: 100%;
+            height: $form-h;
+            color: $bace_text_color;
+            font-size: 16px;
+            text-indent: 1em;
+            background-color: $form-bg;
+            border: 1px solid $form-border;
+            border-radius: 4px;
+            box-shadow: 0 2px 0 0 #cbcecf;
+            option {
+            }
+          }
+        }
+      }
+
+      #select-payered-wrapper {
+        margin-top: 20px;
+        p {
+          color: $bace_text_color;
+          font-size: 12px;
+        }
+        & .select-payered-box:first-of-type {
+          margin-top: 0;
+        }
+        .select-payered-box {
+          margin-top: 8px;
+          p {
+            color: $bace_text_color;
+            font-size: 12px;
+          }
+          .member-name-box {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            margin-top: 4px;
+            .member-name {
+              position: relative;
+              width: 100%;
+              height: $form-h;
+              text-indent: 1em;
+              background-color: #707070;
+              border: 1px solid $form-border;
+              border-radius: 4px;
+              box-shadow: 0 2px 0 0 #cbcecf;
+              display: flex;
+              justify-content: start;
+              align-items: center;
+              text-decoration-line: line-through;
+              span {
+                color: $bace_text_color;
+                font-size: 16px;
+              }
+              &.select-payered {
+                background-color: $form-bg;
+                text-decoration-line: none;
+              }
+              &.select-payered:before {
+                display: block;
+                content: "";
+                position: absolute;
+                top: -100%;
+                bottom: 0%;
+                left: 95%;
+                margin: auto;
+                right: 24px;
+                width: 24px;
+                height: 24px;
+                background-size: 24px;
+                z-index: 100;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-image: url("#{$image_path}/check.png");
+                pointer-events: none;
+              }
+            }
+          }
+        }
+      }
+
+      .button-wrapper {
+        padding-top: 60px;
+        padding-bottom: 28px;
+        .add-payment-button-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .add-payment-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 188px;
+            height: 44px;
+            border-radius: 8px;
+            background-color: $light_blue;
+            box-shadow: 0 2px 0 0 #cbcecf;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            pointer-events: auto;
+            &:hover {
+              background-color: #1cb7f0;
+            }
+          }
+        }
+        .back-button-wrapper {
+          margin-top: 16px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .back-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 188px;
+            height: 44px;
+            border-radius: 8px;
+            background-color: white;
+            border: 1px solid $form-border;
+            box-shadow: 0 2px 0 0 #cbcecf;
+            span {
+              color: $bace_text_color;
+              font-size: 16px;
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>
