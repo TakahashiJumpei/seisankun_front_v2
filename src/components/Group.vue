@@ -8,7 +8,7 @@
               <span>グループ</span>
             </div>
             <div class="group-name">
-              <span>渡韓ごっこin新大久保</span>
+              <span>{{ groupName }}</span>
             </div>
           </div>
           <div class="group-edit-wrapper">
@@ -133,6 +133,7 @@ export default {
       payments: [],
       seisanResults: [],
       lendingBorrowingItems: [],
+      groupName: "",
     };
   },
   filters: {
@@ -195,6 +196,12 @@ export default {
   },
   mounted: function() {
     console.log("Group.vue mounted");
+
+    //ここでAPI通信を行い、グループIDをKeyにグループデータを取得する
+
+    //ダミーグループ名のセット
+    let dummyGroupName= "渡韓ごっこin新大久保";
+    this.groupName = dummyGroupName;
 
     //ダミーメンバーのセット
     let dummyMembers = [

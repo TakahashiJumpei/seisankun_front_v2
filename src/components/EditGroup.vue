@@ -48,14 +48,19 @@
         </div>
 
         <div class="button-wrapper">
-          <div class="create-button-wrapper">
-            <button v-bind:class="{ isButtonActive: isValidOK }" class="create-button" @click="doValidationCheck">
-              <span>作成</span>
+          <div class="update-button-wrapper">
+            <button v-bind:class="{ isButtonActive: isValidOK }" class="update-button" @click="doValidationCheck">
+              <span>変更を確定</span>
             </button>
           </div>
           <div class="back-button-wrapper">
-            <button class="back-button" @click="toTop">
-              <span>戻る</span>
+            <button class="back-button" @click="toGroup">
+              <span>キャンセル</span>
+            </button>
+          </div>
+          <div class="delete-group-button-wrapper">
+            <button class="delete-group-button" @click="deleteGroup">
+              <span>このグループを削除</span>
             </button>
           </div>
         </div>
@@ -72,8 +77,8 @@ export default {
       add_member_name_error_message: "",
       isAddMemberError: false,
       members: [],
-      isValidOK: false,
-      inputGroupName: ""
+      isValidOK: true,
+      inputGroupName: "",
     };
   },
   watch: {
@@ -127,11 +132,14 @@ export default {
       console.log("toGroup()");
       this.$router.push({ path: "/Group/" });
     },
-    toTop() {
-      console.log("clicked back button");
-      console.log("toTop()");
+    deleteGroup(){
+      console.log("clicked delete group button");
+      console.log("deleteGroup()");
+
+      //グループデータの削除のAPI通信が未実装
+
       this.$router.push({ path: "/" });
-    },
+    }
   },
   beforeCreate: function() {
     console.log("EditGroup.vue beforeCreate");
@@ -144,6 +152,24 @@ export default {
   },
   mounted: function() {
     console.log("EditGroup.vue mounted");
+
+    //ここでAPI通信を行い、グループIDをKeyにグループデータを取得する
+
+    //ダミーグループ名のセット
+    let dummyGroupName= "渡韓ごっこin新大久保";
+    this.groupName = dummyGroupName;
+    this.inputGroupName = this.groupName;
+
+    //ダミーメンバーのセット
+    let dummyMembers = [
+      "nakazaway",
+      "じゅんちゃん",
+      "yseki",
+      "ハマ",
+      "やまぐち",
+      "濱本将",
+    ];
+    this.members = dummyMembers;
   },
   beforeUpdate: function() {
     console.log("EditGroup.vue beforeUpdate");
@@ -174,6 +200,7 @@ $form-h: 40px;
 $form-bg: #f4f0f0;
 $form-border: #707070;
 $error_color: #cf5271;
+$delete_color: #2C3E50;
 
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});
@@ -313,11 +340,11 @@ $error_color: #cf5271;
       .button-wrapper {
         padding-top: 60px;
         padding-bottom: 28px;
-        .create-button-wrapper {
+        .update-button-wrapper {
           display: flex;
           justify-content: center;
           align-items: center;
-          .create-button {
+          .update-button {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -358,6 +385,27 @@ $error_color: #cf5271;
             box-shadow: 0 2px 0 0 #cbcecf;
             span {
               color: $bace_text_color;
+              font-size: 16px;
+            }
+          }
+        }
+        .delete-group-button-wrapper {
+          margin-top: 64px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .delete-group-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 188px;
+            height: 44px;
+            border-radius: 8px;
+            background-color: $delete_color;
+            border: 1px solid $form-border;
+            box-shadow: 0 2px 0 0 #cbcecf;
+            span {
+              color: white;
               font-size: 16px;
             }
           }
