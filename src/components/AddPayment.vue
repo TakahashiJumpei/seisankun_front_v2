@@ -92,8 +92,6 @@
 export default {
   data() {
     return {
-      add_member_name: "",
-      add_member_name_error_message: "",
       members: [],
       inputPaymentName: "",
       inputPrice: "",
@@ -103,8 +101,7 @@ export default {
       inputPriceError: false,
     };
   },
-  watch: {
-  },
+  watch: {},
   filters: {},
   methods: {
     selectPayered(index) {
