@@ -101,7 +101,7 @@
             </div>
             <div class="lending-borrowing-item-right">
               <div class="lending-borrowing-member-money" v-bind:class="{ plus: lendingBorrowingItem.plus, minus: !lendingBorrowingItem.plus}">
-                <span>{{ lendingBorrowingItem.plus ? "+ " : "- " }}</span>
+                <span>{{ lendingBorrowingItem.plus ? "+" : "-" }}</span>
                 <span>{{ lendingBorrowingItem.price | numberFormat }}円</span>
               </div>
               <div class="lending-borrowing-member-money-detail" @click="memberLendingBorrowingDetail">
