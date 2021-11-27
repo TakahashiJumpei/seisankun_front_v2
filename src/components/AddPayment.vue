@@ -16,7 +16,9 @@
             placeholder="例：飛行機代"
             v-model="inputPaymentName"
           />
-          <span v-bind:class="{ red: inputPaymentNameError }">※1文字以上20文字以内でご記入ください</span>
+          <span v-bind:class="{ red: inputPaymentNameError }"
+            >※1文字以上20文字以内でご記入ください</span
+          >
         </div>
 
         <div class="input-price-form">
@@ -70,10 +72,7 @@
 
         <div class="button-wrapper">
           <div class="add-payment-button-wrapper">
-            <button
-              class="add-payment-button"
-              @click="doValidationCheck"
-            >
+            <button class="add-payment-button" @click="doValidationCheck">
               <span>追加</span>
             </button>
           </div>
@@ -89,6 +88,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -96,6 +96,7 @@ export default {
       inputPaymentName: "",
       inputPrice: "",
       payer: "",
+      payer_id: 0,
       isSelectPayered: [],
       inputPaymentNameError: false,
       inputPriceError: false,
@@ -139,16 +140,78 @@ export default {
         this.inputPriceError = true;
         errors++;
       }
-      if (errors == 0) {
-        //サーバーに支払いデータを追加する処理が未実装
 
+      if (errors > 0) {
+        console.log("errors > 0");
+      } else {
+        console.log("errors == 0");
         //画面から各種データを取得
         console.log(this.inputPaymentName.trim());
-        console.log(this.inputPrice.trim());//数値型に直す？
+        console.log(this.inputPrice.trim()); //数値型に直す？
         console.log(this.payer);
         console.log(this.isSelectPayered);
-        //グループ画面へ
-        this.toGroup();
+
+        this.payer_id = 1;
+        let _borrowers = [];
+        for (let i = 0; i < this.isSelectPayered.length; i++) {
+          if (this.isSelectPayered[i]) {
+            let _borrowers_unit = {};
+            _borrowers_unit.member_id = i; //とりあえずiにしておく
+            _borrowers.push(_borrowers_unit);
+          }
+        }
+        console.log(_borrowers);
+
+        localStorage.getItem("group_hash_key");
+        console.log(localStorage.getItem("group_hash_key"));
+
+        const options = {
+          method: "POST",
+          url: "http://localhost:10082/payment",
+          headers: { "Content-Type": "application/json" },
+          data: {
+            payment: {
+              id: 1, //（いらない？）
+              travel_id: localStorage.getItem("group_hash_key"),
+              payer_id: this.payer_id,
+              borrowers: _borrowers,
+              title: this.inputPaymentName.trim(),
+              amount: Number(this.inputPrice.trim()),
+            },
+          },
+        };
+        console.log(options);
+
+        axios
+          .request(options)
+          .then(
+            function(response) {
+              console.log("status:", response.status);
+              switch (response.status) {
+                case 200:
+                  console.log("body:", response.data);
+                  //IDは取る必要がなさそう
+                  //グループ画面へ
+                  this.toGroup();
+                  break;
+                case 401:
+                  break;
+                case 403:
+                  break;
+                case 404:
+                  break;
+                case 500:
+                  break;
+                default:
+                  break;
+              }
+            }.bind(this)
+          )
+          .catch(
+            function(error) {
+              console.error(error);
+            }.bind(this)
+          );
       }
     },
     toGroup() {
@@ -168,23 +231,74 @@ export default {
   mounted: function() {
     console.log("AddPayment.vue mounted");
 
-    //ダミーメンバーのセット
-    let dummyMembers = [
-      "nakazaway",
-      "じゅんちゃん",
-      "yseki",
-      "ハマ",
-      "やまぐち",
-      "濱本将",
-    ];
-    this.members = dummyMembers;
+    localStorage.getItem("group_hash_key");
+    console.log(localStorage.getItem("group_hash_key"));
 
-    for (let i = 0; i < 6; i++) {
-      this.isSelectPayered.push(true);
-    }
-    console.log(this.isSelectPayered);
+    const options = {
+      method: "GET",
+      url: "http://localhost:10082/travel",
+      headers: { "Content-Type": "application/json" },
+      params: {
+        hash_key: localStorage.getItem("group_hash_key"),
+      },
+    };
+    console.log(options);
 
-    this.payer = this.members[0];
+    axios
+      .request(options)
+      .then(
+        function(response) {
+          console.log("status:", response.status);
+          switch (response.status) {
+            case 200:
+              console.log("body:", response.data);
+              for (let i = 0; i < response.data.members.length; i++) {
+                this.members.push(response.data.members[i].name);
+              }
+
+              for (let i = 0; i < this.members.length; i++) {
+                this.isSelectPayered.push(true);
+              }
+              console.log(this.isSelectPayered);
+
+              this.payer = this.members[0];
+              break;
+            case 401:
+              break;
+            case 403:
+              break;
+            case 404:
+              break;
+            case 500:
+              break;
+            default:
+              break;
+          }
+        }.bind(this)
+      )
+      .catch(
+        function(error) {
+          console.error(error);
+        }.bind(this)
+      );
+
+    // //ダミーメンバーのセット
+    // let dummyMembers = [
+    //   "nakazaway",
+    //   "じゅんちゃん",
+    //   "yseki",
+    //   "ハマ",
+    //   "やまぐち",
+    //   "濱本将",
+    // ];
+    // this.members = dummyMembers;
+
+    // for (let i = 0; i < this.members.length; i++) {
+    //   this.isSelectPayered.push(true);
+    // }
+    // console.log(this.isSelectPayered);
+
+    // this.payer = this.members[0];
   },
   beforeUpdate: function() {
     console.log("AddPayment.vue beforeUpdate");
