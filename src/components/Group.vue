@@ -167,7 +167,6 @@ export default {
     async getGroupInfo() {
       console.log("Group.vue getGroupInfo");
 
-      //ここでAPI通信を行い、グループIDをKeyにグループデータを取得する
       /**
        * 4つのAPI通信を実装する
        * 非同期にする必要あり？

@@ -335,7 +335,6 @@ export default {
       this.confirm = false;
     },
     deleteGroup() {
-      console.log("clicked delete group button");
       console.log("deleteGroup()");
 
       const options = {

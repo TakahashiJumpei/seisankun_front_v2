@@ -145,74 +145,79 @@ export default {
         console.log("errors > 0");
       } else {
         console.log("errors == 0");
-        //画面から各種データを取得
-        console.log(this.inputPaymentName.trim());
-        console.log(this.inputPrice.trim()); //数値型に直す？
-        console.log(this.payer);
-        console.log(this.isSelectPayered);
-
-        this.payer_id = 1;
-        let _borrowers = [];
-        for (let i = 0; i < this.isSelectPayered.length; i++) {
-          if (this.isSelectPayered[i]) {
-            let _borrowers_unit = {};
-            _borrowers_unit.member_id = i; //とりあえずiにしておく
-            _borrowers.push(_borrowers_unit);
-          }
-        }
-        console.log(_borrowers);
-
-        localStorage.getItem("group_hash_key");
-        console.log(localStorage.getItem("group_hash_key"));
-
-        const options = {
-          method: "POST",
-          url: "http://localhost:10082/payment",
-          headers: { "Content-Type": "application/json" },
-          data: {
-            payment: {
-              id: 1, //（いらない？）
-              travel_id: localStorage.getItem("group_hash_key"),
-              payer_id: this.payer_id,
-              borrowers: _borrowers,
-              title: this.inputPaymentName.trim(),
-              amount: Number(this.inputPrice.trim()),
-            },
-          },
-        };
-        console.log(options);
-
-        axios
-          .request(options)
-          .then(
-            function(response) {
-              console.log("status:", response.status);
-              switch (response.status) {
-                case 200:
-                  console.log("body:", response.data);
-                  //IDは取る必要がなさそう
-                  //グループ画面へ
-                  this.toGroup();
-                  break;
-                case 401:
-                  break;
-                case 403:
-                  break;
-                case 404:
-                  break;
-                case 500:
-                  break;
-                default:
-                  break;
-              }
-            }.bind(this)
-          )
-          .catch(
-            function(error) {
-              console.error(error);
-            }.bind(this)
-          );
+        this.addPayment();
       }
+    },
+    addPayment: function() {
+      console.log("addPayment()");
+
+      //画面から各種データを取得
+      console.log(this.inputPaymentName.trim());
+      console.log(this.inputPrice.trim()); //数値型に直す？
+      console.log(this.payer);
+      console.log(this.isSelectPayered);
+
+      this.payer_id = 1;
+      let _borrowers = [];
+      for (let i = 0; i < this.isSelectPayered.length; i++) {
+        if (this.isSelectPayered[i]) {
+          let _borrowers_unit = {};
+          _borrowers_unit.member_id = i; //とりあえずiにしておく
+          _borrowers.push(_borrowers_unit);
+        }
+      }
+      console.log(_borrowers);
+
+      localStorage.getItem("group_hash_key");
+      console.log(localStorage.getItem("group_hash_key"));
+
+      const options = {
+        method: "POST",
+        url: "http://localhost:10082/payment",
+        headers: { "Content-Type": "application/json" },
+        data: {
+          payment: {
+            id: 1, //（いらない？）
+            travel_id: localStorage.getItem("group_hash_key"),
+            payer_id: this.payer_id,
+            borrowers: _borrowers,
+            title: this.inputPaymentName.trim(),
+            amount: Number(this.inputPrice.trim()),
+          },
+        },
+      };
+      console.log(options);
+
+      axios
+        .request(options)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                //IDは取る必要がなさそう
+                //グループ画面へ
+                this.toGroup();
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
     },
     toGroup() {
       console.log("toGroup()");

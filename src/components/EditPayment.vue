@@ -1,5 +1,31 @@
 <template>
   <div class="main">
+    <div id="overlay" v-bind:class="{ 'confirm-modal': confirm }">
+      <transition name="fade">
+        <div v-if="confirm" id="popup-confirm">
+          <div class="popup-confirm-sub">
+            <div class="confirm-name">
+              <span>{{ originalPaymentName }}</span>
+            </div>
+            <div class="confirm-message">
+              <span>この支払いを本当に削除してもよろしいですか？</span>
+            </div>
+            <div class="button-wrapper">
+              <div class="delete-button-wrapper">
+                <button class="delete-button" @click="deletePayment">
+                  <span>OK</span>
+                </button>
+              </div>
+              <div class="back-button-wrapper">
+                <button class="back-button" @click="hideConfirmModal">
+                  <span>キャンセル</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
     <div class="inner">
       <div class="title-wrapper">
         <div class="title">
@@ -82,7 +108,7 @@
             </button>
           </div>
           <div class="delete-payment-button-wrapper">
-            <button class="delete-payment-button" @click="deletePayment">
+            <button class="delete-payment-button" @click="confirmDeletePayment">
               <span>この支払いを削除</span>
             </button>
           </div>
@@ -93,6 +119,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -103,11 +130,175 @@ export default {
       isSelectPayered: [],
       inputPaymentNameError: false,
       inputPriceError: false,
+      payment_id: 0,
+      confirm: false,
+      originalPaymentName: "",
     };
   },
   watch: {},
   filters: {},
   methods: {
+    async getPaymentInfo() {
+      console.log("getPaymentInfo");
+
+      /**
+       * 2つのAPI通信を実装する
+       * 非同期にする必要あり？
+       * get /travelで全メンバーの取得
+       * get /payment/で支払い情報を取得
+       */
+
+      localStorage.getItem("group_hash_key");
+      console.log(localStorage.getItem("group_hash_key"));
+
+      const options = {
+        method: "GET",
+        url: "http://localhost:10082/travel",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          hash_key: localStorage.getItem("group_hash_key"),
+        },
+      };
+      console.log(options);
+
+      const axios1 = axios
+        .request(options)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                for (let i = 0; i < response.data.members.length; i++) {
+                  this.members.push(response.data.members[i].name);
+                }
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
+
+      const options2 = {
+        method: "GET",
+        url: "http://localhost:10082/payment",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          payment_id: "1",
+        },
+      };
+      console.log(options2);
+
+      const axios2 = axios
+        .request(options2)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200: {
+                console.log("body:", response.data);
+                this.inputPaymentName = response.data.payment.title;
+                this.originalPaymentName = this.inputPaymentName;
+                this.inputPrice = response.data.payment.amount;
+
+                //this.payer = response.data.payment.payer_id;
+
+                //let borrowers = response.data.payment.borrowers;
+                // let borrowers = [
+                //   {
+                //     member_id: 1,
+                //   },
+                //   {
+                //     member_id: 2,
+                //   },
+                // ];
+                let borrowers = "";
+                //メンバーのIDとborrowsのIDが一致していればtrueにする
+                for (let i = 0; i < this.members.length; i++) {
+                  for (let j = 0; j < borrowers.length; j++) {
+                    if (this.members[i] === borrowers[j].member_id) {
+                      this.isSelectPayered.push(true);
+                    } else {
+                      this.isSelectPayered.push(false);
+                    }
+                  }
+                }
+                //ダミー値
+                this.isSelectPayered[0] = true;
+                this.isSelectPayered[1] = true;
+                this.isSelectPayered[2] = false;
+                console.log(this.isSelectPayered);
+
+                break;
+              }
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
+
+      //Promise.all([])とawaitを併用する
+      await Promise.all([axios1, axios2]);
+      console.log("bbbbbb");
+
+      //確実に両方の通信が終わったタイミングでセットする
+      this.payer = this.members[0];
+
+      // //ダミー支払い内容のセット
+      // let dummyInputPaymentName = "飛行機代";
+      // this.inputPaymentName = dummyInputPaymentName;
+
+      // //ダミー支払い金額のセット
+      // let dummyInputPrice = "100000";
+      // this.inputPrice = dummyInputPrice;
+
+      // //ダミーメンバーのセット
+      // let dummyMembers = [
+      //   "nakazaway",
+      //   "じゅんちゃん",
+      //   "yseki",
+      //   "ハマ",
+      //   "やまぐち",
+      //   "濱本将",
+      // ];
+      // this.members = dummyMembers;
+
+      // for (let i = 0; i < 6; i++) {
+      //   this.isSelectPayered.push(true);
+      // }
+      // this.isSelectPayered[1] = false;
+      // this.isSelectPayered[4] = false;
+      // this.isSelectPayered[5] = false;
+      // console.log(this.isSelectPayered);
+
+      // this.payer = this.members[0];
+    },
     selectPayered(index) {
       console.log("selectPayered(index)");
       if (this.isSelectPayered[index]) {
@@ -143,31 +334,144 @@ export default {
         this.inputPriceError = true;
         errors++;
       }
-      if (errors == 0) {
-        //サーバーに支払いデータを追加する処理が未実装
 
-        //画面から各種データを取得
-        console.log(this.inputPaymentName.trim());
-        console.log(this.inputPrice.trim()); //数値型に直す？
-        console.log(this.payer);
-        console.log(this.isSelectPayered);
-        //グループ画面へ
-        this.toGroup();
+      if (errors > 0) {
+        console.log("errors > 0");
+      } else {
+        console.log("errors == 0");
+        this.EditPayment();
       }
+    },
+    EditPayment: function() {
+      console.log("EditPayment()");
+
+      //画面から各種データを取得
+      console.log(this.inputPaymentName.trim());
+      console.log(String(this.inputPrice).trim());
+      console.log(this.payer);
+      console.log(this.isSelectPayered);
+      console.log(this.payment_id);
+
+      this.payment_id = 1; //ダミー値
+      this.payer_id = 1; //ダミー値
+      let _borrowers = [];
+      for (let i = 0; i < this.isSelectPayered.length; i++) {
+        if (this.isSelectPayered[i]) {
+          let _borrowers_unit = {};
+          _borrowers_unit.member_id = i; //とりあえずiにしておく
+          _borrowers.push(_borrowers_unit);
+        }
+      }
+      console.log(_borrowers);
+
+      localStorage.getItem("group_hash_key");
+      console.log(localStorage.getItem("group_hash_key"));
+
+      const options = {
+        method: "PUT",
+        url: "http://localhost:10082/payment",
+        headers: { "Content-Type": "application/json" },
+        data: {
+          payment: {
+            id: this.payment_id,
+            travel_id: localStorage.getItem("group_hash_key"),
+            payer_id: this.payer_id,
+            borrowers: _borrowers,
+            title: this.inputPaymentName.trim(),
+            amount: Number(String(this.inputPrice).trim()),
+          },
+        },
+      };
+      console.log(options);
+
+      axios
+        .request(options)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                //グループ画面へ
+                this.toGroup();
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
     },
     toGroup() {
       console.log("toGroup()");
       this.$router.push({ path: "/Group/" });
     },
-    deletePayment(){
+    confirmDeletePayment() {
+      console.log("confirmDeletePayment()");
+      this.confirm = true;
+    },
+    hideConfirmModal() {
       console.log("clicked delete payment button");
+      console.log("hideConfirmModal()");
+      this.confirm = false;
+    },
+    deletePayment() {
       console.log("deletePayment()");
 
-      //支払いデータの削除のAPI通信が未実装
+      this.payment_id = 1; //ダミー値
 
-      //グループ画面へ
-      this.toGroup();
-    }
+      const options = {
+        method: "DELETE",
+        url: "http://localhost:10082/payment",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          payment_id: this.payment_id,
+        },
+      };
+      console.log(options);
+
+      axios
+        .request(options)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                this.$router.push({ path: "/" });
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
+
+    },
   },
   beforeCreate: function() {
     console.log("EditPayment.vue beforeCreate");
@@ -180,36 +484,7 @@ export default {
   },
   mounted: function() {
     console.log("EditPayment.vue mounted");
-
-    //ダミー支払い内容のセット
-    let dummyInputPaymentName = "飛行機代";
-    this.inputPaymentName = dummyInputPaymentName;
-
-    //ダミー支払い金額のセット
-    let dummyInputPrice = "100000";
-    this.inputPrice = dummyInputPrice;
-
-    //ダミーメンバーのセット
-    let dummyMembers = [
-      "nakazaway",
-      "じゅんちゃん",
-      "yseki",
-      "ハマ",
-      "やまぐち",
-      "濱本将",
-    ];
-    this.members = dummyMembers;
-
-    for (let i = 0; i < 6; i++) {
-      this.isSelectPayered.push(true);
-    }
-    this.isSelectPayered[1] = false;
-    this.isSelectPayered[4] = false;
-    this.isSelectPayered[5] = false;
-    console.log(this.isSelectPayered);
-
-
-    this.payer = this.members[0];
+    this.getPaymentInfo();
   },
   beforeUpdate: function() {
     console.log("EditPayment.vue beforeUpdate");
@@ -241,11 +516,108 @@ $form-bg: #f4f0f0;
 $form-border: #707070;
 $error_color: #cf5271;
 $image_path: "../assets";
-$delete_color: #2C3E50;
+$delete_color: #2c3e50;
 
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});
   padding: $padding-tb $padding-lr;
+
+  #overlay {
+    z-index: 200;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    &.confirm-modal {
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .fade-enter-active,
+      .fade-leave-active {
+        transition: opacity 1s;
+      }
+      .fade-enter,
+      .fade-leave {
+        opacity: 0;
+      }
+      #popup-confirm {
+        .popup-confirm-sub {
+          background: #fff;
+          width: 100%;
+          max-height: 100%;
+          margin: 0 auto;
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          border-radius: 3px;
+          .confirm-name {
+            color: #272643;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: Meiryo;
+          }
+          .confirm-message {
+            margin-top: 8px;
+            color: #272643;
+            font-size: 14px;
+            //font-weight: bold;
+            font-family: Meiryo;
+          }
+          .button-wrapper {
+            margin-top: 16px;
+            .delete-button-wrapper {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              .delete-button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 140px;
+                height: 32px;
+                border-radius: 8px;
+                background-color: $light_blue;
+                box-shadow: 0 2px 0 0 #cbcecf;
+                color: white;
+                font-size: 16px;
+                cursor: pointer;
+                pointer-events: auto;
+                &:hover {
+                  background-color: #1cb7f0;
+                }
+              }
+            }
+            .back-button-wrapper {
+              margin-top: 16px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              .back-button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 140px;
+                height: 32px;
+                border-radius: 8px;
+                background-color: white;
+                border: 1px solid $form-border;
+                box-shadow: 0 2px 0 0 #cbcecf;
+                span {
+                  color: $bace_text_color;
+                  font-size: 16px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   .inner {
     .title-wrapper {
