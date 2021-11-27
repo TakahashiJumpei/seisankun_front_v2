@@ -49,7 +49,11 @@
           <span>支払い内容一覧</span>
         </div>
         <div class="payment-items">
-          <div v-for="payment in payments" :key="payment.payment_id" class="payment-item">
+          <div
+            v-for="payment in payments"
+            :key="payment.payment_id"
+            class="payment-item"
+          >
             <div class="payment-item-left">
               <div class="payment-item-name">
                 <span>{{ payment.name }}</span>
@@ -75,7 +79,11 @@
           <span>精算結果</span>
         </div>
         <div class="seisan-result-items">
-          <div v-for="seisanResult in seisanResults" :key="seisanResult.seisanResult_id" class="seisan-result-item">
+          <div
+            v-for="seisanResult in seisanResults"
+            :key="seisanResult.seisanResult_id"
+            class="seisan-result-item"
+          >
             <div class="seisan-result-item-money-flow">
               <span>{{ seisanResult.from }}</span>
               <span> → </span>
@@ -93,18 +101,31 @@
           <span>貸し借りの状況</span>
         </div>
         <div class="lending-borrowing-items">
-          <div v-for="lendingBorrowingItem in lendingBorrowingItems" :key="lendingBorrowingItem.lendingBorrowingItem_id" class="lending-borrowing-item">
+          <div
+            v-for="lendingBorrowingItem in lendingBorrowingItems"
+            :key="lendingBorrowingItem.lendingBorrowingItem_id"
+            class="lending-borrowing-item"
+          >
             <div class="lending-borrowing-item-left">
               <div class="lending-borrowing-member">
                 <span>{{ lendingBorrowingItem.member }}</span>
               </div>
             </div>
             <div class="lending-borrowing-item-right">
-              <div class="lending-borrowing-member-money" v-bind:class="{ plus: lendingBorrowingItem.plus, minus: !lendingBorrowingItem.plus}">
-                <span>{{ lendingBorrowingItem.plus ? "+" : "-" }}</span>
+              <div
+                class="lending-borrowing-member-money"
+                v-bind:class="{
+                  plus: lendingBorrowingItem.plus,
+                  minus: !lendingBorrowingItem.plus,
+                }"
+              >
+                <span>{{ lendingBorrowingItem.plus ? "+" : "" }}</span>
                 <span>{{ lendingBorrowingItem.price | numberFormat }}円</span>
               </div>
-              <div class="lending-borrowing-member-money-detail" @click="memberLendingBorrowingDetail">
+              <div
+                class="lending-borrowing-member-money-detail"
+                @click="memberLendingBorrowingDetail"
+              >
                 <img src="../assets/search.png" alt="" />
               </div>
             </div>
@@ -126,6 +147,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -142,6 +164,252 @@ export default {
     },
   },
   methods: {
+    async getGroupInfo() {
+      console.log("Group.vue getGroupInfo");
+
+      //ここでAPI通信を行い、グループIDをKeyにグループデータを取得する
+      /**
+       * 4つのAPI通信を実装する
+       * 非同期にする必要あり？
+       * get /travel
+       * get /payment/history
+       * get/ calculation/results
+       * get/ borrowing/statuses
+       */
+
+      localStorage.getItem("group_hash_key");
+      console.log(localStorage.getItem("group_hash_key"));
+
+      const options = {
+        method: "GET",
+        url: "http://localhost:10082/travel",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          hash_key: localStorage.getItem("group_hash_key"),
+        },
+      };
+      console.log(options);
+
+      const axios1 = axios
+        .request(options)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                this.groupName = response.data.travel.name;
+                for (let i = 0; i < response.data.members.length; i++) {
+                  this.members.push(response.data.members[i].name);
+                }
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
+
+      const options2 = {
+        method: "GET",
+        url: "http://localhost:10082/payment/history",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          hash_key: localStorage.getItem("group_hash_key"),
+        },
+      };
+      console.log(options2);
+
+      const axios2 = axios
+        .request(options2)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                for (let i = 0; i < response.data.payments.length; i++) {
+                  let _payments_unit = {};
+                  _payments_unit.title = response.data.payments[i].title;
+                  _payments_unit.member = response.data.payments[i].payer_id;
+                  _payments_unit.price = response.data.payments[i].amount;
+                  this.payments.push(_payments_unit);
+                }
+                console.log(this.payments);
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
+
+      const options3 = {
+        method: "GET",
+        url: "http://localhost:10082/calculation/results",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          hash_key: localStorage.getItem("group_hash_key"),
+        },
+      };
+      console.log(options3);
+
+      const axios3 = axios
+        .request(options3)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                for (let i = 0; i < response.data.results.length; i++) {
+                  let _seisanResults_unit = {};
+                  _seisanResults_unit.from = response.data.results[i].borrower_name;
+                  _seisanResults_unit.to = response.data.results[i].lender_name;
+                  _seisanResults_unit.price = response.data.results[i].borrow_money;
+                  this.seisanResults.push(_seisanResults_unit);
+                }
+                console.log(this.seisanResults);
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
+
+      const options4 = {
+        method: "GET",
+        url: "http://localhost:10082/borrowing/statuses",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          hash_key: localStorage.getItem("group_hash_key"),
+        },
+      };
+      console.log(options4);
+
+      const axios4 = axios
+        .request(options4)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                for (let i = 0; i < response.data.statuses.length; i++) {
+                  let _lendingBorrowingItems_unit = {};
+                  _lendingBorrowingItems_unit.member = response.data.statuses[i].member.name;
+                  _lendingBorrowingItems_unit.price = response.data.statuses[i].borrow_money;
+                  if(_lendingBorrowingItems_unit.price > 0){
+                    _lendingBorrowingItems_unit.plus = true
+                  }else{
+                    _lendingBorrowingItems_unit.plus = false
+                  }
+                  this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
+                }
+                console.log(this.lendingBorrowingItems);
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
+      //Promise.all([])とawaitを併用する
+      await Promise.all([axios1, axios2, axios3, axios4]);
+      console.log("bbbbbb")
+
+      // //ダミーグループ名のセット
+      // let dummyGroupName = "渡韓ごっこin新大久保";
+      // this.groupName = dummyGroupName;
+
+      // //ダミーメンバーのセット
+      // let dummyMembers = [
+      //   "nakazaway",
+      //   "じゅんちゃん",
+      //   "yseki",
+      //   "ハマ",
+      //   "やまぐち",
+      //   "濱本将",
+      // ];
+      // this.members = dummyMembers;
+
+      // //ダミー支払い内容レコードのセット
+      // let dummyPayments = [
+      //   { name: "飛行機代", member: "nakazaway", price: 100000 },
+      //   { name: "ホテル代", member: "じゅんちゃん", price: 80000 },
+      //   { name: "夕食代", member: "nakazaway", price: 20000 },
+      //   { name: "タクシー代", member: "yseki", price: 4000 },
+      // ];
+      // this.payments = dummyPayments;
+
+      // //ダミー精算結果レコードのセット
+      // let dummySeisanResults = [
+      //   { from: "じゅんちゃん", to: "nakazaway", price: 100000 },
+      //   { from: "じゅんちゃん", to: "yseki", price: 50000 },
+      //   { from: "yseki", to: "nakazaway", price: 50000 },
+      // ];
+      // this.seisanResults = dummySeisanResults;
+
+      // //ダミー貸し借りの状況レコードのセット
+      // let dummyLendingBorrowingItems = [
+      //   { member: "nakazaway", price: 36000, plus: true },
+      //   { member: "じゅんちゃん", price: 2000, plus: true },
+      //   { member: "yseki", price: 4000, plus: true },
+      //   { member: "ハマ", price: 300000, plus: false },
+      //   { member: "やまぐち", price: 12000, plus: false },
+      //   { member: "濱本将", price: 8000, plus: false },
+      // ];
+      // this.lendingBorrowingItems = dummyLendingBorrowingItems;
+    },
     toEditGroup() {
       console.log("clicked toEditGroup()");
       //グループの編集ページを表示
@@ -196,52 +464,7 @@ export default {
   },
   mounted: function() {
     console.log("Group.vue mounted");
-
-    //ここでAPI通信を行い、グループIDをKeyにグループデータを取得する
-
-    //ダミーグループ名のセット
-    let dummyGroupName= "渡韓ごっこin新大久保";
-    this.groupName = dummyGroupName;
-
-    //ダミーメンバーのセット
-    let dummyMembers = [
-      "nakazaway",
-      "じゅんちゃん",
-      "yseki",
-      "ハマ",
-      "やまぐち",
-      "濱本将",
-    ];
-    this.members = dummyMembers;
-
-    //ダミー支払い内容レコードのセット
-    let dummyPayments = [
-      { name: "飛行機代", member: "nakazaway", price: 100000 },
-      { name: "ホテル代", member: "じゅんちゃん", price: 80000 },
-      { name: "夕食代", member: "nakazaway", price: 20000 },
-      { name: "タクシー代", member: "yseki", price: 4000 },
-    ];
-    this.payments = dummyPayments;
-
-    //ダミー精算結果レコードのセット
-    let dummySeisanResults = [
-      { from: "じゅんちゃん", to: "nakazaway", price: 100000 },
-      { from: "じゅんちゃん", to: "yseki", price: 50000 },
-      { from: "yseki", to: "nakazaway", price: 50000 },
-    ];
-    this.seisanResults = dummySeisanResults;
-
-    //ダミー貸し借りの状況レコードのセット
-    let dummyLendingBorrowingItems = [
-      { member: "nakazaway", price: 36000, plus: true},
-      { member: "じゅんちゃん", price: 2000, plus: true},
-      { member: "yseki", price: 4000, plus: true},
-      { member: "ハマ", price: 300000, plus: false},
-      { member: "やまぐち", price: 12000, plus: false},
-      { member: "濱本将", price: 8000, plus: false},
-    ];
-    this.lendingBorrowingItems = dummyLendingBorrowingItems;
-
+    this.getGroupInfo();
   },
   beforeUpdate: function() {
     console.log("Group.vue beforeUpdate");
