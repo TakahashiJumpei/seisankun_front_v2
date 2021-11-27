@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div class="title-wrapper">
-      <div class="title-box">
+      <div class="title-box" @click="toTop">
         <span class="title">精算くん</span>
       </div>
     </div>
@@ -14,6 +14,10 @@ export default {
     return {};
   },
   methods: {
+    toTop() {
+      console.log("toTop()");
+      this.$router.push({ path: "/" });
+    },
   },
   beforeCreate: function() {
     console.log("HeaderCommon.vue beforeCreate");
