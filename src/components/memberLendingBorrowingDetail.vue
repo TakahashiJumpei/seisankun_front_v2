@@ -6,7 +6,7 @@
           <span>グループ</span>
         </div>
         <div class="group-name">
-          <span>渡韓ごっこin新大久保</span>
+          <span>{{ groupName }}</span>
         </div>
       </div>
 
@@ -135,6 +135,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -146,6 +147,8 @@ export default {
       borrowingsSum: 0,
       differencePrice: 0,
       differencePricePlus: true,
+      member_id: 0,
+      groupName: "",
     };
   },
   watch: {},
@@ -164,6 +167,201 @@ export default {
       console.log("toGroup()");
       this.$router.push({ path: "/Group/" });
     },
+    async getInfo() {
+      console.log("getInfo()");
+
+      /**
+       * 2つのAPI通信を実装する
+       * 非同期にする必要あり？
+       * get /travel
+       * get/ borrowing/history
+       */
+
+      localStorage.getItem("group_hash_key");
+      console.log(localStorage.getItem("group_hash_key"));
+
+      const options = {
+        method: "GET",
+        url: "http://localhost:10082/travel",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          hash_key: localStorage.getItem("group_hash_key"),
+        },
+      };
+      console.log(options);
+
+      const axios1 = axios
+        .request(options)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                this.groupName = response.data.travel.name;
+                for (let i = 0; i < response.data.members.length; i++) {
+                  this.members.push(response.data.members[i].name);
+                }
+                //ダミー値
+                this.member = this.members[0];
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
+
+      //たぶんURLもしくはクリック元から取得できる
+      this.member_id = 0;
+
+      const options2 = {
+        method: "GET",
+        url: "http://localhost:10082/borrowing/history",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          member_id: this.member_id,
+        },
+      };
+      console.log(options);
+
+      const axios2 = axios
+        .request(options2)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200: {
+                console.log("body:", response.data);
+
+                for (let i = 0; i < response.data.histories.length; i++) {
+                  if (response.data.histories[i].payment.borrow_money > 0) {
+                    let _lendings_unit = {};
+                    _lendings_unit.name =
+                      response.data.histories[i].payment.title;
+                    _lendings_unit.member =
+                      response.data.histories[i].user.name;
+                    _lendings_unit.price =
+                      response.data.histories[i].payment.borrow_money;
+                    this.lendings.push(_lendings_unit);
+                  } else {
+                    let _borrowings_unit = {};
+                    _borrowings_unit.name =
+                      response.data.histories[i].payment.title;
+                    _borrowings_unit.member =
+                      response.data.histories[i].user.name;
+                    _borrowings_unit.price =
+                      Math.abs(response.data.histories[i].payment.borrow_money);
+                    this.borrowings.push(_borrowings_unit);
+                  }
+                }
+
+                for (let i = 0; i < this.lendings.length; i++) {
+                  this.lendingsSum += Number(this.lendings[i].price);
+                }
+                console.log(this.lendingsSum);
+
+                for (let i = 0; i < this.borrowings.length; i++) {
+                  this.borrowingsSum += Number(this.borrowings[i].price);
+                }
+                console.log(this.borrowingsSum);
+
+                this.differencePrice = this.lendingsSum - this.borrowingsSum;
+                console.log(this.differencePrice);
+                if (this.differencePrice > 0) {
+                  this.differencePricePlus = true;
+                } else {
+                  this.differencePricePlus = false;
+                  this.differencePrice = Math.abs(this.differencePrice);
+                }
+
+                break;
+              }
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
+
+      // //ダミーメンバーのセット
+      // let dummyMembers = [
+      //   "nakazaway",
+      //   "じゅんちゃん",
+      //   "yseki",
+      //   "ハマ",
+      //   "やまぐち",
+      //   "濱本将",
+      // ];
+      // this.members = dummyMembers;
+
+      // this.member = this.members[0];
+
+      // //ダミー支払ったもののセット
+      // let dummyLendings = [
+      //   { name: "飛行機代", member: "nakazaway", price: 100000 },
+      //   //{ name: "ホテル代", member: "じゅんちゃん", price: 80000 },
+      //   { name: "夕食代", member: "nakazaway", price: 20000 },
+      //   //{ name: "タクシー代", member: "yseki", price: 4000 },
+      // ];
+      // this.lendings = dummyLendings;
+
+      // for (let i = 0; i < this.lendings.length; i++) {
+      //   this.lendingsSum += Number(this.lendings[i].price);
+      // }
+      // console.log(this.lendingsSum);
+
+      // //ダミー立て替えられたもののセット
+      // let dummyBorrowings = [
+      //   //{ name: "飛行機代", member: "nakazaway", price: 100000 },
+      //   { name: "ホテル代", member: "じゅんちゃん", price: 80000 },
+      //   //{ name: "夕食代", member: "nakazaway", price: 20000 },
+      //   { name: "タクシー代", member: "yseki", price: 4000 },
+      // ];
+      // this.borrowings = dummyBorrowings;
+
+      // for (let i = 0; i < this.borrowings.length; i++) {
+      //   this.borrowingsSum += Number(this.borrowings[i].price);
+      // }
+      // console.log(this.borrowingsSum);
+
+      // this.differencePrice = this.lendingsSum - this.borrowingsSum;
+      // //this.differencePrice = -20000;
+      // if (this.differencePrice > 0) {
+      //   this.differencePricePlus = true;
+      // } else {
+      //   this.differencePricePlus = false;
+      //   this.differencePrice = Math.abs(this.differencePrice);
+      // }
+
+      //Promise.all([])とawaitを併用する
+      await Promise.all([axios1, axios2]);
+      console.log("bbbbbb");
+    },
   },
   beforeCreate: function() {
     console.log("memberLendingBorrowingDetail.vue beforeCreate");
@@ -176,56 +374,7 @@ export default {
   },
   mounted: function() {
     console.log("memberLendingBorrowingDetail.vue mounted");
-
-    //ダミーメンバーのセット
-    let dummyMembers = [
-      "nakazaway",
-      "じゅんちゃん",
-      "yseki",
-      "ハマ",
-      "やまぐち",
-      "濱本将",
-    ];
-    this.members = dummyMembers;
-
-    this.member = this.members[0];
-
-    //ダミー支払ったもののセット
-    let dummyLendings = [
-      { name: "飛行機代", member: "nakazaway", price: 100000 },
-      //{ name: "ホテル代", member: "じゅんちゃん", price: 80000 },
-      { name: "夕食代", member: "nakazaway", price: 20000 },
-      //{ name: "タクシー代", member: "yseki", price: 4000 },
-    ];
-    this.lendings = dummyLendings;
-
-    for (let i = 0; i < this.lendings.length; i++) {
-      this.lendingsSum += Number(this.lendings[i].price);
-    }
-    console.log(this.lendingsSum);
-
-    //ダミー立て替えられたもののセット
-    let dummyBorrowings = [
-      //{ name: "飛行機代", member: "nakazaway", price: 100000 },
-      { name: "ホテル代", member: "じゅんちゃん", price: 80000 },
-      //{ name: "夕食代", member: "nakazaway", price: 20000 },
-      { name: "タクシー代", member: "yseki", price: 4000 },
-    ];
-    this.borrowings = dummyBorrowings;
-
-    for (let i = 0; i < this.borrowings.length; i++) {
-      this.borrowingsSum += Number(this.borrowings[i].price);
-    }
-    console.log(this.borrowingsSum);
-
-    this.differencePrice = this.lendingsSum - this.borrowingsSum;
-    //this.differencePrice = -20000;
-    if (this.differencePrice > 0) {
-      this.differencePricePlus = true;
-    } else {
-      this.differencePricePlus = false;
-      this.differencePrice = Math.abs(this.differencePrice);
-    }
+    this.getInfo();
   },
   beforeUpdate: function() {
     console.log("memberLendingBorrowingDetail.vue beforeUpdate");
