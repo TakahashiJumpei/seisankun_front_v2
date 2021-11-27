@@ -9,8 +9,15 @@
       <div class="input-form-wrapper">
         <div class="input-group-name-form">
           <p>グループ名</p>
-          <input type="text" v-model="inputGroupName" id="group-name" placeholder="グループ名を入力" />
-          <span>※1文字以上20文字以内でご記入ください</span>
+          <input
+            type="text"
+            v-model="inputGroupName"
+            id="group-name"
+            placeholder="グループ名を入力"
+          />
+          <span v-bind:class="{ red: inputGroupNameError }"
+            >※1文字以上20文字以内でご記入ください</span
+          >
         </div>
         <div class="input-member-form">
           <p>メンバーの追加</p>
@@ -49,7 +56,7 @@
 
         <div class="button-wrapper">
           <div class="create-button-wrapper">
-            <button v-bind:class="{ isButtonActive: isValidOK }" class="create-button" @click="doValidationCheck">
+            <button class="create-button" @click="doValidationCheck">
               <span>作成</span>
             </button>
           </div>
@@ -65,6 +72,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -72,22 +80,11 @@ export default {
       add_member_name_error_message: "",
       isAddMemberError: false,
       members: [],
-      isValidOK: false,
-      inputGroupName: ""
+      inputGroupName: "",
+      inputGroupNameError: false,
     };
   },
-  watch: {
-    inputGroupName: function(inputGroupName) {
-      if (
-        inputGroupName.trim().length >=1 &&
-        inputGroupName.trim().length <=20
-      ) {
-        this.isValidOK = true;
-      }else{
-        this.isValidOK = false;
-      }
-    }
-  },
+  watch: {},
   methods: {
     addMember() {
       console.log("addMember()");
@@ -112,19 +109,82 @@ export default {
       console.log("doValidationCheck()");
 
       let errors = 0;
-      //バリデーション未実装
+      //グループ名のバリデーション
+      if (
+        this.inputGroupName.trim().length >= 1 &&
+        this.inputGroupName.trim().length <= 20
+      ) {
+        this.inputGroupNameError = false;
+      } else {
+        this.inputGroupNameError = true;
+        errors++;
+      }
 
       if (errors > 0) {
         console.log("errors > 0");
       } else {
-        //サーバーにグループデータを登録する処理が未実装
-
-        //グループ画面へ
-        this.toGroup();
+        console.log("errors == 0");
+        this.createGroup();
       }
+    },
+    createGroup: function() {
+      console.log("createGroup()");
+
+      //入力データを取得
+      /**
+       * グループ名は必須
+       * メンバー（任意）
+       */
+      console.log(this.inputGroupName);
+      console.log(this.members);
+      let _members = [];
+      for (let i = 0; i < this.members.length; i++) {
+        let _members_unit = {};
+        _members_unit.name = this.members[i];
+        _members.push(_members_unit);
+      }
+      console.log(_members);
+
+      const options = {
+        method: "POST",
+        url: "http://localhost:10082/travel",
+        headers: { "Content-Type": "application/json" },
+        data: {
+          travel: { name: `${this.inputGroupName}` },
+          members: _members,
+        },
+      };
+      console.log(options);
+
+      axios
+        .request(options)
+        .then(
+          function(response) {
+            console.log("status:", response.status);
+            switch (response.status) {
+              case 200:
+                console.log("body:", response.data);
+                console.log(response.data.hash_key);
+                localStorage.setItem("group_hash_key", response.data.hash_key);
+                //グループ画面へ
+                this.toGroup();
+                break;
+              case 401:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.error(error);
+          }.bind(this)
+        );
     },
     toGroup() {
       console.log("toGroup()");
+      //localStorage.getItem("group_hash_key");
       this.$router.push({ path: "/Group/" });
     },
     toTop() {
@@ -212,6 +272,10 @@ $error_color: #cf5271;
         span {
           color: #a8a8a8;
           font-size: 10px;
+          &.red {
+            color: $error_color;
+            font-weight: bold;
+          }
         }
       }
       .input-member-form {
@@ -324,20 +388,14 @@ $error_color: #cf5271;
             width: 188px;
             height: 44px;
             border-radius: 8px;
-            background-color: #bbbbbb;
+            background-color: $light_blue;
             box-shadow: 0 2px 0 0 #cbcecf;
-            color: #dddddd;
+            color: white;
             font-size: 16px;
-            cursor: default;
-            pointer-events: none;
-            &.isButtonActive {
-              color: white;
-              background-color: $light_blue;
-              cursor: pointer;
-              pointer-events: auto;
-            }
+            cursor: pointer;
+            pointer-events: auto;
             &:hover {
-              background-color: #1CB7F0;
+              background-color: #1cb7f0;
             }
           }
         }
