@@ -164,8 +164,8 @@ export default {
             switch (response.status) {
               case 200:
                 console.log("body:", response.data);
-                console.log(response.data.hash_key);
-                localStorage.setItem("group_hash_key", response.data.hash_key);
+                console.log(response.data.travel_key);
+                localStorage.setItem("travel_key", response.data.travel_key);
                 //グループ画面へ
                 this.toGroup();
                 break;
@@ -229,6 +229,7 @@ export default {
 <style scoped lang="scss">
 $bace_text_color: #534e4e;
 $light_blue: #1cb7f0;
+$green: #1db8a3;
 $gray: #f4f0f0;
 $yellow: #fff0bf;
 $padding-tb: 32px;
@@ -309,7 +310,7 @@ $error_color: #cf5271;
           .add {
             width: $form-h;
             height: $form-h;
-            background-color: $light_blue;
+            background-color: $green;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -364,7 +365,7 @@ $error_color: #cf5271;
             .delete {
               width: $form-h;
               height: $form-h;
-              background-color: $light_blue;
+              background-color: $green;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -394,14 +395,14 @@ $error_color: #cf5271;
             width: 188px;
             height: 44px;
             border-radius: 8px;
-            background-color: $light_blue;
+            background-color: $green;
             box-shadow: 0 2px 0 0 #cbcecf;
             color: white;
             font-size: 16px;
             cursor: pointer;
             pointer-events: auto;
             &:hover {
-              background-color: #1cb7f0;
+              background-color: $green;
             }
           }
         }

@@ -73,11 +73,12 @@ export default {
 
 <style scoped lang="scss">
 $light_blue: #1cb7f0;
+$green: #1db8a3;
 $footer-h: 120px;
 footer {
   width: 100%;
   height: $footer-h;
-  background-color: $light_blue;
+  background-color: $green;
   color: white;
   font-weight: normal;
   padding: 0 48px;

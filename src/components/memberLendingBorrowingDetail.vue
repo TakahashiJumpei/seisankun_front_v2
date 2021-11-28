@@ -394,6 +394,7 @@ export default {
 <style scoped lang="scss">
 $bace_text_color: #534e4e;
 $light_blue: #1cb7f0;
+$green: #1db8a3;
 $gray: #f4f0f0;
 $yellow: #fff0bf;
 $padding-tb: 32px;

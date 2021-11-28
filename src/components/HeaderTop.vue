@@ -5,7 +5,7 @@
         <span class="sub-title">〜旅行時の面倒な立替計算からオサラバ〜</span>
       </div>
       <div class="title-box">
-        <span class="title">精算くん</span>
+        <span class="title">Seisan-kun</span>
       </div>
     </div>
   </nav>
@@ -47,11 +47,12 @@ export default {
 
 <style scoped lang="scss">
 $light_blue: #1cb7f0;
+$green: #1db8a3;
 $headerTop-h: 120px;
 nav {
   width: 100%;
   height: $headerTop-h;
-  background-color: $light_blue;
+  background-color: $green;
   color: white;
   font-weight: bold;
   display: flex;

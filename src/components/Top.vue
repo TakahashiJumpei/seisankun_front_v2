@@ -3,11 +3,11 @@
     <div class="inner">
       <div class="explain-wrapper">
         <div class="explain-title">
-          <span>精算くんとは？</span>
+          <span>Seisan-kunとは？</span>
         </div>
         <div class="explain-sentence">
           <span
-            >精算くんは、旅行での面倒な立替計算を自動で計算してくれるサービスです！<br />旅行の最後に立て替えた内容を1つ1つ精算するのは大変ですよね..<br />でも、精算くんに支払い内容を入力しておくだけで、最終的に誰が誰にいくら払えば良いかが一目でわかります！</span
+            >Seisan-kunは、旅行での面倒な立替計算を自動で計算してくれるサービスです！<br />旅行の最後に立て替えた内容を1つ1つ精算するのは大変ですよね..<br />でも、Seisan-kunに支払い内容を入力しておくだけで、最終的に誰が誰にいくら払えば良いかが一目でわかります！</span
           >
         </div>
       </div>
@@ -42,7 +42,7 @@
       </div>
       <div class="feature-wrapper">
         <div class="feature-title">
-          <span>精算くんの特徴</span>
+          <span>Seisan-kunの特徴</span>
         </div>
         <div class="feature-items">
           <div class="feature-item">
@@ -67,7 +67,7 @@
       </div>
       <div class="howto-wrapper">
         <div class="howto-title">
-          <span>精算くんの使い方</span>
+          <span>Seisan-kunの使い方</span>
         </div>
         <div class="howto-items">
           <div class="howto-item">
@@ -164,6 +164,7 @@ export default {
 <style scoped lang="scss">
 $bace_text_color: #534e4e;
 $light_blue: #1cb7f0;
+$green: #1db8a3;
 $gray: #f4f0f0;
 $yellow: #fff0bf;
 $padding-tb: 32px;
@@ -202,7 +203,7 @@ $footer-h: 120px;
         width: 200px;
         height: 48px;
         border-radius: 8px;
-        background-color: $light_blue;
+        background-color: $green;
         color: white;
         font-size: 24px;
       }

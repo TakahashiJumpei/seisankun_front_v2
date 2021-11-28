@@ -471,6 +471,7 @@ export default {
 <style scoped lang="scss">
 $bace_text_color: #534e4e;
 $light_blue: #1cb7f0;
+$green: #1db8a3;
 $gray: #f4f0f0;
 $yellow: #fff0bf;
 $padding-tb: 32px;
@@ -547,7 +548,7 @@ $delete_color: #2c3e50;
                 width: 140px;
                 height: 32px;
                 border-radius: 8px;
-                background-color: $light_blue;
+                background-color: $green;
                 box-shadow: 0 2px 0 0 #cbcecf;
                 color: white;
                 font-size: 16px;
@@ -649,7 +650,7 @@ $delete_color: #2c3e50;
           .add {
             width: $form-h;
             height: $form-h;
-            background-color: $light_blue;
+            background-color: $green;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -704,7 +705,7 @@ $delete_color: #2c3e50;
             .delete {
               width: $form-h;
               height: $form-h;
-              background-color: $light_blue;
+              background-color: $green;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -734,14 +735,14 @@ $delete_color: #2c3e50;
             width: 188px;
             height: 44px;
             border-radius: 8px;
-            background-color: $light_blue;
+            background-color: $green;
             box-shadow: 0 2px 0 0 #cbcecf;
             color: white;
             font-size: 16px;
             cursor: pointer;
             pointer-events: auto;
             &:hover {
-              background-color: #1cb7f0;
+              background-color: $green;
             }
           }
         }

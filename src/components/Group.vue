@@ -483,6 +483,7 @@ export default {
 <style scoped lang="scss">
 $bace_text_color: #534e4e;
 $light_blue: #1cb7f0;
+$green: #1db8a3;
 $gray: #f4f0f0;
 $yellow: #fff0bf;
 $padding-tb: 32px;
@@ -581,7 +582,7 @@ $minus: #dd4a76;
         width: 200px;
         height: 32px;
         border-radius: 4px;
-        background-color: $light_blue;
+        background-color: $green;
         box-shadow: 0 2px 0 0 #cbcecf;
         span {
           color: white;

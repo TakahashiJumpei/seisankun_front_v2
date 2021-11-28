@@ -2,7 +2,7 @@
   <nav>
     <div class="title-wrapper">
       <div class="title-box" @click="toTop">
-        <span class="title">精算くん</span>
+        <span class="title">Seisan-kun</span>
       </div>
     </div>
   </nav>
@@ -48,11 +48,12 @@ export default {
 
 <style scoped lang="scss">
 $light_blue: #1cb7f0;
+$green: #1db8a3;
 $header-h: 48px;
 nav {
   width: 100%;
   height: $header-h;
-  background-color: $light_blue;
+  background-color: $green;
   color: white;
   font-weight: bold;
   display: flex;
