@@ -100,6 +100,7 @@ export default {
       isSelectPayered: [],
       inputPaymentNameError: false,
       inputPriceError: false,
+      travel_key: "",
     };
   },
   watch: {},
@@ -168,17 +169,13 @@ export default {
       }
       console.log(_borrowers);
 
-      localStorage.getItem("group_hash_key");
-      console.log(localStorage.getItem("group_hash_key"));
-
       const options = {
         method: "POST",
         url: "http://localhost:10082/payment",
         headers: { "Content-Type": "application/json" },
         data: {
           payment: {
-            id: 1, //（いらない？）
-            travel_id: localStorage.getItem("group_hash_key"),
+            travel_key: this.travel_key,
             payer_id: this.payer_id,
             borrowers: _borrowers,
             title: this.inputPaymentName.trim(),
@@ -196,7 +193,6 @@ export default {
             switch (response.status) {
               case 200:
                 console.log("body:", response.data);
-                //IDは取る必要がなさそう
                 //グループ画面へ
                 this.toGroup();
                 break;
@@ -221,7 +217,10 @@ export default {
     },
     toGroup() {
       console.log("toGroup()");
-      this.$router.push({ path: "/Group/" });
+      this.$router.push({
+        name: 'Group',
+        params: { travel_key: this.travel_key },
+      });
     },
   },
   beforeCreate: function() {
@@ -236,15 +235,14 @@ export default {
   mounted: function() {
     console.log("AddPayment.vue mounted");
 
-    localStorage.getItem("group_hash_key");
-    console.log(localStorage.getItem("group_hash_key"));
+    this.travel_key = this.$route.params.travel_key;
 
     const options = {
       method: "GET",
       url: "http://localhost:10082/travel",
       headers: { "Content-Type": "application/json" },
       params: {
-        hash_key: localStorage.getItem("group_hash_key"),
+        travel_key: this.travel_key,
       },
     };
     console.log(options);
@@ -551,7 +549,7 @@ $image_path: "../assets";
             cursor: pointer;
             pointer-events: auto;
             &:hover {
-              background-color: #1cb7f0;
+              background-color: $green;
             }
           }
         }

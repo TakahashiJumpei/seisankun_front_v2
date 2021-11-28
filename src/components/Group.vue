@@ -156,6 +156,7 @@ export default {
       seisanResults: [],
       lendingBorrowingItems: [],
       groupName: "",
+      travel_key: "",
     };
   },
   filters: {
@@ -167,6 +168,9 @@ export default {
     async getGroupInfo() {
       console.log("Group.vue getGroupInfo");
 
+      console.log(this.$route.params.travel_key);
+      this.travel_key = this.$route.params.travel_key;
+
       /**
        * 4つのAPI通信を実装する
        * 非同期にする必要あり？
@@ -176,19 +180,15 @@ export default {
        * get/ borrowing/statuses
        */
 
-      localStorage.getItem("group_hash_key");
-      console.log(localStorage.getItem("group_hash_key"));
-
       const options = {
         method: "GET",
         url: "http://localhost:10082/travel",
         headers: { "Content-Type": "application/json" },
         params: {
-          hash_key: localStorage.getItem("group_hash_key"),
+          travel_key: this.travel_key,
         },
       };
       console.log(options);
-
       const axios1 = axios
         .request(options)
         .then(
@@ -226,11 +226,10 @@ export default {
         url: "http://localhost:10082/payment/history",
         headers: { "Content-Type": "application/json" },
         params: {
-          hash_key: localStorage.getItem("group_hash_key"),
+          travel_key: this.travel_key,
         },
       };
       console.log(options2);
-
       const axios2 = axios
         .request(options2)
         .then(
@@ -241,8 +240,10 @@ export default {
                 console.log("body:", response.data);
                 for (let i = 0; i < response.data.payments.length; i++) {
                   let _payments_unit = {};
-                  _payments_unit.title = response.data.payments[i].title;
-                  _payments_unit.member = response.data.payments[i].payer_id;
+                  //支払いIDも取得する必要がある。
+                  _payments_unit.name = response.data.payments[i].title;
+                  _payments_unit.member = response.data.payments[i].payer_name;
+                  //支払いメンバーのメンバーIDも取得する必要がある。
                   _payments_unit.price = response.data.payments[i].amount;
                   this.payments.push(_payments_unit);
                 }
@@ -272,11 +273,10 @@ export default {
         url: "http://localhost:10082/calculation/results",
         headers: { "Content-Type": "application/json" },
         params: {
-          hash_key: localStorage.getItem("group_hash_key"),
+          travel_key: this.travel_key,
         },
       };
       console.log(options3);
-
       const axios3 = axios
         .request(options3)
         .then(
@@ -318,11 +318,10 @@ export default {
         url: "http://localhost:10082/borrowing/statuses",
         headers: { "Content-Type": "application/json" },
         params: {
-          hash_key: localStorage.getItem("group_hash_key"),
+          travel_key: this.travel_key,
         },
       };
       console.log(options4);
-
       const axios4 = axios
         .request(options4)
         .then(
@@ -333,6 +332,7 @@ export default {
                 console.log("body:", response.data);
                 for (let i = 0; i < response.data.statuses.length; i++) {
                   let _lendingBorrowingItems_unit = {};
+                  //メンバーIDも取得する必要がある。
                   _lendingBorrowingItems_unit.member = response.data.statuses[i].member.name;
                   _lendingBorrowingItems_unit.price = response.data.statuses[i].borrow_money;
                   if(_lendingBorrowingItems_unit.price > 0){
@@ -412,7 +412,10 @@ export default {
     toEditGroup() {
       console.log("clicked toEditGroup()");
       //グループの編集ページを表示
-      this.$router.push({ path: "/EditGroup/" });
+      this.$router.push({
+        name: 'EditGroup',
+        params: { travel_key: this.travel_key },
+      });
     },
     getGroupUrl() {
       console.log("clicked getGroupUrl()");
@@ -439,17 +442,27 @@ export default {
     addPayment() {
       console.log("addPayment()");
       //支払いの追加ページを表示
-      this.$router.push({ path: "/AddPayment/" });
+      //this.$router.push({ path: "/AddPayment/" });
+      this.$router.push({
+        name: 'AddPayment',
+        params: { travel_key: this.travel_key },
+      });
     },
     editPayment() {
       console.log("editPayment()");
       //支払いの編集ページを表示
-      this.$router.push({ path: "/EditPayment/" });
+      this.$router.push({
+        name: 'EditPayment',
+        params: { travel_key: this.travel_key },
+      });
     },
     memberLendingBorrowingDetail() {
       console.log("memberLendingBorrowingDetail()");
-      //支払いの編集ページを表示
-      this.$router.push({ path: "/MemberLendingBorrowingDetail/" });
+      //個人の支払い履歴ページを表示
+      this.$router.push({
+        name: 'MemberLendingBorrowingDetail',
+        params: { travel_key: this.travel_key },
+      });
     },
   },
   beforeCreate: function() {

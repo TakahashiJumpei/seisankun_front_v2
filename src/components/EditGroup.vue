@@ -9,12 +9,18 @@
               <span v-else>{{ delete_member_name }}</span>
             </div>
             <div class="confirm-message">
-              <span v-if="confirm_group">このグループを本当に削除してもよろしいですか？</span>
+              <span v-if="confirm_group"
+                >このグループを本当に削除してもよろしいですか？</span
+              >
               <span v-else>このメンバーを本当に削除してもよろしいですか？</span>
             </div>
             <div class="button-wrapper">
               <div class="delete-button-wrapper">
-                <button v-if="confirm_group" class="delete-button" @click="deleteGroup">
+                <button
+                  v-if="confirm_group"
+                  class="delete-button"
+                  @click="deleteGroup"
+                >
                   <span>OK</span>
                 </button>
                 <button v-else class="delete-button" @click="deleteMember">
@@ -115,7 +121,7 @@ export default {
       add_member_name: "",
       add_member_name_error_message: "",
       isAddMemberError: false,
-      members: [],//idも持つように改修する
+      members: [], //idも持つように改修する
       delete_member_name: "",
       memberIndex: 0,
       inputGroupName: "",
@@ -123,6 +129,7 @@ export default {
       confirm: false,
       confirm_group: true,
       originalGroupName: "",
+      travel_key: "",
     };
   },
   watch: {},
@@ -141,15 +148,13 @@ export default {
 
       let _member = {};
       _member.name = this.add_member_name.trim();
-      localStorage.getItem("group_hash_key");
-      console.log(localStorage.getItem("group_hash_key"));
 
       const options = {
         method: "POST",
         url: "http://localhost:10082/member",
         headers: { "Content-Type": "application/json" },
         data: {
-          travel: { hash_key: localStorage.getItem("group_hash_key") },
+          travel: { travel_key: this.travel_key },
           members: _member,
         },
       };
@@ -237,7 +242,6 @@ export default {
             console.error(error);
           }.bind(this)
         );
-      
     },
     doValidationCheck() {
       console.log("clicked create button");
@@ -267,18 +271,9 @@ export default {
 
       //入力データを取得
       /**
-       * グループ名は必須
-       * メンバー（任意）
+       * グループ名
        */
       console.log(this.inputGroupName);
-      console.log(this.members);
-      let _members = [];
-      for (let i = 0; i < this.members.length; i++) {
-        let _members_unit = {};
-        _members_unit.name = this.members[i];
-        _members.push(_members_unit);
-      }
-      console.log(_members);
 
       const options = {
         method: "PUT",
@@ -286,7 +281,6 @@ export default {
         headers: { "Content-Type": "application/json" },
         data: {
           travel: { name: `${this.inputGroupName}` },
-          //members: _members,
         },
       };
       console.log(options);
@@ -323,7 +317,10 @@ export default {
     },
     toGroup() {
       console.log("toGroup()");
-      this.$router.push({ path: "/Group/" });
+      this.$router.push({
+        name: 'Group',
+        params: { travel_key: this.travel_key },
+      });
     },
     confirmDeleteGroup() {
       console.log("confirmDeleteGroup()");
@@ -342,7 +339,7 @@ export default {
         url: "http://localhost:10082/travel",
         headers: { "Content-Type": "application/json" },
         params: {
-          hash_key: localStorage.getItem("group_hash_key"),
+          travel_key: this.travel_key,
         },
       };
       console.log(options);
@@ -391,15 +388,15 @@ export default {
   mounted: function() {
     console.log("EditGroup.vue mounted");
 
-    localStorage.getItem("group_hash_key");
-    console.log(localStorage.getItem("group_hash_key"));
+    console.log(this.$route.params.travel_key);
+    this.travel_key = this.$route.params.travel_key;
 
     const options = {
       method: "GET",
       url: "http://localhost:10082/travel",
       headers: { "Content-Type": "application/json" },
       params: {
-        hash_key: localStorage.getItem("group_hash_key"),
+        travel_key: this.travel_key,
       },
     };
     console.log(options);

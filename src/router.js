@@ -6,7 +6,7 @@ const Group = () => import(/* webpackChunkName: "Group" */ "./components/Group.v
 const EditGroup = () => import(/* webpackChunkName: "EditGroup" */ "./components/EditGroup.vue");
 const AddPayment = () => import(/* webpackChunkName: "AddPayment" */ "./components/AddPayment.vue");
 const EditPayment = () => import(/* webpackChunkName: "EditPayment" */ "./components/EditPayment.vue");
-const memberLendingBorrowingDetail = () => import(/* webpackChunkName: "memberLendingBorrowingDetail" */ "./components/memberLendingBorrowingDetail.vue");
+const MemberLendingBorrowingDetail = () => import(/* webpackChunkName: "MemberLendingBorrowingDetail" */ "./components/MemberLendingBorrowingDetail.vue");
 const Tos = () => import(/* webpackChunkName: "Tos" */ "./components/Tos.vue");
 const PrivacyPolicy = () => import(/* webpackChunkName: "PrivacyPolicy" */ "./components/PrivacyPolicy.vue");
 const HeaderTop = () => import(/* webpackChunkName: "HeaderTop" */ "./components/HeaderTop.vue");
@@ -35,7 +35,8 @@ export default new Router({
       }
     },
     {
-      path: "/Group/",
+      path: "/Group/:travel_key",
+      name: "Group",
       components: {
         default: Group,
         header: HeaderCommon,
@@ -43,7 +44,8 @@ export default new Router({
       }
     },
     {
-      path: "/EditGroup/",
+      path: "/EditGroup/:travel_key",
+      name: 'EditGroup',
       components: {
         default: EditGroup,
         header: HeaderCommon,
@@ -51,7 +53,8 @@ export default new Router({
       }
     },
     {
-      path: "/AddPayment/",
+      path: "/AddPayment/:travel_key",
+      name: "AddPayment",
       components: {
         default: AddPayment,
         header: HeaderCommon,
@@ -59,7 +62,8 @@ export default new Router({
       }
     },
     {
-      path: "/EditPayment/",
+      path: "/EditPayment/:travel_key",
+      name: "EditPayment",
       components: {
         default: EditPayment,
         header: HeaderCommon,
@@ -67,9 +71,10 @@ export default new Router({
       }
     },
     {
-      path: "/memberLendingBorrowingDetail/",
+      path: "/MemberLendingBorrowingDetail/:travel_key",
+      name: "MemberLendingBorrowingDetail",
       components: {
-        default: memberLendingBorrowingDetail,
+        default: MemberLendingBorrowingDetail,
         header: HeaderCommon,
         footer: Footer
       }
@@ -90,9 +95,9 @@ export default new Router({
         footer: Footer
       }
     },
-    {
-      path: "*",
-      redirect: "/"
-    },
+    // {
+    //   path: "*",
+    //   redirect: "/"
+    // },
   ]
 });

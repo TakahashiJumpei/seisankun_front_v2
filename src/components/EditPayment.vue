@@ -133,6 +133,7 @@ export default {
       payment_id: 0,
       confirm: false,
       originalPaymentName: "",
+      travel_key: "",
     };
   },
   watch: {},
@@ -147,16 +148,14 @@ export default {
        * get /travelで全メンバーの取得
        * get /payment/で支払い情報を取得
        */
-
-      localStorage.getItem("group_hash_key");
-      console.log(localStorage.getItem("group_hash_key"));
+      this.travel_key = this.$route.params.travel_key;
 
       const options = {
         method: "GET",
         url: "http://localhost:10082/travel",
         headers: { "Content-Type": "application/json" },
         params: {
-          hash_key: localStorage.getItem("group_hash_key"),
+          travel_key: this.travel_key,
         },
       };
       console.log(options);
@@ -214,22 +213,10 @@ export default {
                 this.originalPaymentName = this.inputPaymentName;
                 this.inputPrice = response.data.payment.amount;
 
-                //this.payer = response.data.payment.payer_id;
-
-                //let borrowers = response.data.payment.borrowers;
-                // let borrowers = [
-                //   {
-                //     member_id: 1,
-                //   },
-                //   {
-                //     member_id: 2,
-                //   },
-                // ];
-                let borrowers = "";
                 //メンバーのIDとborrowsのIDが一致していればtrueにする
                 for (let i = 0; i < this.members.length; i++) {
-                  for (let j = 0; j < borrowers.length; j++) {
-                    if (this.members[i] === borrowers[j].member_id) {
+                  for (let j = 0; j < response.data.payment.borrowers[j].length; j++) {
+                    if (this.members[i].member_id === response.data.payment.borrowers[j].borrower_id) {
                       this.isSelectPayered.push(true);
                     } else {
                       this.isSelectPayered.push(false);
@@ -262,10 +249,8 @@ export default {
             console.error(error);
           }.bind(this)
         );
-
       //Promise.all([])とawaitを併用する
       await Promise.all([axios1, axios2]);
-      console.log("bbbbbb");
 
       //確実に両方の通信が終わったタイミングでセットする
       this.payer = this.members[0];
@@ -364,9 +349,6 @@ export default {
       }
       console.log(_borrowers);
 
-      localStorage.getItem("group_hash_key");
-      console.log(localStorage.getItem("group_hash_key"));
-
       const options = {
         method: "PUT",
         url: "http://localhost:10082/payment",
@@ -374,7 +356,7 @@ export default {
         data: {
           payment: {
             id: this.payment_id,
-            travel_id: localStorage.getItem("group_hash_key"),
+            travel_key: this.travel_key,
             payer_id: this.payer_id,
             borrowers: _borrowers,
             title: this.inputPaymentName.trim(),
@@ -416,7 +398,10 @@ export default {
     },
     toGroup() {
       console.log("toGroup()");
-      this.$router.push({ path: "/Group/" });
+      this.$router.push({
+        name: 'Group',
+        params: { travel_key: this.travel_key },
+      });
     },
     confirmDeletePayment() {
       console.log("confirmDeletePayment()");
@@ -450,7 +435,7 @@ export default {
             switch (response.status) {
               case 200:
                 console.log("body:", response.data);
-                this.$router.push({ path: "/" });
+                this.toGroup();
                 break;
               case 401:
                 break;

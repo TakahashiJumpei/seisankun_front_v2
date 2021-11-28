@@ -119,7 +119,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      travel_key: "",
+    };
   },
   methods: {
     toCreateGroup() {
@@ -129,9 +131,14 @@ export default {
     },
     toGroup() {
       console.log("clicked toGroup()");
-      //どのグループかを特定する必要あり
+      //どのグループかtravel_keyでを特定する必要あり
       //グループページを表示
-      this.$router.push({ path: "/Group/" });
+      this.travel_key = "aaaabbbbccccdddd";
+
+      this.$router.push({
+        name: "Group",
+        params: { travel_key: this.travel_key },
+      });
     },
   },
   beforeCreate: function() {
@@ -145,6 +152,14 @@ export default {
   },
   mounted: function() {
     console.log("Top.vue mounted");
+
+    /**
+     * ローカルストレージから過去のグループIDを取得する（あれば）
+     * あれば、そのグループIDをkeyにGET /travelでグループデータを取ってくる
+     */
+
+    // localStorage.getItem("group_hash_key");
+    // console.log(localStorage.getItem("group_hash_key"));
   },
   beforeUpdate: function() {
     console.log("Top.vue beforeUpdate");
@@ -300,4 +315,3 @@ $footer-h: 120px;
   }
 }
 </style>
-

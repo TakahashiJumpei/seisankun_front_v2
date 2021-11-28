@@ -149,6 +149,7 @@ export default {
       differencePricePlus: true,
       member_id: 0,
       groupName: "",
+      travel_key: "",
     };
   },
   watch: {},
@@ -161,11 +162,17 @@ export default {
     editPayment() {
       console.log("editPayment()");
       //支払いの編集ページを表示
-      this.$router.push({ path: "/EditPayment/" });
+      this.$router.push({
+        name: 'EditPayment',
+        params: { travel_key: this.travel_key },
+      });
     },
     toGroup() {
       console.log("toGroup()");
-      this.$router.push({ path: "/Group/" });
+      this.$router.push({
+        name: 'Group',
+        params: { travel_key: this.travel_key },
+      });
     },
     async getInfo() {
       console.log("getInfo()");
@@ -176,16 +183,14 @@ export default {
        * get /travel
        * get/ borrowing/history
        */
-
-      localStorage.getItem("group_hash_key");
-      console.log(localStorage.getItem("group_hash_key"));
+      this.travel_key = this.$route.params.travel_key;
 
       const options = {
         method: "GET",
         url: "http://localhost:10082/travel",
         headers: { "Content-Type": "application/json" },
         params: {
-          hash_key: localStorage.getItem("group_hash_key"),
+          travel_key: this.travel_key,
         },
       };
       console.log(options);

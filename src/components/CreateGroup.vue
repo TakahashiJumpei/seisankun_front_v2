@@ -82,6 +82,7 @@ export default {
       members: [],
       inputGroupName: "",
       inputGroupNameError: false,
+      travel_key: "",
     };
   },
   watch: {},
@@ -165,7 +166,7 @@ export default {
               case 200:
                 console.log("body:", response.data);
                 console.log(response.data.travel_key);
-                localStorage.setItem("travel_key", response.data.travel_key);
+                this.travel_key = response.data.travel_key;
                 //グループ画面へ
                 this.toGroup();
                 break;
@@ -190,8 +191,11 @@ export default {
     },
     toGroup() {
       console.log("toGroup()");
-      //localStorage.getItem("group_hash_key");
-      this.$router.push({ path: "/Group/" });
+      console.log(this.travel_key);
+      this.$router.push({
+        name: 'Group',
+        params: { travel_key: this.travel_key },
+      });
     },
     toTop() {
       console.log("clicked back button");
