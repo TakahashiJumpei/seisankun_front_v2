@@ -43,8 +43,8 @@
           <p>支払ったメンバー</p>
           <div class="pulldown-box">
             <select v-model="payer">
-              <option v-for="member in members" :key="member.member_id">
-                {{ member }}
+              <option v-for="member in members" :key="member.id">
+                {{ member.name }}
               </option>
             </select>
           </div>
@@ -64,7 +64,7 @@
                 @click="selectPayered(index)"
                 v-bind:class="{ 'select-payered': isSelectPayered[index] }"
               >
-                <span>{{ member }}</span>
+                <span>{{ member.name }}</span>
               </div>
             </div>
           </div>
@@ -156,14 +156,18 @@ export default {
       console.log(this.inputPaymentName.trim());
       console.log(this.inputPrice.trim()); //数値型に直す？
       console.log(this.payer);
+      const selected = this.members.find((item) => item.name === this.payer);
+      console.log(selected.name);
+      console.log(selected.id);
+      this.payer_id = selected.id;
+      console.log(this.payer_id);
       console.log(this.isSelectPayered);
 
-      this.payer_id = 1;
       let _borrowers = [];
       for (let i = 0; i < this.isSelectPayered.length; i++) {
         if (this.isSelectPayered[i]) {
           let _borrowers_unit = {};
-          _borrowers_unit.member_id = i; //とりあえずiにしておく
+          _borrowers_unit.borrower_id = this.members[i].id;
           _borrowers.push(_borrowers_unit);
         }
       }
@@ -218,7 +222,7 @@ export default {
     toGroup() {
       console.log("toGroup()");
       this.$router.push({
-        name: 'Group',
+        name: "Group",
         params: { travel_key: this.travel_key },
       });
     },
@@ -256,7 +260,10 @@ export default {
             case 200:
               console.log("body:", response.data);
               for (let i = 0; i < response.data.members.length; i++) {
-                this.members.push(response.data.members[i].name);
+                let _members_unit = {};
+                _members_unit.id = response.data.members[i].id;
+                _members_unit.name = response.data.members[i].name;
+                this.members.push(_members_unit);
               }
 
               for (let i = 0; i < this.members.length; i++) {
@@ -264,7 +271,7 @@ export default {
               }
               console.log(this.isSelectPayered);
 
-              this.payer = this.members[0];
+              this.payer = this.members[0].name;
               break;
             case 401:
               break;

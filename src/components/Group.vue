@@ -21,8 +21,8 @@
           <div class="member-title">
             <span>メンバー</span>
           </div>
-          <span v-for="(member, index) in members" :key="member.member_id">
-            <span>{{ member }}</span>
+          <span v-for="(member, index) in members" :key="member.id">
+            <span>{{ member.name }}</span>
             <span v-if="index != Object.keys(members).length - 1">, </span>
           </span>
         </div>
@@ -51,7 +51,7 @@
         <div class="payment-items">
           <div
             v-for="payment in payments"
-            :key="payment.payment_id"
+            :key="payment.id"
             class="payment-item"
           >
             <div class="payment-item-left">
@@ -66,7 +66,7 @@
               <div class="payment-item-price">
                 <span>{{ payment.price | numberFormat }}円</span>
               </div>
-              <div class="payment-item-edit" @click="editPayment">
+              <div class="payment-item-edit" @click="editPayment(payment.id)">
                 <img src="../assets/edit.png" alt="" />
               </div>
             </div>
@@ -81,7 +81,7 @@
         <div class="seisan-result-items">
           <div
             v-for="seisanResult in seisanResults"
-            :key="seisanResult.seisanResult_id"
+            :key="seisanResult.id"
             class="seisan-result-item"
           >
             <div class="seisan-result-item-money-flow">
@@ -103,7 +103,7 @@
         <div class="lending-borrowing-items">
           <div
             v-for="lendingBorrowingItem in lendingBorrowingItems"
-            :key="lendingBorrowingItem.lendingBorrowingItem_id"
+            :key="lendingBorrowingItem.id"
             class="lending-borrowing-item"
           >
             <div class="lending-borrowing-item-left">
@@ -124,7 +124,7 @@
               </div>
               <div
                 class="lending-borrowing-member-money-detail"
-                @click="memberLendingBorrowingDetail"
+                @click="memberLendingBorrowingDetail(lendingBorrowingItem.id)"
               >
                 <img src="../assets/search.png" alt="" />
               </div>
@@ -199,7 +199,10 @@ export default {
                 console.log("body:", response.data);
                 this.groupName = response.data.travel.name;
                 for (let i = 0; i < response.data.members.length; i++) {
-                  this.members.push(response.data.members[i].name);
+                  let _members_unit = {};
+                  _members_unit.id = response.data.members[i].id;
+                  _members_unit.name = response.data.members[i].name;
+                  this.members.push(_members_unit);
                 }
                 break;
               case 401:
@@ -241,11 +244,12 @@ export default {
                 for (let i = 0; i < response.data.payments.length; i++) {
                   let _payments_unit = {};
                   //支払いIDも取得する必要がある。
+                  _payments_unit.id = response.data.payments[i].id;
                   _payments_unit.name = response.data.payments[i].title;
                   _payments_unit.member = response.data.payments[i].payer_name;
-                  //支払いメンバーのメンバーIDも取得する必要がある。
                   _payments_unit.price = response.data.payments[i].amount;
                   this.payments.push(_payments_unit);
+                  console.log("payments:", this.payments);
                 }
                 console.log(this.payments);
                 break;
@@ -287,9 +291,11 @@ export default {
                 console.log("body:", response.data);
                 for (let i = 0; i < response.data.results.length; i++) {
                   let _seisanResults_unit = {};
-                  _seisanResults_unit.from = response.data.results[i].borrower_name;
+                  _seisanResults_unit.from =
+                    response.data.results[i].borrower_name;
                   _seisanResults_unit.to = response.data.results[i].lender_name;
-                  _seisanResults_unit.price = response.data.results[i].borrow_money;
+                  _seisanResults_unit.price =
+                    response.data.results[i].borrow_money;
                   this.seisanResults.push(_seisanResults_unit);
                 }
                 console.log(this.seisanResults);
@@ -332,13 +338,16 @@ export default {
                 console.log("body:", response.data);
                 for (let i = 0; i < response.data.statuses.length; i++) {
                   let _lendingBorrowingItems_unit = {};
-                  //メンバーIDも取得する必要がある。
-                  _lendingBorrowingItems_unit.member = response.data.statuses[i].member.name;
-                  _lendingBorrowingItems_unit.price = response.data.statuses[i].borrow_money;
-                  if(_lendingBorrowingItems_unit.price > 0){
-                    _lendingBorrowingItems_unit.plus = true
-                  }else{
-                    _lendingBorrowingItems_unit.plus = false
+                  _lendingBorrowingItems_unit.id =
+                    response.data.statuses[i].member.id;
+                  _lendingBorrowingItems_unit.member =
+                    response.data.statuses[i].member.name;
+                  _lendingBorrowingItems_unit.price =
+                    response.data.statuses[i].borrow_money;
+                  if (_lendingBorrowingItems_unit.price > 0) {
+                    _lendingBorrowingItems_unit.plus = true;
+                  } else {
+                    _lendingBorrowingItems_unit.plus = false;
                   }
                   this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
                 }
@@ -364,7 +373,7 @@ export default {
         );
       //Promise.all([])とawaitを併用する
       await Promise.all([axios1, axios2, axios3, axios4]);
-      console.log("bbbbbb")
+      console.log("全てのAPI通信終了");
 
       // //ダミーグループ名のセット
       // let dummyGroupName = "渡韓ごっこin新大久保";
@@ -411,9 +420,9 @@ export default {
     },
     toEditGroup() {
       console.log("clicked toEditGroup()");
-      //グループの編集ページを表示
+      //グループの編集ページを表示;
       this.$router.push({
-        name: 'EditGroup',
+        name: "EditGroup",
         params: { travel_key: this.travel_key },
       });
     },
@@ -444,24 +453,26 @@ export default {
       //支払いの追加ページを表示
       //this.$router.push({ path: "/AddPayment/" });
       this.$router.push({
-        name: 'AddPayment',
+        name: "AddPayment",
         params: { travel_key: this.travel_key },
       });
     },
-    editPayment() {
-      console.log("editPayment()");
+    editPayment(payment_id) {
+      console.log("editPayment(payment_id)");
+      console.log(payment_id);
       //支払いの編集ページを表示
       this.$router.push({
-        name: 'EditPayment',
-        params: { travel_key: this.travel_key },
+        name: "EditPayment",
+        params: { travel_key: this.travel_key, payment_id: payment_id },
       });
     },
-    memberLendingBorrowingDetail() {
-      console.log("memberLendingBorrowingDetail()");
+    memberLendingBorrowingDetail(member_id) {
+      console.log("memberLendingBorrowingDetail(member_id)");
+      console.log(member_id);
       //個人の支払い履歴ページを表示
       this.$router.push({
-        name: 'MemberLendingBorrowingDetail',
-        params: { travel_key: this.travel_key },
+        name: "MemberLendingBorrowingDetail",
+        params: { travel_key: this.travel_key, member_id: member_id },
       });
     },
   },

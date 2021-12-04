@@ -69,8 +69,8 @@
           <p>支払ったメンバー</p>
           <div class="pulldown-box">
             <select v-model="payer">
-              <option v-for="member in members" :key="member.member_id">
-                {{ member }}
+              <option v-for="member in members" :key="member.id">
+                {{ member.name }}
               </option>
             </select>
           </div>
@@ -80,7 +80,7 @@
           <p>誰の分を払ったか</p>
           <div
             v-for="(member, index) in members"
-            :key="member.member_id"
+            :key="member.id"
             class="select-payered-box"
           >
             <p>メンバー{{ index + 1 }}</p>
@@ -90,7 +90,7 @@
                 @click="selectPayered(index)"
                 v-bind:class="{ 'select-payered': isSelectPayered[index] }"
               >
-                <span>{{ member }}</span>
+                <span>{{ member.name }}</span>
               </div>
             </div>
           </div>
@@ -127,6 +127,7 @@ export default {
       inputPaymentName: "",
       inputPrice: "",
       payer: "",
+      payer_id: 0,
       isSelectPayered: [],
       inputPaymentNameError: false,
       inputPriceError: false,
@@ -149,6 +150,7 @@ export default {
        * get /payment/で支払い情報を取得
        */
       this.travel_key = this.$route.params.travel_key;
+      this.payment_id = this.$route.params.payment_id;
 
       const options = {
         method: "GET",
@@ -169,7 +171,10 @@ export default {
               case 200:
                 console.log("body:", response.data);
                 for (let i = 0; i < response.data.members.length; i++) {
-                  this.members.push(response.data.members[i].name);
+                  let _members_unit = {};
+                  _members_unit.id = response.data.members[i].id;
+                  _members_unit.name = response.data.members[i].name;
+                  this.members.push(_members_unit);
                 }
                 break;
               case 401:
@@ -190,18 +195,21 @@ export default {
             console.error(error);
           }.bind(this)
         );
+      
+      await Promise.all([axios1]);
+      console.log("get travel終了");
 
       const options2 = {
         method: "GET",
         url: "http://localhost:10082/payment",
         headers: { "Content-Type": "application/json" },
         params: {
-          payment_id: "1",
+          payment_id: this.payment_id,
         },
       };
       console.log(options2);
 
-      const axios2 = axios
+      axios
         .request(options2)
         .then(
           function(response) {
@@ -212,21 +220,35 @@ export default {
                 this.inputPaymentName = response.data.payment.title;
                 this.originalPaymentName = this.inputPaymentName;
                 this.inputPrice = response.data.payment.amount;
-
+                this.payer_id = response.data.payment.payer_id;
+                for (let i = 0; i < this.members.length; i++) {
+                  if(this.payer_id === this.members[i].id){
+                    this.payer = this.members[i].name;
+                  }
+                }
                 //メンバーのIDとborrowsのIDが一致していればtrueにする
                 for (let i = 0; i < this.members.length; i++) {
-                  for (let j = 0; j < response.data.payment.borrowers[j].length; j++) {
-                    if (this.members[i].member_id === response.data.payment.borrowers[j].borrower_id) {
+                  console.log(i);
+                  for (
+                    let j = 0;
+                    j < response.data.payment.borrowers.length;
+                    j++
+                  ) {
+                    console.log(j);
+                    console.log(this.members[i].id);
+                    console.log(response.data.payment.borrowers[j].borrower_id);
+                    if (
+                      this.members[i].id ===
+                      response.data.payment.borrowers[j].borrower_id
+                    ) {
+                      console.log("true");
                       this.isSelectPayered.push(true);
                     } else {
+                      console.log("false");
                       this.isSelectPayered.push(false);
                     }
                   }
                 }
-                //ダミー値
-                this.isSelectPayered[0] = true;
-                this.isSelectPayered[1] = true;
-                this.isSelectPayered[2] = false;
                 console.log(this.isSelectPayered);
 
                 break;
@@ -249,11 +271,13 @@ export default {
             console.error(error);
           }.bind(this)
         );
-      //Promise.all([])とawaitを併用する
-      await Promise.all([axios1, axios2]);
+      
+      
 
-      //確実に両方の通信が終わったタイミングでセットする
-      this.payer = this.members[0];
+      // const selected = this.members.find((item) => item.name === this.payer);
+      // console.log(selected.name);
+      // console.log(selected.id);
+      // this.payer_id = selected.id;
 
       // //ダミー支払い内容のセット
       // let dummyInputPaymentName = "飛行機代";
@@ -334,16 +358,19 @@ export default {
       console.log(this.inputPaymentName.trim());
       console.log(String(this.inputPrice).trim());
       console.log(this.payer);
+      const selected = this.members.find((item) => item.name === this.payer);
+      console.log(selected.name);
+      console.log(selected.id);
+      this.payer_id = selected.id;
+      console.log(this.payer_id);
       console.log(this.isSelectPayered);
       console.log(this.payment_id);
 
-      this.payment_id = 1; //ダミー値
-      this.payer_id = 1; //ダミー値
       let _borrowers = [];
       for (let i = 0; i < this.isSelectPayered.length; i++) {
         if (this.isSelectPayered[i]) {
           let _borrowers_unit = {};
-          _borrowers_unit.member_id = i; //とりあえずiにしておく
+          _borrowers_unit.member_id = this.members[i].id;
           _borrowers.push(_borrowers_unit);
         }
       }
@@ -355,7 +382,7 @@ export default {
         headers: { "Content-Type": "application/json" },
         data: {
           payment: {
-            id: this.payment_id,
+            id: Number(this.payment_id),
             travel_key: this.travel_key,
             payer_id: this.payer_id,
             borrowers: _borrowers,
@@ -399,7 +426,7 @@ export default {
     toGroup() {
       console.log("toGroup()");
       this.$router.push({
-        name: 'Group',
+        name: "Group",
         params: { travel_key: this.travel_key },
       });
     },
@@ -415,14 +442,12 @@ export default {
     deletePayment() {
       console.log("deletePayment()");
 
-      this.payment_id = 1; //ダミー値
-
       const options = {
         method: "DELETE",
         url: "http://localhost:10082/payment",
         headers: { "Content-Type": "application/json" },
         params: {
-          payment_id: this.payment_id,
+          payment_id: Number(this.payment_id),
         },
       };
       console.log(options);
@@ -455,7 +480,6 @@ export default {
             console.error(error);
           }.bind(this)
         );
-
     },
   },
   beforeCreate: function() {
@@ -574,7 +598,7 @@ $delete_color: #2c3e50;
                 cursor: pointer;
                 pointer-events: auto;
                 &:hover {
-                  background-color: #1cb7f0;
+                  background-color: $green;
                 }
               }
             }
@@ -815,7 +839,7 @@ $delete_color: #2c3e50;
             cursor: pointer;
             pointer-events: auto;
             &:hover {
-              background-color: #1cb7f0;
+              background-color: $green;
             }
           }
         }

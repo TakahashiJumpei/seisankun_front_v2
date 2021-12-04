@@ -23,7 +23,7 @@
         <div class="lending-items">
           <div
             v-for="lending in lendings"
-            :key="lending.lending_id"
+            :key="lending.id"
             class="lending-item"
           >
             <div class="lending-item-left">
@@ -60,7 +60,7 @@
         <div class="borrowing-items">
           <div
             v-for="borrowing in borrowings"
-            :key="borrowing.borrowing_id"
+            :key="borrowing.id"
             class="borrowing-item"
           >
             <div class="borrowing-item-left">
@@ -163,14 +163,14 @@ export default {
       console.log("editPayment()");
       //支払いの編集ページを表示
       this.$router.push({
-        name: 'EditPayment',
+        name: "EditPayment",
         params: { travel_key: this.travel_key },
       });
     },
     toGroup() {
       console.log("toGroup()");
       this.$router.push({
-        name: 'Group',
+        name: "Group",
         params: { travel_key: this.travel_key },
       });
     },
@@ -184,6 +184,7 @@ export default {
        * get/ borrowing/history
        */
       this.travel_key = this.$route.params.travel_key;
+      this.member_id = this.$route.params.member_id;
 
       const options = {
         method: "GET",
@@ -205,10 +206,16 @@ export default {
                 console.log("body:", response.data);
                 this.groupName = response.data.travel.name;
                 for (let i = 0; i < response.data.members.length; i++) {
-                  this.members.push(response.data.members[i].name);
+                  let _members_unit = {};
+                  _members_unit.id = response.data.members[i].id;
+                  _members_unit.name = response.data.members[i].name;
+                  this.members.push(_members_unit);
                 }
-                //ダミー値
-                this.member = this.members[0];
+                for (let i = 0; i < this.members.length; i++) {
+                  if(Number(this.member_id) === this.members[i].id){
+                    this.member = this.members[i].name;
+                  }
+                }
                 break;
               case 401:
                 break;
@@ -229,8 +236,8 @@ export default {
           }.bind(this)
         );
 
-      //たぶんURLもしくはクリック元から取得できる
-      this.member_id = 0;
+      await Promise.all([axios1]);
+      console.log("get travel終了");
 
       const options2 = {
         method: "GET",
@@ -240,9 +247,9 @@ export default {
           member_id: this.member_id,
         },
       };
-      console.log(options);
+      console.log(options2);
 
-      const axios2 = axios
+      axios
         .request(options2)
         .then(
           function(response) {
@@ -267,8 +274,9 @@ export default {
                       response.data.histories[i].payment.title;
                     _borrowings_unit.member =
                       response.data.histories[i].user.name;
-                    _borrowings_unit.price =
-                      Math.abs(response.data.histories[i].payment.borrow_money);
+                    _borrowings_unit.price = Math.abs(
+                      response.data.histories[i].payment.borrow_money
+                    );
                     this.borrowings.push(_borrowings_unit);
                   }
                 }
@@ -362,10 +370,6 @@ export default {
       //   this.differencePricePlus = false;
       //   this.differencePrice = Math.abs(this.differencePrice);
       // }
-
-      //Promise.all([])とawaitを併用する
-      await Promise.all([axios1, axios2]);
-      console.log("bbbbbb");
     },
   },
   beforeCreate: function() {

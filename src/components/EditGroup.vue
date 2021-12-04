@@ -552,7 +552,7 @@ $delete_color: #2c3e50;
                 cursor: pointer;
                 pointer-events: auto;
                 &:hover {
-                  background-color: #1cb7f0;
+                  background-color: $green;
                 }
               }
             }

@@ -62,7 +62,7 @@ export default new Router({
       }
     },
     {
-      path: "/EditPayment/:travel_key",
+      path: "/EditPayment/:travel_key/:payment_id",
       name: "EditPayment",
       components: {
         default: EditPayment,
@@ -71,7 +71,7 @@ export default new Router({
       }
     },
     {
-      path: "/MemberLendingBorrowingDetail/:travel_key",
+      path: "/MemberLendingBorrowingDetail/:travel_key/:member_id",
       name: "MemberLendingBorrowingDetail",
       components: {
         default: MemberLendingBorrowingDetail,
