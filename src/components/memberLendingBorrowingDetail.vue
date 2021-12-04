@@ -35,7 +35,7 @@
               <div class="lending-item-price">
                 <span>{{ lending.price | numberFormat }}円</span>
               </div>
-              <div class="lending-item-edit" @click="editPayment">
+              <div class="lending-item-edit" @click="editPayment(lending.id)">
                 <img src="../assets/edit.png" alt="" />
               </div>
             </div>
@@ -75,7 +75,7 @@
               <div class="borrowing-item-price">
                 <span>{{ borrowing.price | numberFormat }}円</span>
               </div>
-              <div class="borrowing-item-edit" @click="editPayment">
+              <div class="borrowing-item-edit" @click="editPayment(borrowing.id)">
                 <img src="../assets/edit.png" alt="" />
               </div>
             </div>
@@ -159,14 +159,24 @@ export default {
     },
   },
   methods: {
-    editPayment() {
-      console.log("editPayment()");
+    editPayment(id) {
+      console.log("editPayment(id)");
+      console.log(id);
+      id = 1;
       //支払いの編集ページを表示
       this.$router.push({
         name: "EditPayment",
-        params: { travel_key: this.travel_key },
+        params: { travel_key: this.travel_key, payment_id: id },
       });
     },
+    // editPayment() {
+    //   console.log("editPayment()");
+    //   //支払いの編集ページを表示
+    //   this.$router.push({
+    //     name: "EditPayment",
+    //     params: { travel_key: this.travel_key },
+    //   });
+    // },
     toGroup() {
       console.log("toGroup()");
       this.$router.push({
@@ -261,6 +271,8 @@ export default {
                 for (let i = 0; i < response.data.histories.length; i++) {
                   if (response.data.histories[i].payment.borrow_money > 0) {
                     let _lendings_unit = {};
+                    // _lendings_unit.id =
+                    //   response.data.histories[i].payment.id;
                     _lendings_unit.name =
                       response.data.histories[i].payment.title;
                     _lendings_unit.member =
@@ -270,6 +282,8 @@ export default {
                     this.lendings.push(_lendings_unit);
                   } else {
                     let _borrowings_unit = {};
+                    // _borrowings_unit.id =
+                    //   response.data.histories[i].payment.id;
                     _borrowings_unit.name =
                       response.data.histories[i].payment.title;
                     _borrowings_unit.member =
