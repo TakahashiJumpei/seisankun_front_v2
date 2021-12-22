@@ -3,13 +3,17 @@
 
     <router-view name="header"></router-view>
     <router-view></router-view>
-    <router-view name="footer"></router-view>
+    <Footer/>
 
   </div>
 </template>
 
 <script>
+import Footer from '@/components/Footer'
 export default {
+  components: {
+    Footer
+  },
   methods: {
     beforeEnter() {
       this.$root.$emit("triggerScroll");

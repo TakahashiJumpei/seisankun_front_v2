@@ -11,7 +11,6 @@ const Tos = () => import(/* webpackChunkName: "Tos" */ "./components/Tos.vue");
 const PrivacyPolicy = () => import(/* webpackChunkName: "PrivacyPolicy" */ "./components/PrivacyPolicy.vue");
 const HeaderTop = () => import(/* webpackChunkName: "HeaderTop" */ "./components/HeaderTop.vue");
 const HeaderCommon = () => import(/* webpackChunkName: "HeaderCommon" */ "./components/HeaderCommon.vue");
-const Footer = () => import(/* webpackChunkName: "Footer" */ "./components/Footer.vue");
 
 Vue.use(Router);
 
@@ -23,7 +22,6 @@ export default new Router({
       components: {
         default: Top,
         header: HeaderTop,
-        footer: Footer
       }
     },
     {
@@ -31,7 +29,6 @@ export default new Router({
       components: {
         default: CreateGroup,
         header: HeaderCommon,
-        footer: Footer
       }
     },
     {
@@ -40,7 +37,6 @@ export default new Router({
       components: {
         default: Group,
         header: HeaderCommon,
-        footer: Footer
       }
     },
     {
@@ -49,7 +45,6 @@ export default new Router({
       components: {
         default: EditGroup,
         header: HeaderCommon,
-        footer: Footer
       }
     },
     {
@@ -58,7 +53,6 @@ export default new Router({
       components: {
         default: AddPayment,
         header: HeaderCommon,
-        footer: Footer
       }
     },
     {
@@ -67,7 +61,6 @@ export default new Router({
       components: {
         default: EditPayment,
         header: HeaderCommon,
-        footer: Footer
       }
     },
     {
@@ -76,7 +69,6 @@ export default new Router({
       components: {
         default: MemberLendingBorrowingDetail,
         header: HeaderCommon,
-        footer: Footer
       }
     },
     {
@@ -84,7 +76,6 @@ export default new Router({
       components: {
         default: Tos,
         header: HeaderCommon,
-        footer: Footer
       }
     },
     {
@@ -92,7 +83,6 @@ export default new Router({
       components: {
         default: PrivacyPolicy,
         header: HeaderCommon,
-        footer: Footer
       }
     },
     // {
