@@ -505,7 +505,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$bace_text_color: #534e4e;
+$base_text_color: #534e4e;
 $light_blue: #1cb7f0;
 $green: #1db8a3;
 $gray: #f4f0f0;
@@ -527,7 +527,7 @@ $minus: #dd4a76;
         display: flex;
         justify-content: space-between;
         //align-items: center;
-        color: $bace_text_color;
+        color: $base_text_color;
         font-weight: bold;
         .name-wrapper {
           .group-title {
@@ -551,7 +551,7 @@ $minus: #dd4a76;
         margin-bottom: 8px;
         font-size: 10px;
         font-weight: bold;
-        border-bottom: solid 1px $bace_text_color;
+        border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
         .member-title {
         }
@@ -621,7 +621,7 @@ $minus: #dd4a76;
       background-color: $yellow;
       padding: 8px 18px;
       padding-bottom: 24px;
-      color: $bace_text_color;
+      color: $base_text_color;
       .payment-list-title {
         display: flex;
         justify-content: center;
@@ -635,7 +635,7 @@ $minus: #dd4a76;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: solid 1px $bace_text_color;
+          border-bottom: solid 1px $base_text_color;
           padding-bottom: 2px;
           .payment-item-left {
             .payment-item-name {
@@ -663,7 +663,7 @@ $minus: #dd4a76;
               justify-content: center;
               align-items: center;
               border-radius: 4px;
-              border: 1px solid $bace_text_color;
+              border: 1px solid $base_text_color;
               cursor: pointer;
               pointer-events: auto;
               img {
@@ -682,7 +682,7 @@ $minus: #dd4a76;
       background-color: $gray;
       padding: 8px 18px;
       padding-bottom: 24px;
-      color: $bace_text_color;
+      color: $base_text_color;
       .seisan-result-title {
         display: flex;
         justify-content: center;
@@ -696,7 +696,7 @@ $minus: #dd4a76;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: solid 1px $bace_text_color;
+          border-bottom: solid 1px $base_text_color;
           padding-bottom: 2px;
           .seisan-result-item-money-flow {
             font-size: 12px;
@@ -714,7 +714,7 @@ $minus: #dd4a76;
       margin: 0 calc(-#{$padding-lr});
       margin-top: 28px;
       padding: 0 18px;
-      color: $bace_text_color;
+      color: $base_text_color;
       .lending-borrowing-title {
         display: flex;
         justify-content: center;
@@ -728,7 +728,7 @@ $minus: #dd4a76;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: solid 1px $bace_text_color;
+          border-bottom: solid 1px $base_text_color;
           padding-bottom: 2px;
           .lending-borrowing-item-left {
             display: flex;
@@ -777,7 +777,7 @@ $minus: #dd4a76;
         align-items: center;
         .lending-borrowing-explain {
           font-size: 10px;
-          color: $bace_text_color;
+          color: $base_text_color;
           .blue-explain {
             .blue {
               color: $plus;

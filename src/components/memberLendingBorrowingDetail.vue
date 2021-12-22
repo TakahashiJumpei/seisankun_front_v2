@@ -415,7 +415,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$bace_text_color: #534e4e;
+$base_text_color: #534e4e;
 $light_blue: #1cb7f0;
 $green: #1db8a3;
 $gray: #f4f0f0;
@@ -434,10 +434,10 @@ $form-border: #707070;
   padding: $padding-tb $padding-lr;
   .inner {
     .group-name-wrapper {
-      color: $bace_text_color;
+      color: $base_text_color;
       font-weight: bold;
       padding-bottom: 8px;
-      border-bottom: solid 1px $bace_text_color;
+      border-bottom: solid 1px $base_text_color;
       .group-title {
         font-size: 10px;
       }
@@ -452,7 +452,7 @@ $form-border: #707070;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: $bace_text_color;
+        color: $base_text_color;
         font-size: $theme-title-size;
         font-weight: bold;
         font-size: 20px;
@@ -465,7 +465,7 @@ $form-border: #707070;
       background-color: $yellow;
       padding: 12px 18px;
       padding-bottom: 30px;
-      color: $bace_text_color;
+      color: $base_text_color;
       .lending-list-title {
         display: flex;
         justify-content: center;
@@ -479,7 +479,7 @@ $form-border: #707070;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: solid 1px $bace_text_color;
+          border-bottom: solid 1px $base_text_color;
           padding-bottom: 2px;
           .lending-item-left {
             .lending-item-name {
@@ -503,7 +503,7 @@ $form-border: #707070;
               justify-content: center;
               align-items: center;
               border-radius: 4px;
-              border: 1px solid $bace_text_color;
+              border: 1px solid $base_text_color;
               cursor: pointer;
               pointer-events: auto;
               img {
@@ -523,7 +523,7 @@ $form-border: #707070;
           display: flex;
           justify-content: flex-end;
           align-items: center;
-          border-bottom: solid 1px $bace_text_color;
+          border-bottom: solid 1px $base_text_color;
           padding-bottom: 2px;
           .lending-sum-title {
             font-size: 16px;
@@ -544,7 +544,7 @@ $form-border: #707070;
       background-color: $yellow;
       padding: 12px 18px;
       padding-bottom: 30px;
-      color: $bace_text_color;
+      color: $base_text_color;
       .borrowing-list-title {
         display: flex;
         justify-content: center;
@@ -558,7 +558,7 @@ $form-border: #707070;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: solid 1px $bace_text_color;
+          border-bottom: solid 1px $base_text_color;
           padding-bottom: 2px;
           .borrowing-item-left {
             .borrowing-item-name {
@@ -586,7 +586,7 @@ $form-border: #707070;
               justify-content: center;
               align-items: center;
               border-radius: 4px;
-              border: 1px solid $bace_text_color;
+              border: 1px solid $base_text_color;
               cursor: pointer;
               pointer-events: auto;
               img {
@@ -606,7 +606,7 @@ $form-border: #707070;
           display: flex;
           justify-content: flex-end;
           align-items: center;
-          border-bottom: solid 1px $bace_text_color;
+          border-bottom: solid 1px $base_text_color;
           padding-bottom: 2px;
           .borrowing-sum-title {
             font-size: 16px;
@@ -626,7 +626,7 @@ $form-border: #707070;
       margin-top: 20px;
       background-color: $yellow;
       padding: 12px 18px;
-      color: $bace_text_color;
+      color: $base_text_color;
       .difference-box {
         display: flex;
         justify-content: center;
@@ -636,7 +636,7 @@ $form-border: #707070;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: solid 1px $bace_text_color;
+            border-bottom: solid 1px $base_text_color;
             padding-bottom: 2px;
             .difference-title {
               font-size: 16px;
@@ -661,7 +661,7 @@ $form-border: #707070;
             align-items: center;
             .difference-lending-borrowing-explain {
               font-size: 10px;
-              color: $bace_text_color;
+              color: $base_text_color;
               .blue-explain {
                 .blue {
                   color: $plus;
@@ -695,7 +695,7 @@ $form-border: #707070;
         border: 1px solid $form-border;
         box-shadow: 0 2px 0 0 #cbcecf;
         span {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 16px;
         }
       }

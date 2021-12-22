@@ -466,7 +466,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$bace_text_color: #534e4e;
+$base_text_color: #534e4e;
 $light_blue: #1cb7f0;
 $green: #1db8a3;
 $gray: #f4f0f0;
@@ -572,7 +572,7 @@ $delete_color: #2c3e50;
                 border: 1px solid $form-border;
                 box-shadow: 0 2px 0 0 #cbcecf;
                 span {
-                  color: $bace_text_color;
+                  color: $base_text_color;
                   font-size: 16px;
                 }
               }
@@ -589,7 +589,7 @@ $delete_color: #2c3e50;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: $bace_text_color;
+        color: $base_text_color;
         font-size: $theme-title-size;
         font-weight: bold;
       }
@@ -598,14 +598,14 @@ $delete_color: #2c3e50;
       margin-top: 32px;
       .input-group-name-form {
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         input {
           margin-top: 4px;
           width: 100%;
           height: $form-h;
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 16px;
           text-indent: 1em;
           background-color: $form-bg;
@@ -625,7 +625,7 @@ $delete_color: #2c3e50;
       .input-member-form {
         margin-top: 4px;
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         .member-name-box {
@@ -636,7 +636,7 @@ $delete_color: #2c3e50;
           input {
             width: calc(100% - 40px);
             height: $form-h;
-            color: $bace_text_color;
+            color: $base_text_color;
             font-size: 16px;
             text-indent: 1em;
             background-color: $form-bg;
@@ -675,7 +675,7 @@ $delete_color: #2c3e50;
         .show-member-form {
           margin-top: 8px;
           p {
-            color: $bace_text_color;
+            color: $base_text_color;
             font-size: 12px;
           }
           .member-name-box {
@@ -695,7 +695,7 @@ $delete_color: #2c3e50;
               justify-content: start;
               align-items: center;
               span {
-                color: $bace_text_color;
+                color: $base_text_color;
                 font-size: 16px;
               }
             }
@@ -759,7 +759,7 @@ $delete_color: #2c3e50;
             border: 1px solid $form-border;
             box-shadow: 0 2px 0 0 #cbcecf;
             span {
-              color: $bace_text_color;
+              color: $base_text_color;
               font-size: 16px;
             }
           }

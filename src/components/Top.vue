@@ -177,7 +177,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$bace_text_color: #534e4e;
+$base_text_color: #534e4e;
 $light_blue: #1cb7f0;
 $green: #1db8a3;
 $gray: #f4f0f0;
@@ -193,15 +193,15 @@ $footer-h: 120px;
   .inner {
     .explain-wrapper {
       .explain-title {
-        color: $bace_text_color;
+        color: $base_text_color;
         font-size: $theme-title-size;
         font-weight: bold;
-        border-bottom: solid 1px $bace_text_color;
+        border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
       }
       .explain-sentence {
         margin-top: 8px;
-        color: $bace_text_color;
+        color: $base_text_color;
         font-size: 12px;
         font-weight: normal;
       }
@@ -229,15 +229,15 @@ $footer-h: 120px;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: $bace_text_color;
+        color: $base_text_color;
         font-size: $theme-title-size;
         font-weight: bold;
-        border-bottom: solid 1px $bace_text_color;
+        border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
       }
       .past-groups {
         margin-top: 16px;
-        color: $bace_text_color;
+        color: $base_text_color;
         font-size: 12px;
         font-weight: normal;
         .past-group {
@@ -261,11 +261,11 @@ $footer-h: 120px;
       margin-top: 32px;
       background-color: $yellow;
       padding: $padding-tb $padding-lr;
-      color: $bace_text_color;
+      color: $base_text_color;
       .feature-title {
         font-size: $theme-title-size;
         font-weight: bold;
-        border-bottom: solid 1px $bace_text_color;
+        border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
       }
       .feature-items {
@@ -289,11 +289,11 @@ $footer-h: 120px;
       margin-top: 32px;
       //background-color: $yellow;
       padding: 0 $padding-lr;
-      color: $bace_text_color;
+      color: $base_text_color;
       .howto-title {
         font-size: $theme-title-size;
         font-weight: bold;
-        border-bottom: solid 1px $bace_text_color;
+        border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
       }
       .howto-items {

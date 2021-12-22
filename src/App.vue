@@ -20,11 +20,11 @@ export default {
 
 <style scoped lang="scss">
 @import "./css/ress.css";
-$bace_text_color: #534E4E;
-$bace_text_font: Noto Sans JP;
+$base_text_color: #534E4E;
+$base_text_font: Noto Sans JP;
 .container {
   overflow-y: hidden;
-  color: $bace_text_color;
-  font-family: $bace_text_font;
+  color: $base_text_color;
+  font-family: $base_text_font;
 }
 </style>

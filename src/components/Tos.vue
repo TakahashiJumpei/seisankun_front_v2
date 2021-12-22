@@ -7,7 +7,7 @@
 </template>
 
 <style scoped lang="scss">
-$bace_text_color: #534e4e;
+$base_text_color: #534e4e;
 $light_blue: #1cb7f0;
 $gray: #f4f0f0;
 $yellow: #fff0bf;

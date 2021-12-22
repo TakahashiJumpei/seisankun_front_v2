@@ -326,7 +326,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$bace_text_color: #534e4e;
+$base_text_color: #534e4e;
 $light_blue: #1cb7f0;
 $green: #1db8a3;
 $gray: #f4f0f0;
@@ -352,7 +352,7 @@ $image_path: "../assets";
         display: flex;
         justify-content: center;
         align-items: center;
-        color: $bace_text_color;
+        color: $base_text_color;
         font-size: $theme-title-size;
         font-weight: bold;
       }
@@ -361,14 +361,14 @@ $image_path: "../assets";
       margin-top: 32px;
       .input-payment-name-form {
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         input {
           margin-top: 4px;
           width: 100%;
           height: $form-h;
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 16px;
           text-indent: 1em;
           background-color: $form-bg;
@@ -388,7 +388,7 @@ $image_path: "../assets";
       .input-price-form {
         margin-top: 4px;
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         .price-box {
@@ -399,7 +399,7 @@ $image_path: "../assets";
           input {
             width: calc(100% - 40px);
             height: $form-h;
-            color: $bace_text_color;
+            color: $base_text_color;
             font-size: 16px;
             text-indent: 1em;
             background-color: $form-bg;
@@ -414,7 +414,7 @@ $image_path: "../assets";
             justify-content: center;
             align-items: center;
             span {
-              color: $bace_text_color;
+              color: $base_text_color;
               font-size: 16px;
               font-weight: normal;
             }
@@ -432,7 +432,7 @@ $image_path: "../assets";
       .pulldown-payer-form {
         margin-top: 4px;
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         .pulldown-box {
@@ -458,7 +458,7 @@ $image_path: "../assets";
             margin-top: 4px;
             width: 100%;
             height: $form-h;
-            color: $bace_text_color;
+            color: $base_text_color;
             font-size: 16px;
             text-indent: 1em;
             background-color: $form-bg;
@@ -474,7 +474,7 @@ $image_path: "../assets";
       #select-payered-wrapper {
         margin-top: 20px;
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         & .select-payered-box:first-of-type {
@@ -483,7 +483,7 @@ $image_path: "../assets";
         .select-payered-box {
           margin-top: 8px;
           p {
-            color: $bace_text_color;
+            color: $base_text_color;
             font-size: 12px;
           }
           .member-name-box {
@@ -505,7 +505,7 @@ $image_path: "../assets";
               align-items: center;
               text-decoration-line: line-through;
               span {
-                color: $bace_text_color;
+                color: $base_text_color;
                 font-size: 16px;
               }
               &.select-payered {
@@ -576,7 +576,7 @@ $image_path: "../assets";
             border: 1px solid $form-border;
             box-shadow: 0 2px 0 0 #cbcecf;
             span {
-              color: $bace_text_color;
+              color: $base_text_color;
               font-size: 16px;
             }
           }

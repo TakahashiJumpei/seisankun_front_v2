@@ -511,7 +511,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$bace_text_color: #534e4e;
+$base_text_color: #534e4e;
 $light_blue: #1cb7f0;
 $green: #1db8a3;
 $gray: #f4f0f0;
@@ -618,7 +618,7 @@ $delete_color: #2c3e50;
                 border: 1px solid $form-border;
                 box-shadow: 0 2px 0 0 #cbcecf;
                 span {
-                  color: $bace_text_color;
+                  color: $base_text_color;
                   font-size: 16px;
                 }
               }
@@ -635,7 +635,7 @@ $delete_color: #2c3e50;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: $bace_text_color;
+        color: $base_text_color;
         font-size: $theme-title-size;
         font-weight: bold;
       }
@@ -644,14 +644,14 @@ $delete_color: #2c3e50;
       margin-top: 32px;
       .input-payment-name-form {
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         input {
           margin-top: 4px;
           width: 100%;
           height: $form-h;
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 16px;
           text-indent: 1em;
           background-color: $form-bg;
@@ -671,7 +671,7 @@ $delete_color: #2c3e50;
       .input-price-form {
         margin-top: 4px;
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         .price-box {
@@ -682,7 +682,7 @@ $delete_color: #2c3e50;
           input {
             width: calc(100% - 40px);
             height: $form-h;
-            color: $bace_text_color;
+            color: $base_text_color;
             font-size: 16px;
             text-indent: 1em;
             background-color: $form-bg;
@@ -697,7 +697,7 @@ $delete_color: #2c3e50;
             justify-content: center;
             align-items: center;
             span {
-              color: $bace_text_color;
+              color: $base_text_color;
               font-size: 16px;
               font-weight: normal;
             }
@@ -715,7 +715,7 @@ $delete_color: #2c3e50;
       .pulldown-payer-form {
         margin-top: 4px;
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         .pulldown-box {
@@ -741,7 +741,7 @@ $delete_color: #2c3e50;
             margin-top: 4px;
             width: 100%;
             height: $form-h;
-            color: $bace_text_color;
+            color: $base_text_color;
             font-size: 16px;
             text-indent: 1em;
             background-color: $form-bg;
@@ -757,7 +757,7 @@ $delete_color: #2c3e50;
       #select-payered-wrapper {
         margin-top: 20px;
         p {
-          color: $bace_text_color;
+          color: $base_text_color;
           font-size: 12px;
         }
         & .select-payered-box:first-of-type {
@@ -766,7 +766,7 @@ $delete_color: #2c3e50;
         .select-payered-box {
           margin-top: 8px;
           p {
-            color: $bace_text_color;
+            color: $base_text_color;
             font-size: 12px;
           }
           .member-name-box {
@@ -788,7 +788,7 @@ $delete_color: #2c3e50;
               align-items: center;
               text-decoration-line: line-through;
               span {
-                color: $bace_text_color;
+                color: $base_text_color;
                 font-size: 16px;
               }
               &.select-payered {
@@ -859,7 +859,7 @@ $delete_color: #2c3e50;
             border: 1px solid $form-border;
             box-shadow: 0 2px 0 0 #cbcecf;
             span {
-              color: $bace_text_color;
+              color: $base_text_color;
               font-size: 16px;
             }
           }
