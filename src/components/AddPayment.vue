@@ -291,24 +291,6 @@ export default {
           console.error(error);
         }.bind(this)
       );
-
-    // //ダミーメンバーのセット
-    // let dummyMembers = [
-    //   "nakazaway",
-    //   "じゅんちゃん",
-    //   "yseki",
-    //   "ハマ",
-    //   "やまぐち",
-    //   "濱本将",
-    // ];
-    // this.members = dummyMembers;
-
-    // for (let i = 0; i < this.members.length; i++) {
-    //   this.isSelectPayered.push(true);
-    // }
-    // console.log(this.isSelectPayered);
-
-    // this.payer = this.members[0];
   },
   beforeUpdate: function() {
     console.log("AddPayment.vue beforeUpdate");

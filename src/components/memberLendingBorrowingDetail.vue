@@ -169,14 +169,6 @@ export default {
         params: { travel_key: this.travel_key, payment_id: id },
       });
     },
-    // editPayment() {
-    //   console.log("editPayment()");
-    //   //支払いの編集ページを表示
-    //   this.$router.push({
-    //     name: "EditPayment",
-    //     params: { travel_key: this.travel_key },
-    //   });
-    // },
     toGroup() {
       console.log("toGroup()");
       this.$router.push({
@@ -334,56 +326,6 @@ export default {
             console.error(error);
           }.bind(this)
         );
-
-      // //ダミーメンバーのセット
-      // let dummyMembers = [
-      //   "nakazaway",
-      //   "じゅんちゃん",
-      //   "yseki",
-      //   "ハマ",
-      //   "やまぐち",
-      //   "濱本将",
-      // ];
-      // this.members = dummyMembers;
-
-      // this.member = this.members[0];
-
-      // //ダミー支払ったもののセット
-      // let dummyLendings = [
-      //   { name: "飛行機代", member: "nakazaway", price: 100000 },
-      //   //{ name: "ホテル代", member: "じゅんちゃん", price: 80000 },
-      //   { name: "夕食代", member: "nakazaway", price: 20000 },
-      //   //{ name: "タクシー代", member: "yseki", price: 4000 },
-      // ];
-      // this.lendings = dummyLendings;
-
-      // for (let i = 0; i < this.lendings.length; i++) {
-      //   this.lendingsSum += Number(this.lendings[i].price);
-      // }
-      // console.log(this.lendingsSum);
-
-      // //ダミー立て替えられたもののセット
-      // let dummyBorrowings = [
-      //   //{ name: "飛行機代", member: "nakazaway", price: 100000 },
-      //   { name: "ホテル代", member: "じゅんちゃん", price: 80000 },
-      //   //{ name: "夕食代", member: "nakazaway", price: 20000 },
-      //   { name: "タクシー代", member: "yseki", price: 4000 },
-      // ];
-      // this.borrowings = dummyBorrowings;
-
-      // for (let i = 0; i < this.borrowings.length; i++) {
-      //   this.borrowingsSum += Number(this.borrowings[i].price);
-      // }
-      // console.log(this.borrowingsSum);
-
-      // this.differencePrice = this.lendingsSum - this.borrowingsSum;
-      // //this.differencePrice = -20000;
-      // if (this.differencePrice > 0) {
-      //   this.differencePricePlus = true;
-      // } else {
-      //   this.differencePricePlus = false;
-      //   this.differencePrice = Math.abs(this.differencePrice);
-      // }
     },
   },
   beforeCreate: function() {

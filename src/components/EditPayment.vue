@@ -271,42 +271,6 @@ export default {
             console.error(error);
           }.bind(this)
         );
-
-
-
-      // const selected = this.members.find((item) => item.name === this.payer);
-      // console.log(selected.name);
-      // console.log(selected.id);
-      // this.payer_id = selected.id;
-
-      // //ダミー支払い内容のセット
-      // let dummyInputPaymentName = "飛行機代";
-      // this.inputPaymentName = dummyInputPaymentName;
-
-      // //ダミー支払い金額のセット
-      // let dummyInputPrice = "100000";
-      // this.inputPrice = dummyInputPrice;
-
-      // //ダミーメンバーのセット
-      // let dummyMembers = [
-      //   "nakazaway",
-      //   "じゅんちゃん",
-      //   "yseki",
-      //   "ハマ",
-      //   "やまぐち",
-      //   "濱本将",
-      // ];
-      // this.members = dummyMembers;
-
-      // for (let i = 0; i < 6; i++) {
-      //   this.isSelectPayered.push(true);
-      // }
-      // this.isSelectPayered[1] = false;
-      // this.isSelectPayered[4] = false;
-      // this.isSelectPayered[5] = false;
-      // console.log(this.isSelectPayered);
-
-      // this.payer = this.members[0];
     },
     selectPayered(index) {
       console.log("selectPayered(index)");

@@ -374,49 +374,6 @@ export default {
       //Promise.all([])とawaitを併用する
       await Promise.all([axios1, axios2, axios3, axios4]);
       console.log("全てのAPI通信終了");
-
-      // //ダミーグループ名のセット
-      // let dummyGroupName = "渡韓ごっこin新大久保";
-      // this.groupName = dummyGroupName;
-
-      // //ダミーメンバーのセット
-      // let dummyMembers = [
-      //   "nakazaway",
-      //   "じゅんちゃん",
-      //   "yseki",
-      //   "ハマ",
-      //   "やまぐち",
-      //   "濱本将",
-      // ];
-      // this.members = dummyMembers;
-
-      // //ダミー支払い内容レコードのセット
-      // let dummyPayments = [
-      //   { name: "飛行機代", member: "nakazaway", price: 100000 },
-      //   { name: "ホテル代", member: "じゅんちゃん", price: 80000 },
-      //   { name: "夕食代", member: "nakazaway", price: 20000 },
-      //   { name: "タクシー代", member: "yseki", price: 4000 },
-      // ];
-      // this.payments = dummyPayments;
-
-      // //ダミー精算結果レコードのセット
-      // let dummySeisanResults = [
-      //   { from: "じゅんちゃん", to: "nakazaway", price: 100000 },
-      //   { from: "じゅんちゃん", to: "yseki", price: 50000 },
-      //   { from: "yseki", to: "nakazaway", price: 50000 },
-      // ];
-      // this.seisanResults = dummySeisanResults;
-
-      // //ダミー貸し借りの状況レコードのセット
-      // let dummyLendingBorrowingItems = [
-      //   { member: "nakazaway", price: 36000, plus: true },
-      //   { member: "じゅんちゃん", price: 2000, plus: true },
-      //   { member: "yseki", price: 4000, plus: true },
-      //   { member: "ハマ", price: 300000, plus: false },
-      //   { member: "やまぐち", price: 12000, plus: false },
-      //   { member: "濱本将", price: 8000, plus: false },
-      // ];
-      // this.lendingBorrowingItems = dummyLendingBorrowingItems;
     },
     toEditGroup() {
       console.log("clicked toEditGroup()");
