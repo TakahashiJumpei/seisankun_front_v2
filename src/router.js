@@ -78,7 +78,7 @@ export default new Router({
         header: HeaderCommon,
         footer: Footer
       }
-    },    
+    },
     {
       path: "/tos/",
       components: {

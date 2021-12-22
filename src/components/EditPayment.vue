@@ -195,7 +195,7 @@ export default {
             console.error(error);
           }.bind(this)
         );
-      
+
       await Promise.all([axios1]);
       console.log("get travel終了");
 
@@ -271,8 +271,8 @@ export default {
             console.error(error);
           }.bind(this)
         );
-      
-      
+
+
 
       // const selected = this.members.find((item) => item.name === this.payer);
       // console.log(selected.name);
