@@ -13,11 +13,6 @@ import Footer from '@/components/Footer'
 export default {
   components: {
     Footer
-  },
-  methods: {
-    beforeEnter() {
-      this.$root.$emit("triggerScroll");
-    }
   }
 };
 </script>
