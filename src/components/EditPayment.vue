@@ -294,7 +294,7 @@ export default {
       }
 
       if (errors > 0) {
-        console.log("エラー時の処理");
+        scrollTo(0, 0);
       } else {
         this.EditPayment();
       }
