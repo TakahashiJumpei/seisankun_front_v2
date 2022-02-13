@@ -85,9 +85,5 @@ export default new Router({
         header: HeaderCommon,
       }
     },
-    // {
-    //   path: "*",
-    //   redirect: "/"
-    // },
   ]
 });
