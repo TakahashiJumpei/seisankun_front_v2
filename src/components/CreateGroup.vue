@@ -56,7 +56,7 @@
 
         <div class="button-wrapper">
           <div class="create-button-wrapper">
-            <button class="create-button" @click="doValidationCheck">
+            <button class="create-button" @click="doValidation">
               <span>作成</span>
             </button>
           </div>
@@ -102,7 +102,7 @@ export default {
     deleteMember(index) {
       this.members.splice(index, 1);
     },
-    doValidationCheck() {
+    doValidation() {
       let errors = 0;
       //グループ名のバリデーション
       if (

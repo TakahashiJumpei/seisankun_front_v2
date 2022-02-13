@@ -93,7 +93,7 @@
 
         <div class="button-wrapper">
           <div class="update-button-wrapper">
-            <button class="update-button" @click="doValidationCheck">
+            <button class="update-button" @click="doValidation">
               <span>変更を確定</span>
             </button>
           </div>
@@ -231,7 +231,7 @@ export default {
           }.bind(this)
         );
     },
-    doValidationCheck() {
+    doValidation() {
 
       let errors = 0;
       //グループ名のバリデーション

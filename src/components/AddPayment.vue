@@ -72,7 +72,7 @@
 
         <div class="button-wrapper">
           <div class="add-payment-button-wrapper">
-            <button class="add-payment-button" @click="doValidationCheck">
+            <button class="add-payment-button" @click="doValidation">
               <span>追加</span>
             </button>
           </div>
@@ -114,7 +114,7 @@ export default {
       }
       this.$forceUpdate(); //強制的にコンポーネントを更新
     },
-    doValidationCheck() {
+    doValidation() {
       let errors = 0;
       //支払い内容のバリデーション
       if (
