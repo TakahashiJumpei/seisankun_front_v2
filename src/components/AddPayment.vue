@@ -414,8 +414,6 @@ $image_path: "../assets";
             border: 1px solid $form-border;
             border-radius: 4px;
             box-shadow: 0 2px 0 0 #cbcecf;
-            option {
-            }
           }
         }
       }
