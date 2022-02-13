@@ -34,9 +34,9 @@
               <span>円</span>
             </div>
           </div>
-          <span v-bind:class="{ red: inputPriceError }"
-            >※半角数字でご記入ください</span
-          >
+          <span v-bind:class="{ red: inputPriceError }">{{
+            inputPriceErrorText
+          }}</span>
         </div>
 
         <div class="pulldown-payer-form">
@@ -101,6 +101,7 @@ export default {
       inputPaymentNameError: false,
       inputPriceError: false,
       travel_key: "",
+      inputPriceErrorText: "※半角数字でご記入ください",
     };
   },
   watch: {},
@@ -128,14 +129,19 @@ export default {
       }
       //支払い金額のバリデーション
       if (
-        String(this.inputPrice)
+        !String(this.inputPrice)
           .trim()
           .match(/^([1-9]\d*|0)$/)
       ) {
-        this.inputPriceError = false;
-      } else {
         this.inputPriceError = true;
+        this.inputPriceErrorText = "※半角数字でご記入ください";
         errors++;
+      } else if (String(this.inputPrice).trim().length > 10) {
+        this.inputPriceError = true;
+        this.inputPriceErrorText = "料金は10桁以内でご入力ください";
+        errors++;
+      } else {
+        this.inputPriceError = false;
       }
 
       if (errors > 0) {

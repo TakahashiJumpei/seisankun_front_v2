@@ -60,9 +60,9 @@
               <span>円</span>
             </div>
           </div>
-          <span v-bind:class="{ red: inputPriceError }"
-            >※半角数字でご記入ください</span
-          >
+          <span v-bind:class="{ red: inputPriceError }">{{
+            inputPriceErrorText
+          }}</span>
         </div>
 
         <div class="pulldown-payer-form">
@@ -135,13 +135,13 @@ export default {
       confirm: false,
       originalPaymentName: "",
       travel_key: "",
+      inputPriceErrorText: "※半角数字でご記入ください",
     };
   },
   watch: {},
   filters: {},
   methods: {
     async getPaymentInfo() {
-
       /**
        * 2つのAPI通信を実装する
        * 非同期にする必要あり？
@@ -214,7 +214,7 @@ export default {
                 this.inputPrice = response.data.payment.amount;
                 this.payer_id = response.data.payment.payer_id;
                 for (let i = 0; i < this.members.length; i++) {
-                  if(this.payer_id === this.members[i].id){
+                  if (this.payer_id === this.members[i].id) {
                     this.payer = this.members[i].name;
                   }
                 }
@@ -265,7 +265,6 @@ export default {
       this.$forceUpdate(); //強制的にコンポーネントを更新
     },
     doValidation() {
-
       let errors = 0;
       //支払い内容のバリデーション
       if (
@@ -279,14 +278,19 @@ export default {
       }
       //支払い金額のバリデーション
       if (
-        String(this.inputPrice)
+        !String(this.inputPrice)
           .trim()
           .match(/^([1-9]\d*|0)$/)
       ) {
-        this.inputPriceError = false;
-      } else {
         this.inputPriceError = true;
+        this.inputPriceErrorText = "※半角数字でご記入ください";
         errors++;
+      } else if (String(this.inputPrice).trim().length > 10) {
+        this.inputPriceError = true;
+        this.inputPriceErrorText = "料金は10桁以内でご入力ください";
+        errors++;
+      } else {
+        this.inputPriceError = false;
       }
 
       if (errors > 0) {
@@ -296,7 +300,6 @@ export default {
       }
     },
     EditPayment: function() {
-
       //画面から各種データを取得
       const selected = this.members.find((item) => item.name === this.payer);
       this.payer_id = selected.id;
@@ -367,7 +370,6 @@ export default {
       this.confirm = false;
     },
     deletePayment() {
-
       const options = {
         method: "DELETE",
         url: "http://localhost:10082/payment",
@@ -405,23 +407,16 @@ export default {
         );
     },
   },
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
+  beforeCreate: function() {},
+  created: function() {},
+  beforeMount: function() {},
   mounted: function() {
     this.getPaymentInfo();
   },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
-  },
+  beforeUpdate: function() {},
+  updated: function() {},
+  beforeDestroy: function() {},
+  destroyed: function() {},
 };
 </script>
 
