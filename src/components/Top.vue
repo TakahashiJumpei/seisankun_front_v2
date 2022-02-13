@@ -125,12 +125,10 @@ export default {
   },
   methods: {
     toCreateGroup() {
-      console.log("clicked toCreateGroup()");
       //グループの作成ページを表示
       this.$router.push({ path: "/CreateGroup/" });
     },
     toGroup() {
-      console.log("clicked toGroup()");
       //どのグループかtravel_keyでを特定する必要あり
       //グループページを表示
       this.travel_key = "aaaabbbbccccdddd";
@@ -142,16 +140,12 @@ export default {
     },
   },
   beforeCreate: function() {
-    console.log("Top.vue beforeCreate");
   },
   created: function() {
-    console.log("Top.vue created");
   },
   beforeMount: function() {
-    console.log("Top.vue beforeMount");
   },
   mounted: function() {
-    console.log("Top.vue mounted");
 
     /**
      * ローカルストレージから過去のグループIDを取得する（あれば）
@@ -159,19 +153,14 @@ export default {
      */
 
     // localStorage.getItem("group_hash_key");
-    // console.log(localStorage.getItem("group_hash_key"));
   },
   beforeUpdate: function() {
-    console.log("Top.vue beforeUpdate");
   },
   updated: function() {
-    console.log("Top.vue updated");
   },
   beforeDestroy: function() {
-    console.log("Top.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("Top.vue destroyed");
   },
 };
 </script>

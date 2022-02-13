@@ -88,13 +88,11 @@ export default {
   watch: {},
   methods: {
     addMember() {
-      console.log("addMember()");
       if (
         this.add_member_name.trim().length == 0 ||
         this.add_member_name.trim().length > 20
       ) {
         this.isAddMemberError = true;
-        console.log(this.isAddMemberError);
         return;
       }
       this.isAddMemberError = false;
@@ -102,12 +100,9 @@ export default {
       this.add_member_name = "";
     },
     deleteMember(index) {
-      console.log("deleteMember(index)");
       this.members.splice(index, 1);
     },
     doValidationCheck() {
-      console.log("clicked create button");
-      console.log("doValidationCheck()");
 
       let errors = 0;
       //グループ名のバリデーション
@@ -122,29 +117,23 @@ export default {
       }
 
       if (errors > 0) {
-        console.log("errors > 0");
       } else {
-        console.log("errors == 0");
         this.createGroup();
       }
     },
     createGroup: function() {
-      console.log("createGroup()");
 
       //入力データを取得
       /**
        * グループ名は必須
        * メンバー（任意）
        */
-      console.log(this.inputGroupName);
-      console.log(this.members);
       let _members = [];
       for (let i = 0; i < this.members.length; i++) {
         let _members_unit = {};
         _members_unit.name = this.members[i];
         _members.push(_members_unit);
       }
-      console.log(_members);
 
       const options = {
         method: "POST",
@@ -155,17 +144,13 @@ export default {
           members: _members,
         },
       };
-      console.log(options);
 
       axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
-                console.log(response.data.travel_key);
                 this.travel_key = response.data.travel_key;
                 //グループ画面へ
                 this.toGroup();
@@ -185,47 +170,34 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
     toGroup() {
-      console.log("toGroup()");
-      console.log(this.travel_key);
       this.$router.push({
         name: 'Group',
         params: { travel_key: this.travel_key },
       });
     },
     toTop() {
-      console.log("clicked back button");
-      console.log("toTop()");
       this.$router.push({ path: "/" });
     },
   },
   beforeCreate: function() {
-    console.log("CreateGroup.vue beforeCreate");
   },
   created: function() {
-    console.log("CreateGroup.vue created");
   },
   beforeMount: function() {
-    console.log("CreateGroup.vue beforeMount");
   },
   mounted: function() {
-    console.log("CreateGroup.vue mounted");
   },
   beforeUpdate: function() {
-    console.log("CreateGroup.vue beforeUpdate");
   },
   updated: function() {
-    console.log("CreateGroup.vue updated");
   },
   beforeDestroy: function() {
-    console.log("CreateGroup.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("CreateGroup.vue destroyed");
   },
 };
 </script>

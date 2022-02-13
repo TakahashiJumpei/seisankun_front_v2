@@ -31,28 +31,20 @@ export default {
   },
   methods: {},
   beforeCreate: function() {
-    console.log("Tos.vue beforeCreate");
   },
   created: function() {
-    console.log("Tos.vue created");
   },
   beforeMount: function() {
-    console.log("Tos.vue beforeMount");
   },
   mounted: function() {
-    console.log("Tos.vue mounted");
   },
   beforeUpdate: function() {
-    console.log("Tos.vue beforeUpdate");
   },
   updated: function() {
-    console.log("Tos.vue updated");
   },
   beforeDestroy: function() {
-    console.log("Tos.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("Tos.vue destroyed");
   },
 };
 </script>

@@ -135,13 +135,11 @@ export default {
   watch: {},
   methods: {
     addMember() {
-      console.log("addMember()");
       if (
         this.add_member_name.trim().length == 0 ||
         this.add_member_name.trim().length > 20
       ) {
         this.isAddMemberError = true;
-        console.log(this.isAddMemberError);
         return;
       }
       this.isAddMemberError = false;
@@ -158,17 +156,13 @@ export default {
           members: _member,
         },
       };
-      console.log(options);
 
       axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
-                console.log("member_id:", response.data.member_id);
                 this.members.push(this.add_member_name.trim());
                 this.add_member_name = "";
                 break;
@@ -187,12 +181,10 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
     confirmDeleteMember(index) {
-      console.log("confirmDeleteMember(index)");
       this.confirm = true;
       this.confirm_group = false;
       this.delete_member_name = this.members[index];
@@ -200,8 +192,6 @@ export default {
       this.delete_member_id = 1;
     },
     deleteMember() {
-      console.log("deleteMember()");
-      console.log(this.memberIndex);
 
       const options = {
         method: "DELETE",
@@ -211,16 +201,13 @@ export default {
           member_id: this.delete_member_id,
         },
       };
-      console.log(options);
 
       axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 this.members.splice(this.memberIndex, 1);
                 this.hideConfirmModal();
                 break;
@@ -239,13 +226,10 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
     doValidationCheck() {
-      console.log("clicked create button");
-      console.log("doValidationCheck()");
 
       let errors = 0;
       //グループ名のバリデーション
@@ -260,20 +244,16 @@ export default {
       }
 
       if (errors > 0) {
-        console.log("errors > 0");
       } else {
-        console.log("errors == 0");
         this.EditGroup();
       }
     },
     EditGroup: function() {
-      console.log("EditGroup()");
 
       //入力データを取得
       /**
        * グループ名
        */
-      console.log(this.inputGroupName);
 
       const options = {
         method: "PUT",
@@ -283,16 +263,13 @@ export default {
           travel: { name: `${this.inputGroupName}` },
         },
       };
-      console.log(options);
 
       axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 //グループ画面へ
                 this.toGroup();
                 break;
@@ -311,28 +288,23 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
     toGroup() {
-      console.log("toGroup()");
       this.$router.push({
         name: 'Group',
         params: { travel_key: this.travel_key },
       });
     },
     confirmDeleteGroup() {
-      console.log("confirmDeleteGroup()");
       this.confirm = true;
       this.confirm_group = true;
     },
     hideConfirmModal() {
-      console.log("hideConfirmModal()");
       this.confirm = false;
     },
     deleteGroup() {
-      console.log("deleteGroup()");
 
       const options = {
         method: "DELETE",
@@ -342,16 +314,13 @@ export default {
           travel_key: this.travel_key,
         },
       };
-      console.log(options);
 
       axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 //ローカルストレージ内のグループIDを削除する
                 //localStorage.getItem("group_hash_key"),
                 this.$router.push({ path: "/" });
@@ -371,24 +340,18 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
   },
   beforeCreate: function() {
-    console.log("EditGroup.vue beforeCreate");
   },
   created: function() {
-    console.log("EditGroup.vue created");
   },
   beforeMount: function() {
-    console.log("EditGroup.vue beforeMount");
   },
   mounted: function() {
-    console.log("EditGroup.vue mounted");
 
-    console.log(this.$route.params.travel_key);
     this.travel_key = this.$route.params.travel_key;
 
     const options = {
@@ -399,16 +362,13 @@ export default {
         travel_key: this.travel_key,
       },
     };
-    console.log(options);
 
     axios
       .request(options)
       .then(
         function(response) {
-          console.log("status:", response.status);
           switch (response.status) {
             case 200:
-              console.log("body:", response.data);
               this.inputGroupName = response.data.travel.name;
               this.originalGroupName = this.inputGroupName;
               for (let i = 0; i < response.data.members.length; i++) {
@@ -430,37 +390,17 @@ export default {
       )
       .catch(
         function(error) {
-          console.error(error);
         }.bind(this)
       );
 
-    // //ダミーグループ名のセット
-    // let dummyGroupName = "渡韓ごっこin新大久保";
-    // this.groupName = dummyGroupName;
-    // this.inputGroupName = this.groupName;
-
-    // //ダミーメンバーのセット
-    // let dummyMembers = [
-    //   "nakazaway",
-    //   "じゅんちゃん",
-    //   "yseki",
-    //   "ハマ",
-    //   "やまぐち",
-    //   "濱本将",
-    // ];
-    // this.members = dummyMembers;
   },
   beforeUpdate: function() {
-    console.log("EditGroup.vue beforeUpdate");
   },
   updated: function() {
-    console.log("EditGroup.vue updated");
   },
   beforeDestroy: function() {
-    console.log("EditGroup.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("EditGroup.vue destroyed");
   },
 };
 </script>

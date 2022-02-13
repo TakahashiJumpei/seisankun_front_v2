@@ -15,33 +15,24 @@ export default {
   },
   methods: {
     toTop() {
-      console.log("toTop()");
       this.$router.push({ path: "/" });
     },
   },
   beforeCreate: function() {
-    console.log("HeaderCommon.vue beforeCreate");
   },
   created: function() {
-    console.log("HeaderCommon.vue created");
   },
   beforeMount: function() {
-    console.log("HeaderCommon.vue beforeMount");
   },
   mounted: function() {
-    console.log("HeaderCommon.vue mounted");
   },
   beforeUpdate: function() {
-    console.log("HeaderCommon.vue beforeUpdate");
   },
   updated: function() {
-    console.log("HeaderCommon.vue updated");
   },
   beforeDestroy: function() {
-    console.log("HeaderCommon.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("HeaderCommon.vue destroyed");
   },
 };
 </script>

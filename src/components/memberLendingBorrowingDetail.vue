@@ -160,8 +160,6 @@ export default {
   },
   methods: {
     editPayment(id) {
-      console.log("editPayment(id)");
-      console.log(id);
       id = 1;
       //支払いの編集ページを表示
       this.$router.push({
@@ -170,14 +168,12 @@ export default {
       });
     },
     toGroup() {
-      console.log("toGroup()");
       this.$router.push({
         name: "Group",
         params: { travel_key: this.travel_key },
       });
     },
     async getInfo() {
-      console.log("getInfo()");
 
       /**
        * 2つのAPI通信を実装する
@@ -196,16 +192,13 @@ export default {
           travel_key: this.travel_key,
         },
       };
-      console.log(options);
 
       const axios1 = axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 this.groupName = response.data.travel.name;
                 for (let i = 0; i < response.data.members.length; i++) {
                   let _members_unit = {};
@@ -234,12 +227,10 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
 
       await Promise.all([axios1]);
-      console.log("get travel終了");
 
       const options2 = {
         method: "GET",
@@ -249,16 +240,13 @@ export default {
           member_id: this.member_id,
         },
       };
-      console.log(options2);
 
       axios
         .request(options2)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200: {
-                console.log("body:", response.data);
 
                 for (let i = 0; i < response.data.histories.length; i++) {
                   if (response.data.histories[i].payment.borrow_money > 0) {
@@ -290,15 +278,12 @@ export default {
                 for (let i = 0; i < this.lendings.length; i++) {
                   this.lendingsSum += Number(this.lendings[i].price);
                 }
-                console.log(this.lendingsSum);
 
                 for (let i = 0; i < this.borrowings.length; i++) {
                   this.borrowingsSum += Number(this.borrowings[i].price);
                 }
-                console.log(this.borrowingsSum);
 
                 this.differencePrice = this.lendingsSum - this.borrowingsSum;
-                console.log(this.differencePrice);
                 if (this.differencePrice > 0) {
                   this.differencePricePlus = true;
                 } else {
@@ -323,35 +308,26 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
   },
   beforeCreate: function() {
-    console.log("memberLendingBorrowingDetail.vue beforeCreate");
   },
   created: function() {
-    console.log("memberLendingBorrowingDetail.vue created");
   },
   beforeMount: function() {
-    console.log("memberLendingBorrowingDetail.vue beforeMount");
   },
   mounted: function() {
-    console.log("memberLendingBorrowingDetail.vue mounted");
     this.getInfo();
   },
   beforeUpdate: function() {
-    console.log("memberLendingBorrowingDetail.vue beforeUpdate");
   },
   updated: function() {
-    console.log("memberLendingBorrowingDetail.vue updated");
   },
   beforeDestroy: function() {
-    console.log("memberLendingBorrowingDetail.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("memberLendingBorrowingDetail.vue destroyed");
   },
 };
 </script>

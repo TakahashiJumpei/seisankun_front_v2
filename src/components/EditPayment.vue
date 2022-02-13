@@ -141,7 +141,6 @@ export default {
   filters: {},
   methods: {
     async getPaymentInfo() {
-      console.log("getPaymentInfo");
 
       /**
        * 2つのAPI通信を実装する
@@ -160,16 +159,13 @@ export default {
           travel_key: this.travel_key,
         },
       };
-      console.log(options);
 
       const axios1 = axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 for (let i = 0; i < response.data.members.length; i++) {
                   let _members_unit = {};
                   _members_unit.id = response.data.members[i].id;
@@ -192,12 +188,10 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
 
       await Promise.all([axios1]);
-      console.log("get travel終了");
 
       const options2 = {
         method: "GET",
@@ -207,16 +201,13 @@ export default {
           payment_id: this.payment_id,
         },
       };
-      console.log(options2);
 
       axios
         .request(options2)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200: {
-                console.log("body:", response.data);
                 this.inputPaymentName = response.data.payment.title;
                 this.originalPaymentName = this.inputPaymentName;
                 this.inputPrice = response.data.payment.amount;
@@ -228,29 +219,21 @@ export default {
                 }
                 //メンバーのIDとborrowsのIDが一致していればtrueにする
                 for (let i = 0; i < this.members.length; i++) {
-                  console.log(i);
                   for (
                     let j = 0;
                     j < response.data.payment.borrowers.length;
                     j++
                   ) {
-                    console.log(j);
-                    console.log(this.members[i].id);
-                    console.log(response.data.payment.borrowers[j].borrower_id);
                     if (
                       this.members[i].id ===
                       response.data.payment.borrowers[j].borrower_id
                     ) {
-                      console.log("true");
                       this.isSelectPayered.push(true);
                     } else {
-                      console.log("false");
                       this.isSelectPayered.push(false);
                     }
                   }
                 }
-                console.log(this.isSelectPayered);
-
                 break;
               }
               case 401:
@@ -268,12 +251,10 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
     selectPayered(index) {
-      console.log("selectPayered(index)");
       if (this.isSelectPayered[index]) {
         this.isSelectPayered[index] = false;
       } else {
@@ -282,8 +263,6 @@ export default {
       this.$forceUpdate(); //強制的にコンポーネントを更新
     },
     doValidationCheck() {
-      console.log("clicked add payment button");
-      console.log("doValidationCheck()");
 
       let errors = 0;
       //支払い内容のバリデーション
@@ -309,26 +288,15 @@ export default {
       }
 
       if (errors > 0) {
-        console.log("errors > 0");
       } else {
-        console.log("errors == 0");
         this.EditPayment();
       }
     },
     EditPayment: function() {
-      console.log("EditPayment()");
 
       //画面から各種データを取得
-      console.log(this.inputPaymentName.trim());
-      console.log(String(this.inputPrice).trim());
-      console.log(this.payer);
       const selected = this.members.find((item) => item.name === this.payer);
-      console.log(selected.name);
-      console.log(selected.id);
       this.payer_id = selected.id;
-      console.log(this.payer_id);
-      console.log(this.isSelectPayered);
-      console.log(this.payment_id);
 
       let _borrowers = [];
       for (let i = 0; i < this.isSelectPayered.length; i++) {
@@ -338,7 +306,6 @@ export default {
           _borrowers.push(_borrowers_unit);
         }
       }
-      console.log(_borrowers);
 
       const options = {
         method: "PUT",
@@ -355,16 +322,13 @@ export default {
           },
         },
       };
-      console.log(options);
 
       axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 //グループ画面へ
                 this.toGroup();
                 break;
@@ -383,28 +347,22 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
     toGroup() {
-      console.log("toGroup()");
       this.$router.push({
         name: "Group",
         params: { travel_key: this.travel_key },
       });
     },
     confirmDeletePayment() {
-      console.log("confirmDeletePayment()");
       this.confirm = true;
     },
     hideConfirmModal() {
-      console.log("clicked delete payment button");
-      console.log("hideConfirmModal()");
       this.confirm = false;
     },
     deletePayment() {
-      console.log("deletePayment()");
 
       const options = {
         method: "DELETE",
@@ -414,16 +372,13 @@ export default {
           payment_id: Number(this.payment_id),
         },
       };
-      console.log(options);
 
       axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 this.toGroup();
                 break;
               case 401:
@@ -441,35 +396,26 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
   },
   beforeCreate: function() {
-    console.log("EditPayment.vue beforeCreate");
   },
   created: function() {
-    console.log("EditPayment.vue created");
   },
   beforeMount: function() {
-    console.log("EditPayment.vue beforeMount");
   },
   mounted: function() {
-    console.log("EditPayment.vue mounted");
     this.getPaymentInfo();
   },
   beforeUpdate: function() {
-    console.log("EditPayment.vue beforeUpdate");
   },
   updated: function() {
-    console.log("EditPayment.vue updated");
   },
   beforeDestroy: function() {
-    console.log("EditPayment.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("EditPayment.vue destroyed");
   },
 };
 </script>

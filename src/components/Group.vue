@@ -166,9 +166,7 @@ export default {
   },
   methods: {
     async getGroupInfo() {
-      console.log("Group.vue getGroupInfo");
 
-      console.log(this.$route.params.travel_key);
       this.travel_key = this.$route.params.travel_key;
 
       /**
@@ -188,15 +186,12 @@ export default {
           travel_key: this.travel_key,
         },
       };
-      console.log(options);
       const axios1 = axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 this.groupName = response.data.travel.name;
                 for (let i = 0; i < response.data.members.length; i++) {
                   let _members_unit = {};
@@ -220,7 +215,6 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
 
@@ -232,15 +226,12 @@ export default {
           travel_key: this.travel_key,
         },
       };
-      console.log(options2);
       const axios2 = axios
         .request(options2)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 for (let i = 0; i < response.data.payments.length; i++) {
                   let _payments_unit = {};
                   //支払いIDも取得する必要がある。
@@ -249,9 +240,7 @@ export default {
                   _payments_unit.member = response.data.payments[i].payer_name;
                   _payments_unit.price = response.data.payments[i].amount;
                   this.payments.push(_payments_unit);
-                  console.log("payments:", this.payments);
                 }
-                console.log(this.payments);
                 break;
               case 401:
                 break;
@@ -268,7 +257,6 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
 
@@ -280,15 +268,12 @@ export default {
           travel_key: this.travel_key,
         },
       };
-      console.log(options3);
       const axios3 = axios
         .request(options3)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 for (let i = 0; i < response.data.results.length; i++) {
                   let _seisanResults_unit = {};
                   _seisanResults_unit.from =
@@ -298,7 +283,6 @@ export default {
                     response.data.results[i].borrow_money;
                   this.seisanResults.push(_seisanResults_unit);
                 }
-                console.log(this.seisanResults);
                 break;
               case 401:
                 break;
@@ -315,7 +299,6 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
 
@@ -327,15 +310,12 @@ export default {
           travel_key: this.travel_key,
         },
       };
-      console.log(options4);
       const axios4 = axios
         .request(options4)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 for (let i = 0; i < response.data.statuses.length; i++) {
                   let _lendingBorrowingItems_unit = {};
                   _lendingBorrowingItems_unit.id =
@@ -351,7 +331,6 @@ export default {
                   }
                   this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
                 }
-                console.log(this.lendingBorrowingItems);
                 break;
               case 401:
                 break;
@@ -368,15 +347,12 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
       //Promise.all([])とawaitを併用する
       await Promise.all([axios1, axios2, axios3, axios4]);
-      console.log("全てのAPI通信終了");
     },
     toEditGroup() {
-      console.log("clicked toEditGroup()");
       //グループの編集ページを表示;
       this.$router.push({
         name: "EditGroup",
@@ -384,7 +360,6 @@ export default {
       });
     },
     getGroupUrl() {
-      console.log("clicked getGroupUrl()");
       //ダミーで開発サイトのURLを取得
       let dummyUrl = "https://dev-seisan-kun-v2.netlify.app/#/";
       const element = document.createElement("input");
@@ -396,7 +371,6 @@ export default {
       document.body.removeChild(element);
     },
     shareForLine() {
-      console.log("clicked shareForLine()");
       //現在表示中のURLにグループのIDがつく仕組みなので簡単にできそう
       //ダミーで開発サイトのURLを取得
       let dummyUrl = "https://dev-seisan-kun-v2.netlify.app/#/";
@@ -406,7 +380,6 @@ export default {
       window.open(lineHref, "_blank");
     },
     addPayment() {
-      console.log("addPayment()");
       //支払いの追加ページを表示
       //this.$router.push({ path: "/AddPayment/" });
       this.$router.push({
@@ -415,8 +388,6 @@ export default {
       });
     },
     editPayment(payment_id) {
-      console.log("editPayment(payment_id)");
-      console.log(payment_id);
       //支払いの編集ページを表示
       this.$router.push({
         name: "EditPayment",
@@ -424,8 +395,6 @@ export default {
       });
     },
     memberLendingBorrowingDetail(member_id) {
-      console.log("memberLendingBorrowingDetail(member_id)");
-      console.log(member_id);
       //個人の支払い履歴ページを表示
       this.$router.push({
         name: "MemberLendingBorrowingDetail",
@@ -434,29 +403,21 @@ export default {
     },
   },
   beforeCreate: function() {
-    console.log("Group.vue beforeCreate");
   },
   created: function() {
-    console.log("Group.vue created");
   },
   beforeMount: function() {
-    console.log("Group.vue beforeMount");
   },
   mounted: function() {
-    console.log("Group.vue mounted");
     this.getGroupInfo();
   },
   beforeUpdate: function() {
-    console.log("Group.vue beforeUpdate");
   },
   updated: function() {
-    console.log("Group.vue updated");
   },
   beforeDestroy: function() {
-    console.log("Group.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("Group.vue destroyed");
   },
 };
 </script>

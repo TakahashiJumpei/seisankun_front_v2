@@ -107,7 +107,6 @@ export default {
   filters: {},
   methods: {
     selectPayered(index) {
-      console.log("selectPayered(index)");
       if (this.isSelectPayered[index]) {
         this.isSelectPayered[index] = false;
       } else {
@@ -116,9 +115,6 @@ export default {
       this.$forceUpdate(); //強制的にコンポーネントを更新
     },
     doValidationCheck() {
-      console.log("clicked add payment button");
-      console.log("doValidationCheck()");
-
       let errors = 0;
       //支払い内容のバリデーション
       if (
@@ -143,25 +139,15 @@ export default {
       }
 
       if (errors > 0) {
-        console.log("errors > 0");
       } else {
-        console.log("errors == 0");
         this.addPayment();
       }
     },
     addPayment: function() {
-      console.log("addPayment()");
 
       //画面から各種データを取得
-      console.log(this.inputPaymentName.trim());
-      console.log(this.inputPrice.trim()); //数値型に直す？
-      console.log(this.payer);
       const selected = this.members.find((item) => item.name === this.payer);
-      console.log(selected.name);
-      console.log(selected.id);
       this.payer_id = selected.id;
-      console.log(this.payer_id);
-      console.log(this.isSelectPayered);
 
       let _borrowers = [];
       for (let i = 0; i < this.isSelectPayered.length; i++) {
@@ -171,7 +157,6 @@ export default {
           _borrowers.push(_borrowers_unit);
         }
       }
-      console.log(_borrowers);
 
       const options = {
         method: "POST",
@@ -187,16 +172,13 @@ export default {
           },
         },
       };
-      console.log(options);
 
       axios
         .request(options)
         .then(
           function(response) {
-            console.log("status:", response.status);
             switch (response.status) {
               case 200:
-                console.log("body:", response.data);
                 //グループ画面へ
                 this.toGroup();
                 break;
@@ -215,12 +197,10 @@ export default {
         )
         .catch(
           function(error) {
-            console.error(error);
           }.bind(this)
         );
     },
     toGroup() {
-      console.log("toGroup()");
       this.$router.push({
         name: "Group",
         params: { travel_key: this.travel_key },
@@ -228,16 +208,12 @@ export default {
     },
   },
   beforeCreate: function() {
-    console.log("AddPayment.vue beforeCreate");
   },
   created: function() {
-    console.log("AddPayment.vue created");
   },
   beforeMount: function() {
-    console.log("AddPayment.vue beforeMount");
   },
   mounted: function() {
-    console.log("AddPayment.vue mounted");
 
     this.travel_key = this.$route.params.travel_key;
 
@@ -249,16 +225,13 @@ export default {
         travel_key: this.travel_key,
       },
     };
-    console.log(options);
 
     axios
       .request(options)
       .then(
         function(response) {
-          console.log("status:", response.status);
           switch (response.status) {
             case 200:
-              console.log("body:", response.data);
               for (let i = 0; i < response.data.members.length; i++) {
                 let _members_unit = {};
                 _members_unit.id = response.data.members[i].id;
@@ -269,7 +242,6 @@ export default {
               for (let i = 0; i < this.members.length; i++) {
                 this.isSelectPayered.push(true);
               }
-              console.log(this.isSelectPayered);
 
               this.payer = this.members[0].name;
               break;
@@ -288,21 +260,16 @@ export default {
       )
       .catch(
         function(error) {
-          console.error(error);
         }.bind(this)
       );
   },
   beforeUpdate: function() {
-    console.log("AddPayment.vue beforeUpdate");
   },
   updated: function() {
-    console.log("AddPayment.vue updated");
   },
   beforeDestroy: function() {
-    console.log("AddPayment.vue beforeDestroy");
   },
   destroyed: function() {
-    console.log("AddPayment.vue destroyed");
   },
 };
 </script>
