@@ -181,6 +181,7 @@ export default {
         )
         .catch(
           function(error) {
+            console.log(error);
           }.bind(this)
         );
     },
@@ -226,6 +227,7 @@ export default {
         )
         .catch(
           function(error) {
+            console.log(error);
           }.bind(this)
         );
     },
@@ -244,6 +246,7 @@ export default {
       }
 
       if (errors > 0) {
+        console.log("エラー時の処理");
       } else {
         this.EditGroup();
       }
@@ -288,6 +291,7 @@ export default {
         )
         .catch(
           function(error) {
+            console.log(error);
           }.bind(this)
         );
     },
@@ -340,6 +344,7 @@ export default {
         )
         .catch(
           function(error) {
+            console.log(error);
           }.bind(this)
         );
     },
@@ -390,6 +395,7 @@ export default {
       )
       .catch(
         function(error) {
+          console.log(error);
         }.bind(this)
       );
 

@@ -227,6 +227,7 @@ export default {
         )
         .catch(
           function(error) {
+            console.log(error);
           }.bind(this)
         );
 
@@ -308,6 +309,7 @@ export default {
         )
         .catch(
           function(error) {
+            console.log(error);
           }.bind(this)
         );
     },

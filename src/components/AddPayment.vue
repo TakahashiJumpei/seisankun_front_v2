@@ -139,12 +139,12 @@ export default {
       }
 
       if (errors > 0) {
+        console.log("エラー時の処理");
       } else {
         this.addPayment();
       }
     },
     addPayment: function() {
-
       //画面から各種データを取得
       const selected = this.members.find((item) => item.name === this.payer);
       this.payer_id = selected.id;
@@ -197,6 +197,7 @@ export default {
         )
         .catch(
           function(error) {
+            console.log(error);
           }.bind(this)
         );
     },
@@ -207,14 +208,10 @@ export default {
       });
     },
   },
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
+  beforeCreate: function() {},
+  created: function() {},
+  beforeMount: function() {},
   mounted: function() {
-
     this.travel_key = this.$route.params.travel_key;
 
     const options = {
@@ -260,17 +257,14 @@ export default {
       )
       .catch(
         function(error) {
+          console.log(error);
         }.bind(this)
       );
   },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
-  },
+  beforeUpdate: function() {},
+  updated: function() {},
+  beforeDestroy: function() {},
+  destroyed: function() {},
 };
 </script>
 

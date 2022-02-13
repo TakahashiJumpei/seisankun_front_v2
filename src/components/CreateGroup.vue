@@ -103,7 +103,6 @@ export default {
       this.members.splice(index, 1);
     },
     doValidationCheck() {
-
       let errors = 0;
       //グループ名のバリデーション
       if (
@@ -117,12 +116,12 @@ export default {
       }
 
       if (errors > 0) {
+        console.log("エラー時の処理");
       } else {
         this.createGroup();
       }
     },
     createGroup: function() {
-
       //入力データを取得
       /**
        * グループ名は必須
@@ -168,14 +167,13 @@ export default {
             }
           }.bind(this)
         )
-        .catch(
-          function(error) {
-          }.bind(this)
-        );
+        .catch(function(error) {
+          console.log(error);
+        }.bind(this));
     },
     toGroup() {
       this.$router.push({
-        name: 'Group',
+        name: "Group",
         params: { travel_key: this.travel_key },
       });
     },
@@ -183,22 +181,14 @@ export default {
       this.$router.push({ path: "/" });
     },
   },
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
-  mounted: function() {
-  },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
-  },
+  beforeCreate: function() {},
+  created: function() {},
+  beforeMount: function() {},
+  mounted: function() {},
+  beforeUpdate: function() {},
+  updated: function() {},
+  beforeDestroy: function() {},
+  destroyed: function() {},
 };
 </script>
 
