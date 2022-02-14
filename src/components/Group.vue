@@ -470,8 +470,6 @@ $minus: #dd4a76;
         font-weight: bold;
         border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
-        .member-title {
-        }
       }
       .share-wrapper {
         margin-top: 8px;
