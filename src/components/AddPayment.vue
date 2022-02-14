@@ -14,9 +14,9 @@
             type="text"
             id="payment-name"
             placeholder="例：飛行機代"
-            v-model="inputPaymentName"
+            v-model="inputPaymentTitle"
           />
-          <span v-bind:class="{ red: inputPaymentNameError }"
+          <span v-bind:class="{ red: inputPaymentTitleError }"
             >※1文字以上20文字以内でご記入ください</span
           >
         </div>
@@ -28,14 +28,14 @@
               type="text"
               id="price"
               placeholder="例：1000"
-              v-model="inputPrice"
+              v-model="inputAmount"
             />
             <div class="money-unit">
               <span>{{ moneyUnit }}</span>
             </div>
           </div>
-          <span v-bind:class="{ red: inputPriceError }">{{
-            inputPriceErrorText
+          <span v-bind:class="{ red: inputAmountError }">{{
+            inputAmountErrorText
           }}</span>
         </div>
 
@@ -93,15 +93,15 @@ export default {
   data() {
     return {
       members: [],
-      inputPaymentName: "",
-      inputPrice: "",
+      inputPaymentTitle: "",
+      inputAmount: "",
       payer: "",
       payer_id: 0,
       isSelectPayered: [],
-      inputPaymentNameError: false,
-      inputPriceError: false,
+      inputPaymentTitleError: false,
+      inputAmountError: false,
       travel_key: "",
-      inputPriceErrorText: "※半角数字でご記入ください",
+      inputAmountErrorText: "※半角数字でご記入ください",
       moneyUnit: "円",
     };
   },
@@ -120,29 +120,29 @@ export default {
       let errors = 0;
       //支払い内容のバリデーション
       if (
-        this.inputPaymentName.trim().length >= 1 &&
-        this.inputPaymentName.trim().length <= 20
+        this.inputPaymentTitle.trim().length >= 1 &&
+        this.inputPaymentTitle.trim().length <= 20
       ) {
-        this.inputPaymentNameError = false;
+        this.inputPaymentTitleError = false;
       } else {
-        this.inputPaymentNameError = true;
+        this.inputPaymentTitleError = true;
         errors++;
       }
       //支払い金額のバリデーション
       if (
-        !String(this.inputPrice)
+        !String(this.inputAmount)
           .trim()
           .match(/^([1-9]\d*|0)$/)
       ) {
-        this.inputPriceError = true;
-        this.inputPriceErrorText = "※半角数字でご記入ください";
+        this.inputAmountError = true;
+        this.inputAmountErrorText = "※半角数字でご記入ください";
         errors++;
-      } else if (String(this.inputPrice).trim().length > 10) {
-        this.inputPriceError = true;
-        this.inputPriceErrorText = "料金は10桁以内でご入力ください";
+      } else if (String(this.inputAmount).trim().length > 10) {
+        this.inputAmountError = true;
+        this.inputAmountErrorText = "料金は10桁以内でご入力ください";
         errors++;
       } else {
-        this.inputPriceError = false;
+        this.inputAmountError = false;
       }
 
       if (errors > 0) {
@@ -174,8 +174,8 @@ export default {
             travel_key: this.travel_key,
             payer_id: this.payer_id,
             borrowers: _borrowers,
-            title: this.inputPaymentName.trim(),
-            amount: Number(this.inputPrice.trim()),
+            title: this.inputPaymentTitle.trim(),
+            amount: Number(String(this.inputAmount).trim()),
           },
         },
       };
