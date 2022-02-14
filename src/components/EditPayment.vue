@@ -166,12 +166,7 @@ export default {
           function(response) {
             switch (response.status) {
               case 200:
-                for (let i = 0; i < response.data.members.length; i++) {
-                  let _members_unit = {};
-                  _members_unit.id = response.data.members[i].id;
-                  _members_unit.name = response.data.members[i].name;
-                  this.members.push(_members_unit);
-                }
+                this.members = response.data.members;
                 break;
               case 401:
                 break;

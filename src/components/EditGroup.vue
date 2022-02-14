@@ -82,7 +82,7 @@
             <p>メンバー{{ index + 1 }}</p>
             <div class="member-name-box">
               <div class="member-name">
-                <span>{{ member }}</span>
+                <span>{{ member.name }}</span>
               </div>
               <div class="delete" @click="confirmDeleteMember(index)">
                 <span>-</span>
@@ -188,7 +188,7 @@ export default {
     confirmDeleteMember(index) {
       this.confirm = true;
       this.confirm_group = false;
-      this.delete_member_name = this.members[index];
+      this.delete_member_name = this.members[index].name;
       this.memberIndex = index;
       this.delete_member_id = 1;
     },
@@ -376,9 +376,7 @@ export default {
             case 200:
               this.inputGroupName = response.data.travel.name;
               this.originalGroupName = this.inputGroupName;
-              for (let i = 0; i < response.data.members.length; i++) {
-                this.members.push(response.data.members[i].name);
-              }
+              this.members = response.data.members;
               break;
             case 401:
               break;

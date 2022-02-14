@@ -235,17 +235,10 @@ export default {
         function(response) {
           switch (response.status) {
             case 200:
-              for (let i = 0; i < response.data.members.length; i++) {
-                let _members_unit = {};
-                _members_unit.id = response.data.members[i].id;
-                _members_unit.name = response.data.members[i].name;
-                this.members.push(_members_unit);
-              }
-
+              this.members = response.data.members;
               for (let i = 0; i < this.members.length; i++) {
                 this.isSelectPayered.push(true);
               }
-
               this.payer = this.members[0].name;
               break;
             case 401:
@@ -266,6 +259,7 @@ export default {
           console.log(error);
         }.bind(this)
       );
+    return;
   },
   beforeUpdate: function() {},
   updated: function() {},
