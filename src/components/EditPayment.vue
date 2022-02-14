@@ -56,8 +56,8 @@
               placeholder="例：1000"
               v-model="inputPrice"
             />
-            <div class="yen">
-              <span>円</span>
+            <div class="money-unit">
+              <span>{{ moneyUnit }}</span>
             </div>
           </div>
           <span v-bind:class="{ red: inputPriceError }">{{
@@ -136,6 +136,7 @@ export default {
       originalPaymentName: "",
       travel_key: "",
       inputPriceErrorText: "※半角数字でご記入ください",
+      moneyUnit: "円",
     };
   },
   watch: {},
@@ -595,7 +596,7 @@ $delete_color: #2c3e50;
             border-radius: 4px;
             box-shadow: 0 2px 0 0 #cbcecf;
           }
-          .yen {
+          .money-unit {
             width: $form-h;
             height: $form-h;
             display: flex;

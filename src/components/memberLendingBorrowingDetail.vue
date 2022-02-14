@@ -33,7 +33,8 @@
             </div>
             <div class="lending-item-right">
               <div class="lending-item-price">
-                <span>{{ lending.price | numberFormat }}円</span>
+                <span>{{ lending.price | numberFormat }}</span>
+                <span>{{ moneyUnit }}</span>
               </div>
               <div class="lending-item-edit" @click="editPayment(lending.id)">
                 <img src="../assets/edit.png" alt="" />
@@ -47,7 +48,8 @@
               <span>①支払い合計</span>
             </div>
             <div class="lending-sum-price">
-              <span>{{ lendingsSum | numberFormat }}円</span>
+              <span>{{ lendingsSum | numberFormat }}</span>
+              <span>{{ moneyUnit }}</span>
             </div>
           </div>
         </div>
@@ -73,7 +75,8 @@
             </div>
             <div class="borrowing-item-right">
               <div class="borrowing-item-price">
-                <span>{{ borrowing.price | numberFormat }}円</span>
+                <span>{{ borrowing.price | numberFormat }}</span>
+                <span>{{ moneyUnit }}</span>
               </div>
               <div class="borrowing-item-edit" @click="editPayment(borrowing.id)">
                 <img src="../assets/edit.png" alt="" />
@@ -87,7 +90,8 @@
               <span>②立て替えられた合計</span>
             </div>
             <div class="borrowing-sum-price">
-              <span>{{ borrowingsSum | numberFormat }}円</span>
+              <span>{{ borrowingsSum | numberFormat }}</span>
+              <span>{{ moneyUnit }}</span>
             </div>
           </div>
         </div>
@@ -108,7 +112,8 @@
                 }"
               >
                 <span>{{ differencePricePlus ? "+" : "-" }}</span>
-                <span>{{ differencePrice | numberFormat }}円</span>
+                <span>{{ differencePrice | numberFormat }}</span>
+                <span>{{ moneyUnit }}</span>
               </div>
             </div>
             <div class="difference-lending-borrowing-explain-wrapper">
@@ -150,6 +155,7 @@ export default {
       member_id: 0,
       groupName: "",
       travel_key: "",
+      moneyUnit: "円",
     };
   },
   watch: {},

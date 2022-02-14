@@ -64,7 +64,8 @@
             </div>
             <div class="payment-item-right">
               <div class="payment-item-price">
-                <span>{{ payment.price | numberFormat }}円</span>
+                <span>{{ payment.price | numberFormat }}</span>
+                <span>{{ moneyUnit }}</span>
               </div>
               <div class="payment-item-edit" @click="editPayment(payment.id)">
                 <img src="../assets/edit.png" alt="" />
@@ -90,7 +91,8 @@
               <span>{{ seisanResult.to }}</span>
             </div>
             <div class="seisan-result-item-money">
-              <span>{{ seisanResult.price | numberFormat }}円</span>
+              <span>{{ seisanResult.price | numberFormat }}</span>
+              <span>{{ moneyUnit }}</span>
             </div>
           </div>
         </div>
@@ -120,7 +122,8 @@
                 }"
               >
                 <span>{{ lendingBorrowingItem.plus ? "+" : "" }}</span>
-                <span>{{ lendingBorrowingItem.price | numberFormat }}円</span>
+                <span>{{ lendingBorrowingItem.price | numberFormat }}</span>
+                <span>{{ moneyUnit }}</span>
               </div>
               <div
                 class="lending-borrowing-member-money-detail"
@@ -157,6 +160,7 @@ export default {
       lendingBorrowingItems: [],
       groupName: "",
       travel_key: "",
+      moneyUnit: "円",
     };
   },
   filters: {
