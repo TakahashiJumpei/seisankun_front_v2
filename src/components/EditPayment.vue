@@ -76,19 +76,19 @@
           </div>
         </div>
 
-        <div id="select-payered-wrapper">
+        <div id="select-borrower-wrapper">
           <p>誰の分を払ったか</p>
           <div
             v-for="(member, index) in members"
             :key="member.id"
-            class="select-payered-box"
+            class="select-borrower-box"
           >
             <p>メンバー{{ index + 1 }}</p>
             <div class="member-name-box">
               <div
                 class="member-name"
-                @click="selectPayered(index)"
-                v-bind:class="{ 'select-payered': isSelectPayered[index] }"
+                @click="selectBorrower(index)"
+                v-bind:class="{ 'select-borrower': isSelectBorrower[index] }"
               >
                 <span>{{ member.name }}</span>
               </div>
@@ -128,7 +128,7 @@ export default {
       inputAmount: "",
       payer: "",
       payer_id: 0,
-      isSelectPayered: [],
+      isSelectBorrower: [],
       inputPaymentTitleError: false,
       inputAmountError: false,
       payment_id: 0,
@@ -225,9 +225,9 @@ export default {
                       this.members[i].id ===
                       response.data.payment.borrowers[j].borrower_id
                     ) {
-                      this.isSelectPayered.push(true);
+                      this.isSelectBorrower.push(true);
                     } else {
-                      this.isSelectPayered.push(false);
+                      this.isSelectBorrower.push(false);
                     }
                   }
                 }
@@ -252,11 +252,11 @@ export default {
           }.bind(this)
         );
     },
-    selectPayered(index) {
-      if (this.isSelectPayered[index]) {
-        this.isSelectPayered[index] = false;
+    selectBorrower(index) {
+      if (this.isSelectBorrower[index]) {
+        this.isSelectBorrower[index] = false;
       } else {
-        this.isSelectPayered[index] = true;
+        this.isSelectBorrower[index] = true;
       }
       this.$forceUpdate(); //強制的にコンポーネントを更新
     },
@@ -301,8 +301,8 @@ export default {
       this.payer_id = selected.id;
 
       let _borrowers = [];
-      for (let i = 0; i < this.isSelectPayered.length; i++) {
-        if (this.isSelectPayered[i]) {
+      for (let i = 0; i < this.isSelectBorrower.length; i++) {
+        if (this.isSelectBorrower[i]) {
           let _borrowers_unit = {};
           _borrowers_unit.member_id = this.members[i].id;
           _borrowers.push(_borrowers_unit);
@@ -658,16 +658,16 @@ $delete_color: #2c3e50;
         }
       }
 
-      #select-payered-wrapper {
+      #select-borrower-wrapper {
         margin-top: 20px;
         p {
           color: $base_text_color;
           font-size: 12px;
         }
-        & .select-payered-box:first-of-type {
+        & .select-borrower-box:first-of-type {
           margin-top: 0;
         }
-        .select-payered-box {
+        .select-borrower-box {
           margin-top: 8px;
           p {
             color: $base_text_color;
@@ -695,11 +695,11 @@ $delete_color: #2c3e50;
                 color: $base_text_color;
                 font-size: 16px;
               }
-              &.select-payered {
+              &.select-borrower {
                 background-color: $form-bg;
                 text-decoration-line: none;
               }
-              &.select-payered:before {
+              &.select-borrower:before {
                 display: block;
                 content: "";
                 position: absolute;
