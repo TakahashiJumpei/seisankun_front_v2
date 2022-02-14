@@ -214,53 +214,57 @@ export default {
         params: { travel_key: this.travel_key },
       });
     },
+    getGroupInfo() {
+      this.travel_key = this.$route.params.travel_key;
+
+      const options = {
+        method: "GET",
+        url: "http://localhost:10082/travel",
+        headers: { "Content-Type": "application/json" },
+        params: {
+          travel_key: this.travel_key,
+        },
+      };
+
+      axios
+        .request(options)
+        .then(
+          function(response) {
+            switch (response.status) {
+              case 200:
+                this.members = response.data.members;
+                for (let i = 0; i < this.members.length; i++) {
+                  this.isSelectPayered.push(true);
+                }
+                this.payer = this.members[0].name;
+                break;
+              case 401:
+                break;
+              case 403:
+                break;
+              case 404:
+                break;
+              case 500:
+                break;
+              default:
+                break;
+            }
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.log(error);
+          }.bind(this)
+        );
+      return;
+    },
   },
   beforeCreate: function() {},
   created: function() {},
   beforeMount: function() {},
   mounted: function() {
-    this.travel_key = this.$route.params.travel_key;
-
-    const options = {
-      method: "GET",
-      url: "http://localhost:10082/travel",
-      headers: { "Content-Type": "application/json" },
-      params: {
-        travel_key: this.travel_key,
-      },
-    };
-
-    axios
-      .request(options)
-      .then(
-        function(response) {
-          switch (response.status) {
-            case 200:
-              this.members = response.data.members;
-              for (let i = 0; i < this.members.length; i++) {
-                this.isSelectPayered.push(true);
-              }
-              this.payer = this.members[0].name;
-              break;
-            case 401:
-              break;
-            case 403:
-              break;
-            case 404:
-              break;
-            case 500:
-              break;
-            default:
-              break;
-          }
-        }.bind(this)
-      )
-      .catch(
-        function(error) {
-          console.log(error);
-        }.bind(this)
-      );
-    return;
+    //旅行情報の取得
+    this.getGroupInfo();
   },
   beforeUpdate: function() {},
   updated: function() {},
