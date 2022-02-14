@@ -54,7 +54,7 @@
           <p>誰の分を払ったか</p>
           <div
             v-for="(member, index) in members"
-            :key="member.member_id"
+            :key="member.id"
             class="select-payered-box"
           >
             <p>メンバー{{ index + 1 }}</p>
