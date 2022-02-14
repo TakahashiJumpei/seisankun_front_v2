@@ -105,8 +105,6 @@ export default {
       moneyUnit: "円",
     };
   },
-  watch: {},
-  filters: {},
   methods: {
     selectBorrower(index) {
       if (this.isSelectBorrower[index]) {

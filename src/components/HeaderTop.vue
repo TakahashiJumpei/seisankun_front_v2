@@ -11,32 +11,6 @@
   </nav>
 </template>
 
-<script>
-export default {
-  data() {
-    return {};
-  },
-  methods: {
-  },
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
-  mounted: function() {
-  },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
-  },
-};
-</script>
-
 <style scoped lang="scss">
 $light_blue: #1cb7f0;
 $green: #1db8a3;

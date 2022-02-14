@@ -19,32 +19,5 @@ $footer-h: 120px;
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});
   padding: $padding-tb $padding-lr;
-  .inner {
-  }
 }
 </style>
-
-<script>
-export default {
-  data() {
-    return {};
-  },
-  methods: {},
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
-  mounted: function() {
-  },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
-  },
-};
-</script>

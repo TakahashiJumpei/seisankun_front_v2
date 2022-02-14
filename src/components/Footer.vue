@@ -21,9 +21,6 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
   methods: {
     toTos() {
       //利用規約ページを表示
@@ -39,23 +36,6 @@ export default {
       const url = 'https://docs.google.com/forms/d/e/1FAIpQLSdcaHWXI4n_lgJXaD4yrGft3_G8-OFI_tqdYhBobbPX8j5j9Q/viewform'
       window.open(url, '_blank')
     },
-
-  },
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
-  mounted: function() {
-  },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
   },
 };
 </script>

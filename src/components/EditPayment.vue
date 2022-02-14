@@ -139,8 +139,6 @@ export default {
       moneyUnit: "円",
     };
   },
-  watch: {},
-  filters: {},
   methods: {
     async getPaymentInfo() {
       /**

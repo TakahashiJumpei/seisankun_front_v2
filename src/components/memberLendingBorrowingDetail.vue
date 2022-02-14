@@ -158,7 +158,6 @@ export default {
       moneyUnit: "円",
     };
   },
-  watch: {},
   filters: {
     numberFormat: function(num) {
       return num.toLocaleString();

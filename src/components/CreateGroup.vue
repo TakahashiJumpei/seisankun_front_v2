@@ -85,7 +85,6 @@ export default {
       travel_key: "",
     };
   },
-  watch: {},
   methods: {
     addMember() {
       if (
