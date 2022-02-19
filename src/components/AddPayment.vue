@@ -89,6 +89,7 @@
 
 <script>
 import axios from "axios";
+import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -212,56 +213,70 @@ export default {
         params: { travel_key: this.travel_key },
       });
     },
-    getGroupInfo() {
+    async getGroupInfo() {
       this.travel_key = this.$route.params.travel_key;
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getGroupInfo(this.travel_key);
+      console.log(response);
 
-      const options = {
-        method: "GET",
-        url: "http://localhost:10082/travel",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          travel_key: this.travel_key,
-        },
-      };
+      this.members = response.data.members;
+      for (let i = 0; i < this.members.length; i++) {
+        this.isSelectBorrower.push(true);
+      }
+      this.payer = this.members[0].name;
 
-      axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                this.members = response.data.members;
-                for (let i = 0; i < this.members.length; i++) {
-                  this.isSelectBorrower.push(true);
-                }
-                this.payer = this.members[0].name;
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
-      return;
+      // const options = {
+      //   method: "GET",
+      //   url: "http://localhost:10082/travel",
+      //   headers: { "Content-Type": "application/json" },
+      //   params: {
+      //     travel_key: this.travel_key,
+      //   },
+      // };
+
+      // axios
+      //   .request(options)
+      //   .then(
+      //     function(response) {
+      //       switch (response.status) {
+      //         case 200:
+      //           this.members = response.data.members;
+      //           for (let i = 0; i < this.members.length; i++) {
+      //             this.isSelectBorrower.push(true);
+      //           }
+      //           this.payer = this.members[0].name;
+      //           break;
+      //         case 401:
+      //           break;
+      //         case 403:
+      //           break;
+      //         case 404:
+      //           break;
+      //         case 500:
+      //           break;
+      //         default:
+      //           break;
+      //       }
+      //     }.bind(this)
+      //   )
+      //   .catch(
+      //     function(error) {
+      //       console.log(error);
+      //     }.bind(this)
+      //   );
+      // return;
     },
   },
   beforeCreate: function() {},
   created: function() {},
   beforeMount: function() {},
   mounted: function() {
-    //旅行情報の取得
+    // const apihandler = new api_request("http://localhost:10082");
+    // console.log(apihandler)
+    //apihandler.get_group();
+
+    //グループ情報の取得
     this.getGroupInfo();
   },
   beforeUpdate: function() {},
