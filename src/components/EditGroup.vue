@@ -76,7 +76,7 @@
         <div id="show-member-form-wrapper">
           <div
             v-for="(member, index) in members"
-            :key="member"
+            :key="member.id"
             class="show-member-form"
           >
             <p>メンバー{{ index + 1 }}</p>
@@ -114,14 +114,14 @@
 </template>
 
 <script>
-import axios from "axios";
+import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
       add_member_name: "",
       add_member_name_error_message: "",
       isAddMemberError: false,
-      members: [], //idも持つように改修する
+      members: [],
       delete_member_name: "",
       memberIndex: 0,
       inputGroupName: "",
@@ -133,7 +133,7 @@ export default {
     };
   },
   methods: {
-    addMember() {
+    async addMember() {
       if (
         this.add_member_name.trim().length == 0 ||
         this.add_member_name.trim().length > 20
@@ -146,43 +146,20 @@ export default {
       let _member = {};
       _member.name = this.add_member_name.trim();
 
-      const options = {
-        method: "POST",
-        url: "http://localhost:10082/member",
-        headers: { "Content-Type": "application/json" },
-        data: {
-          travel: { travel_key: this.travel_key },
-          members: _member,
-        },
+      let data = {
+        travel: { travel_key: this.travel_key },
+        members: _member,
       };
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.addMember(data);
+      console.log(response);
+      //エラー時の処理を実装する
 
-      axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                this.members.push(this.add_member_name.trim());
-                this.add_member_name = "";
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+      //APIからID以外の付属情報も返却してもらうようにする
+      this.members.push(_member);
+      this.add_member_name = "";
+      console.log(this.members);
     },
     confirmDeleteMember(index) {
       this.confirm = true;
@@ -191,47 +168,16 @@ export default {
       this.memberIndex = index;
       this.delete_member_id = 1;
     },
-    deleteMember() {
+    async deleteMember() {
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.deleteMember(this.delete_member_id);
+      console.log(response);
 
-      const options = {
-        method: "DELETE",
-        url: "http://localhost:10082/member",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          member_id: this.delete_member_id,
-        },
-      };
-
-      axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                this.members.splice(this.memberIndex, 1);
-                this.hideConfirmModal();
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+      this.members.splice(this.memberIndex, 1);
+      this.hideConfirmModal();
     },
     doValidation() {
-
       let errors = 0;
       //グループ名のバリデーション
       if (
@@ -247,56 +193,24 @@ export default {
       if (errors > 0) {
         console.log("エラー時の処理");
       } else {
-        this.EditGroup();
+        this.editGroup();
       }
     },
-    EditGroup: function() {
-
-      //入力データを取得
-      /**
-       * グループ名
-       */
-
-      const options = {
-        method: "PUT",
-        url: "http://localhost:10082/travel",
-        headers: { "Content-Type": "application/json" },
-        data: {
-          travel: { name: `${this.inputGroupName}` },
-        },
+    async editGroup() {
+      let data = {
+        travel: { name: `${this.inputGroupName}` },
       };
-
-      axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                //グループ画面へ
-                this.toGroup();
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.editGroup(data);
+      console.log(response);
+      //エラー時の処理を実装する
+      //グループ画面へ
+      this.toGroup();
     },
     toGroup() {
       this.$router.push({
-        name: 'Group',
+        name: "Group",
         params: { travel_key: this.travel_key },
       });
     },
@@ -307,104 +221,37 @@ export default {
     hideConfirmModal() {
       this.confirm = false;
     },
-    deleteGroup() {
-
-      const options = {
-        method: "DELETE",
-        url: "http://localhost:10082/travel",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          travel_key: this.travel_key,
-        },
-      };
-
-      axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                //ローカルストレージ内のグループIDを削除する
-                //localStorage.getItem("group_hash_key"),
-                this.$router.push({ path: "/" });
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+    async deleteGroup() {
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.deleteGroup(this.travel_key);
+      console.log(response);
+      //ローカルストレージ内のグループIDを削除する
+      //localStorage.getItem("group_hash_key"),
+      this.$router.push({ path: "/" });
+    },
+    async getGroup() {
+      this.travel_key = this.$route.params.travel_key;
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getGroup(this.travel_key);
+      console.log(response);
+      this.inputGroupName = response.data.travel.name;
+      this.originalGroupName = this.inputGroupName;
+      this.members = response.data.members;
     },
   },
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
+  beforeCreate: function() {},
+  created: function() {},
+  beforeMount: function() {},
   mounted: function() {
-
-    this.travel_key = this.$route.params.travel_key;
-
-    const options = {
-      method: "GET",
-      url: "http://localhost:10082/travel",
-      headers: { "Content-Type": "application/json" },
-      params: {
-        travel_key: this.travel_key,
-      },
-    };
-
-    axios
-      .request(options)
-      .then(
-        function(response) {
-          switch (response.status) {
-            case 200:
-              this.inputGroupName = response.data.travel.name;
-              this.originalGroupName = this.inputGroupName;
-              this.members = response.data.members;
-              break;
-            case 401:
-              break;
-            case 403:
-              break;
-            case 404:
-              break;
-            case 500:
-              break;
-            default:
-              break;
-          }
-        }.bind(this)
-      )
-      .catch(
-        function(error) {
-          console.log(error);
-        }.bind(this)
-      );
-
+    //グループ情報の取得
+    this.getGroup();
   },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
-  },
+  beforeUpdate: function() {},
+  updated: function() {},
+  beforeDestroy: function() {},
+  destroyed: function() {},
 };
 </script>
 

@@ -88,7 +88,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { api_request } from "../js/api.js";
 export default {
   data() {
@@ -150,7 +149,7 @@ export default {
         this.addPayment();
       }
     },
-    addPayment: function() {
+    async addPayment() {
       //画面から各種データを取得
       const selected = this.members.find((item) => item.name === this.payer);
       this.payer_id = selected.id;
@@ -163,49 +162,22 @@ export default {
           _borrowers.push(_borrowers_unit);
         }
       }
-
-      const options = {
-        method: "POST",
-        url: "http://localhost:10082/payment",
-        headers: { "Content-Type": "application/json" },
-        data: {
-          payment: {
-            travel_key: this.travel_key,
-            payer_id: this.payer_id,
-            borrowers: _borrowers,
-            title: this.inputPaymentTitle.trim(),
-            amount: Number(String(this.inputAmount).trim()),
-          },
+      let data = {
+        payment: {
+          travel_key: this.travel_key,
+          payer_id: this.payer_id,
+          borrowers: _borrowers,
+          title: this.inputPaymentTitle.trim(),
+          amount: Number(String(this.inputAmount).trim()),
         },
       };
-
-      axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                //グループ画面へ
-                this.toGroup();
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.addPayment(data);
+      console.log(response);
+      //エラー時の処理を実装する
+      //グループ画面へ
+      this.toGroup();
     },
     toGroup() {
       this.$router.push({
@@ -213,71 +185,25 @@ export default {
         params: { travel_key: this.travel_key },
       });
     },
-    async getGroupInfo() {
+    async getGroup() {
       this.travel_key = this.$route.params.travel_key;
       const apihandler = new api_request("http://localhost:10082");
       //APIからレスが来るまで後続の処理を止める
-      let response = await apihandler.getGroupInfo(this.travel_key);
+      let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
-
       this.members = response.data.members;
       for (let i = 0; i < this.members.length; i++) {
         this.isSelectBorrower.push(true);
       }
       this.payer = this.members[0].name;
-
-      // const options = {
-      //   method: "GET",
-      //   url: "http://localhost:10082/travel",
-      //   headers: { "Content-Type": "application/json" },
-      //   params: {
-      //     travel_key: this.travel_key,
-      //   },
-      // };
-
-      // axios
-      //   .request(options)
-      //   .then(
-      //     function(response) {
-      //       switch (response.status) {
-      //         case 200:
-      //           this.members = response.data.members;
-      //           for (let i = 0; i < this.members.length; i++) {
-      //             this.isSelectBorrower.push(true);
-      //           }
-      //           this.payer = this.members[0].name;
-      //           break;
-      //         case 401:
-      //           break;
-      //         case 403:
-      //           break;
-      //         case 404:
-      //           break;
-      //         case 500:
-      //           break;
-      //         default:
-      //           break;
-      //       }
-      //     }.bind(this)
-      //   )
-      //   .catch(
-      //     function(error) {
-      //       console.log(error);
-      //     }.bind(this)
-      //   );
-      // return;
     },
   },
   beforeCreate: function() {},
   created: function() {},
   beforeMount: function() {},
   mounted: function() {
-    // const apihandler = new api_request("http://localhost:10082");
-    // console.log(apihandler)
-    //apihandler.get_group();
-
     //グループ情報の取得
-    this.getGroupInfo();
+    this.getGroup();
   },
   beforeUpdate: function() {},
   updated: function() {},

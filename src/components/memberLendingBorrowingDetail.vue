@@ -36,7 +36,7 @@
                 <span>{{ lending.price | numberFormat }}</span>
                 <span>{{ moneyUnit }}</span>
               </div>
-              <div class="lending-item-edit" @click="editPayment(lending.id)">
+              <div class="lending-item-edit" @click="toEditPayment(lending.id)">
                 <img src="../assets/edit.png" alt="" />
               </div>
             </div>
@@ -78,7 +78,10 @@
                 <span>{{ borrowing.price | numberFormat }}</span>
                 <span>{{ moneyUnit }}</span>
               </div>
-              <div class="borrowing-item-edit" @click="editPayment(borrowing.id)">
+              <div
+                class="borrowing-item-edit"
+                @click="toEditPayment(borrowing.id)"
+              >
                 <img src="../assets/edit.png" alt="" />
               </div>
             </div>
@@ -140,7 +143,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -164,7 +167,7 @@ export default {
     },
   },
   methods: {
-    editPayment(id) {
+    toEditPayment(id) {
       id = 1;
       //支払いの編集ページを表示
       this.$router.push({
@@ -178,159 +181,78 @@ export default {
         params: { travel_key: this.travel_key },
       });
     },
-    async getInfo() {
-
-      /**
-       * 2つのAPI通信を実装する
-       * 非同期にする必要あり？
-       * get /travel
-       * get/ borrowing/history
-       */
+    async getGroup() {
       this.travel_key = this.$route.params.travel_key;
       this.member_id = this.$route.params.member_id;
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getGroup(this.travel_key);
+      console.log(response);
+      this.groupName = response.data.travel.name;
+      this.members = response.data.members;
+      for (let i = 0; i < this.members.length; i++) {
+        if (Number(this.member_id) === this.members[i].id) {
+          this.member = this.members[i].name;
+        }
+      }
+      this.getBorrowingHistory();
+    },
+    async getBorrowingHistory() {
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getBorrowingHistory(this.member_id);
+      console.log(response);
 
-      const options = {
-        method: "GET",
-        url: "http://localhost:10082/travel",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          travel_key: this.travel_key,
-        },
-      };
+      for (let i = 0; i < response.data.histories.length; i++) {
+        if (response.data.histories[i].payment.borrow_money > 0) {
+          let _lendings_unit = {};
+          // _lendings_unit.id =
+          //   response.data.histories[i].payment.id;
+          _lendings_unit.name = response.data.histories[i].payment.title;
+          _lendings_unit.member = response.data.histories[i].user.name;
+          _lendings_unit.price =
+            response.data.histories[i].payment.borrow_money;
+          this.lendings.push(_lendings_unit);
+        } else {
+          let _borrowings_unit = {};
+          // _borrowings_unit.id =
+          //   response.data.histories[i].payment.id;
+          _borrowings_unit.name = response.data.histories[i].payment.title;
+          _borrowings_unit.member = response.data.histories[i].user.name;
+          _borrowings_unit.price = Math.abs(
+            response.data.histories[i].payment.borrow_money
+          );
+          this.borrowings.push(_borrowings_unit);
+        }
+      }
 
-      const axios1 = axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                this.groupName = response.data.travel.name;
-                this.members = response.data.members;
-                for (let i = 0; i < this.members.length; i++) {
-                  if(Number(this.member_id) === this.members[i].id){
-                    this.member = this.members[i].name;
-                  }
-                }
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+      for (let i = 0; i < this.lendings.length; i++) {
+        this.lendingsSum += Number(this.lendings[i].price);
+      }
 
-      await Promise.all([axios1]);
+      for (let i = 0; i < this.borrowings.length; i++) {
+        this.borrowingsSum += Number(this.borrowings[i].price);
+      }
 
-      const options2 = {
-        method: "GET",
-        url: "http://localhost:10082/borrowing/history",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          member_id: this.member_id,
-        },
-      };
-
-      axios
-        .request(options2)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200: {
-
-                for (let i = 0; i < response.data.histories.length; i++) {
-                  if (response.data.histories[i].payment.borrow_money > 0) {
-                    let _lendings_unit = {};
-                    // _lendings_unit.id =
-                    //   response.data.histories[i].payment.id;
-                    _lendings_unit.name =
-                      response.data.histories[i].payment.title;
-                    _lendings_unit.member =
-                      response.data.histories[i].user.name;
-                    _lendings_unit.price =
-                      response.data.histories[i].payment.borrow_money;
-                    this.lendings.push(_lendings_unit);
-                  } else {
-                    let _borrowings_unit = {};
-                    // _borrowings_unit.id =
-                    //   response.data.histories[i].payment.id;
-                    _borrowings_unit.name =
-                      response.data.histories[i].payment.title;
-                    _borrowings_unit.member =
-                      response.data.histories[i].user.name;
-                    _borrowings_unit.price = Math.abs(
-                      response.data.histories[i].payment.borrow_money
-                    );
-                    this.borrowings.push(_borrowings_unit);
-                  }
-                }
-
-                for (let i = 0; i < this.lendings.length; i++) {
-                  this.lendingsSum += Number(this.lendings[i].price);
-                }
-
-                for (let i = 0; i < this.borrowings.length; i++) {
-                  this.borrowingsSum += Number(this.borrowings[i].price);
-                }
-
-                this.differencePrice = this.lendingsSum - this.borrowingsSum;
-                if (this.differencePrice > 0) {
-                  this.differencePricePlus = true;
-                } else {
-                  this.differencePricePlus = false;
-                  this.differencePrice = Math.abs(this.differencePrice);
-                }
-
-                break;
-              }
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+      this.differencePrice = this.lendingsSum - this.borrowingsSum;
+      if (this.differencePrice > 0) {
+        this.differencePricePlus = true;
+      } else {
+        this.differencePricePlus = false;
+        this.differencePrice = Math.abs(this.differencePrice);
+      }
     },
   },
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
+  beforeCreate: function() {},
+  created: function() {},
+  beforeMount: function() {},
   mounted: function() {
-    this.getInfo();
+    this.getGroup();
   },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
-  },
+  beforeUpdate: function() {},
+  updated: function() {},
+  beforeDestroy: function() {},
+  destroyed: function() {},
 };
 </script>
 

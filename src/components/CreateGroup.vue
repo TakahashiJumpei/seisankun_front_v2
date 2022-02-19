@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -120,7 +120,7 @@ export default {
         this.createGroup();
       }
     },
-    createGroup: function() {
+    async createGroup() {
       //入力データを取得
       /**
        * グループ名は必須
@@ -133,42 +133,18 @@ export default {
         _members.push(_members_unit);
       }
 
-      const options = {
-        method: "POST",
-        url: "http://localhost:10082/travel",
-        headers: { "Content-Type": "application/json" },
-        data: {
-          travel: { name: `${this.inputGroupName}` },
-          members: _members,
-        },
+      let data = {
+        travel: { name: `${this.inputGroupName}` },
+        members: _members,
       };
 
-      axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                this.travel_key = response.data.travel_key;
-                //グループ画面へ
-                this.toGroup();
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(function(error) {
-          console.log(error);
-        }.bind(this));
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.createGroup(data);
+      console.log(response);
+      this.travel_key = response.data.travel_key;
+      //グループ画面へ
+      this.toGroup();
     },
     toGroup() {
       this.$router.push({

@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -169,192 +169,69 @@ export default {
     },
   },
   methods: {
-    async getGroupInfo() {
-
+    async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-
-      /**
-       * 4つのAPI通信を実装する
-       * 非同期にする必要あり？
-       * get /travel
-       * get /payment/history
-       * get/ calculation/results
-       * get/ borrowing/statuses
-       */
-
-      const options = {
-        method: "GET",
-        url: "http://localhost:10082/travel",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          travel_key: this.travel_key,
-        },
-      };
-      const axios1 = axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                this.groupName = response.data.travel.name;
-                this.members = response.data.members;
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
-
-      const options2 = {
-        method: "GET",
-        url: "http://localhost:10082/payment/history",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          travel_key: this.travel_key,
-        },
-      };
-      const axios2 = axios
-        .request(options2)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                for (let i = 0; i < response.data.payments.length; i++) {
-                  let _payments_unit = {};
-                  //支払いIDも取得する必要がある。
-                  _payments_unit.id = response.data.payments[i].id;
-                  _payments_unit.name = response.data.payments[i].title;
-                  _payments_unit.member = response.data.payments[i].payer_name;
-                  _payments_unit.price = response.data.payments[i].amount;
-                  this.payments.push(_payments_unit);
-                }
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
-
-      const options3 = {
-        method: "GET",
-        url: "http://localhost:10082/calculation/results",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          travel_key: this.travel_key,
-        },
-      };
-      const axios3 = axios
-        .request(options3)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                for (let i = 0; i < response.data.results.length; i++) {
-                  let _seisanResults_unit = {};
-                  _seisanResults_unit.from =
-                    response.data.results[i].borrower_name;
-                  _seisanResults_unit.to = response.data.results[i].lender_name;
-                  _seisanResults_unit.price =
-                    response.data.results[i].borrow_money;
-                  this.seisanResults.push(_seisanResults_unit);
-                }
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
-
-      const options4 = {
-        method: "GET",
-        url: "http://localhost:10082/borrowing/statuses",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          travel_key: this.travel_key,
-        },
-      };
-      const axios4 = axios
-        .request(options4)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                for (let i = 0; i < response.data.statuses.length; i++) {
-                  let _lendingBorrowingItems_unit = {};
-                  _lendingBorrowingItems_unit.id =
-                    response.data.statuses[i].member.id;
-                  _lendingBorrowingItems_unit.member =
-                    response.data.statuses[i].member.name;
-                  _lendingBorrowingItems_unit.price =
-                    response.data.statuses[i].borrow_money;
-                  if (_lendingBorrowingItems_unit.price > 0) {
-                    _lendingBorrowingItems_unit.plus = true;
-                  } else {
-                    _lendingBorrowingItems_unit.plus = false;
-                  }
-                  this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
-                }
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
-      //Promise.all([])とawaitを併用する
-      await Promise.all([axios1, axios2, axios3, axios4]);
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getGroup(this.travel_key);
+      console.log(response);
+      this.groupName = response.data.travel.name;
+      this.members = response.data.members;
+      this.getPaymentHistory();
     },
+    async getPaymentHistory() {
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getPaymentHistory(this.travel_key);
+      console.log(response);
+
+      for (let i = 0; i < response.data.payments.length; i++) {
+        let _payments_unit = {};
+        //支払いIDも取得する必要がある。
+        _payments_unit.id = response.data.payments[i].id;
+        _payments_unit.name = response.data.payments[i].title;
+        _payments_unit.member = response.data.payments[i].payer_name;
+        _payments_unit.price = response.data.payments[i].amount;
+        this.payments.push(_payments_unit);
+      }
+      this.getCalculationResults();
+    },
+    async getCalculationResults() {
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getCalculationResults(this.travel_key);
+      console.log(response);
+      for (let i = 0; i < response.data.results.length; i++) {
+        let _seisanResults_unit = {};
+        _seisanResults_unit.from = response.data.results[i].borrower_name;
+        _seisanResults_unit.to = response.data.results[i].lender_name;
+        _seisanResults_unit.price = response.data.results[i].borrow_money;
+        this.seisanResults.push(_seisanResults_unit);
+      }
+      this.getBorrowingStatuses();
+    },
+    async getBorrowingStatuses() {
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getBorrowingStatuses(this.travel_key);
+      console.log(response);
+
+      for (let i = 0; i < response.data.statuses.length; i++) {
+        let _lendingBorrowingItems_unit = {};
+        _lendingBorrowingItems_unit.id = response.data.statuses[i].member.id;
+        _lendingBorrowingItems_unit.member =
+          response.data.statuses[i].member.name;
+        _lendingBorrowingItems_unit.price =
+          response.data.statuses[i].borrow_money;
+        if (_lendingBorrowingItems_unit.price > 0) {
+          _lendingBorrowingItems_unit.plus = true;
+        } else {
+          _lendingBorrowingItems_unit.plus = false;
+        }
+        this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
+      }
+    },
+
     toEditGroup() {
       //グループの編集ページを表示;
       this.$router.push({
@@ -405,23 +282,16 @@ export default {
       });
     },
   },
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
+  beforeCreate: function() {},
+  created: function() {},
+  beforeMount: function() {},
   mounted: function() {
-    this.getGroupInfo();
+    this.getGroup();
   },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
-  },
+  beforeUpdate: function() {},
+  updated: function() {},
+  beforeDestroy: function() {},
+  destroyed: function() {},
 };
 </script>
 

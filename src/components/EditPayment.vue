@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -140,115 +140,43 @@ export default {
     };
   },
   methods: {
-    async getPaymentInfo() {
-      /**
-       * 2つのAPI通信を実装する
-       * 非同期にする必要あり？
-       * get /travelで全メンバーの取得
-       * get /payment/で支払い情報を取得
-       */
+    async getGroup() {
       this.travel_key = this.$route.params.travel_key;
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getGroup(this.travel_key);
+      console.log(response);
+      this.members = response.data.members;
+      this.getPayment();
+    },
+    async getPayment() {
       this.payment_id = this.$route.params.payment_id;
-
-      const options = {
-        method: "GET",
-        url: "http://localhost:10082/travel",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          travel_key: this.travel_key,
-        },
-      };
-
-      const axios1 = axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                this.members = response.data.members;
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
-
-      await Promise.all([axios1]);
-
-      const options2 = {
-        method: "GET",
-        url: "http://localhost:10082/payment",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          payment_id: this.payment_id,
-        },
-      };
-
-      axios
-        .request(options2)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200: {
-                this.inputPaymentTitle = response.data.payment.title;
-                this.originalPaymentName = this.inputPaymentTitle;
-                this.inputAmount = response.data.payment.amount;
-                this.payer_id = response.data.payment.payer_id;
-                for (let i = 0; i < this.members.length; i++) {
-                  if (this.payer_id === this.members[i].id) {
-                    this.payer = this.members[i].name;
-                  }
-                }
-                //メンバーのIDとborrowsのIDが一致していればtrueにする
-                for (let i = 0; i < this.members.length; i++) {
-                  for (
-                    let j = 0;
-                    j < response.data.payment.borrowers.length;
-                    j++
-                  ) {
-                    if (
-                      this.members[i].id ===
-                      response.data.payment.borrowers[j].borrower_id
-                    ) {
-                      this.isSelectBorrower.push(true);
-                    } else {
-                      this.isSelectBorrower.push(false);
-                    }
-                  }
-                }
-                break;
-              }
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.getPayment(this.payment_id);
+      console.log(response);
+      this.inputPaymentTitle = response.data.payment.title;
+      this.originalPaymentName = this.inputPaymentTitle;
+      this.inputAmount = response.data.payment.amount;
+      this.payer_id = response.data.payment.payer_id;
+      for (let i = 0; i < this.members.length; i++) {
+        if (this.payer_id === this.members[i].id) {
+          this.payer = this.members[i].name;
+        }
+      }
+      //メンバーのIDとborrowsのIDが一致していればtrueにする
+      for (let i = 0; i < this.members.length; i++) {
+        for (let j = 0; j < response.data.payment.borrowers.length; j++) {
+          if (
+            this.members[i].id ===
+            response.data.payment.borrowers[j].borrower_id
+          ) {
+            this.isSelectBorrower.push(true);
+          } else {
+            this.isSelectBorrower.push(false);
+          }
+        }
+      }
     },
     selectBorrower(index) {
       if (this.isSelectBorrower[index]) {
@@ -290,10 +218,10 @@ export default {
       if (errors > 0) {
         scrollTo(0, 0);
       } else {
-        this.EditPayment();
+        this.editPayment();
       }
     },
-    EditPayment: function() {
+    async editPayment() {
       //画面から各種データを取得
       const selected = this.members.find((item) => item.name === this.payer);
       this.payer_id = selected.id;
@@ -307,49 +235,23 @@ export default {
         }
       }
 
-      const options = {
-        method: "PUT",
-        url: "http://localhost:10082/payment",
-        headers: { "Content-Type": "application/json" },
-        data: {
-          payment: {
-            id: Number(this.payment_id),
-            travel_key: this.travel_key,
-            payer_id: this.payer_id,
-            borrowers: _borrowers,
-            title: this.inputPaymentTitle.trim(),
-            amount: Number(String(this.inputAmount).trim()),
-          },
+      let data = {
+        payment: {
+          id: Number(this.payment_id),
+          travel_key: this.travel_key,
+          payer_id: this.payer_id,
+          borrowers: _borrowers,
+          title: this.inputPaymentTitle.trim(),
+          amount: Number(String(this.inputAmount).trim()),
         },
       };
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.editPayment(data);
+      console.log(response);
 
-      axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                //グループ画面へ
-                this.toGroup();
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+      //グループ画面へ
+      this.toGroup();
     },
     toGroup() {
       this.$router.push({
@@ -363,49 +265,19 @@ export default {
     hideConfirmModal() {
       this.confirm = false;
     },
-    deletePayment() {
-      const options = {
-        method: "DELETE",
-        url: "http://localhost:10082/payment",
-        headers: { "Content-Type": "application/json" },
-        params: {
-          payment_id: Number(this.payment_id),
-        },
-      };
-
-      axios
-        .request(options)
-        .then(
-          function(response) {
-            switch (response.status) {
-              case 200:
-                this.toGroup();
-                break;
-              case 401:
-                break;
-              case 403:
-                break;
-              case 404:
-                break;
-              case 500:
-                break;
-              default:
-                break;
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            console.log(error);
-          }.bind(this)
-        );
+    async deletePayment() {
+      const apihandler = new api_request("http://localhost:10082");
+      //APIからレスが来るまで後続の処理を止める
+      let response = await apihandler.deletePayment(Number(this.payment_id));
+      console.log(response);
+      this.toGroup();
     },
   },
   beforeCreate: function() {},
   created: function() {},
   beforeMount: function() {},
   mounted: function() {
-    this.getPaymentInfo();
+    this.getGroup();
   },
   beforeUpdate: function() {},
   updated: function() {},
