@@ -149,8 +149,6 @@ export default {
     },
     async addPayment() {
       //画面から各種データを取得
-      console.log("this.payer_id = " + this.payer_id);
-
       //借り手の取得
       let borrowers = [];
       for (let i = 0; i < this.borrowers.length; i++) {
@@ -372,46 +370,6 @@ $image_path: "../assets";
             justify-content: start;
             align-items: center;
             margin-top: 4px;
-            // .member-name {
-            //   position: relative;
-            //   width: 100%;
-            //   height: $form-h;
-            //   text-indent: 1em;
-            //   background-color: #707070;
-            //   border: 1px solid $form-border;
-            //   border-radius: 4px;
-            //   box-shadow: 0 2px 0 0 #cbcecf;
-            //   display: flex;
-            //   justify-content: start;
-            //   align-items: center;
-            //   text-decoration-line: line-through;
-            //   span {
-            //     color: $base_text_color;
-            //     font-size: 16px;
-            //   }
-            //   &.select-borrower {
-            //     background-color: $form-bg;
-            //     text-decoration-line: none;
-            //   }
-            //   &.select-borrower:before {
-            //     display: block;
-            //     content: "";
-            //     position: absolute;
-            //     top: -100%;
-            //     bottom: 0%;
-            //     left: 95%;
-            //     margin: auto;
-            //     right: 24px;
-            //     width: 24px;
-            //     height: 24px;
-            //     background-size: 24px;
-            //     z-index: 100;
-            //     background-position: center;
-            //     background-repeat: no-repeat;
-            //     background-image: url("#{$image_path}/check.png");
-            //     pointer-events: none;
-            //   }
-            // }
             input {
               display: none;
             }
@@ -432,36 +390,12 @@ $image_path: "../assets";
                 color: $base_text_color;
                 font-size: 16px;
               }
-              // &.select-borrower {
-              //   background-color: $form-bg;
-              //   text-decoration-line: none;
-              // }
-              // &.select-borrower:before {
-              //   display: block;
-              //   content: "";
-              //   position: absolute;
-              //   top: -100%;
-              //   bottom: 0%;
-              //   left: 95%;
-              //   margin: auto;
-              //   right: 24px;
-              //   width: 24px;
-              //   height: 24px;
-              //   background-size: 24px;
-              //   z-index: 100;
-              //   background-position: center;
-              //   background-repeat: no-repeat;
-              //   background-image: url("#{$image_path}/check.png");
-              //   pointer-events: none;
-              // }
             }
             input[type="checkbox"]:checked + label {
-              /* チェックされたチェックボックス直後の.labelのスタイル */
               background-color: $form-bg;
               text-decoration-line: none;
             }
             input[type="checkbox"]:checked + label:before {
-              /* チェックされたチェックボックス直後の.labelのスタイル */
               display: block;
               content: "";
               position: absolute;

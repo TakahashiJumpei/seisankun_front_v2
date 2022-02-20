@@ -548,12 +548,10 @@ $delete_color: #2c3e50;
               }
             }
             input[type="checkbox"]:checked + label {
-              /* チェックされたチェックボックス直後の.labelのスタイル */
               background-color: $form-bg;
               text-decoration-line: none;
             }
             input[type="checkbox"]:checked + label:before {
-              /* チェックされたチェックボックス直後の.labelのスタイル */
               display: block;
               content: "";
               position: absolute;
