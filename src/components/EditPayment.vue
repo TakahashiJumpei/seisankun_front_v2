@@ -68,8 +68,12 @@
         <div class="pulldown-payer-form">
           <p>支払ったメンバー</p>
           <div class="pulldown-box">
-            <select v-model="payer">
-              <option v-for="member in members" :key="member.id">
+            <select v-model="payer_id">
+              <option
+                v-for="member in members"
+                :key="member.id"
+                v-bind:value="member.id"
+              >
                 {{ member.name }}
               </option>
             </select>
@@ -85,13 +89,15 @@
           >
             <p>メンバー{{ index + 1 }}</p>
             <div class="member-name-box">
-              <div
-                class="member-name"
-                @click="selectBorrower(index)"
-                v-bind:class="{ 'select-borrower': isSelectBorrower[index] }"
-              >
+              <input
+                type="checkbox"
+                :id="'member' + member.id"
+                :value="member.id"
+                v-model="borrowers"
+              />
+              <label :for="'member' + member.id">
                 <span>{{ member.name }}</span>
-              </div>
+              </label>
             </div>
           </div>
         </div>
@@ -127,8 +133,7 @@ export default {
       members: [],
       inputPaymentTitle: "",
       inputAmount: "",
-      payer: "",
-      payer_id: 0,
+      payer_id: null,
       isSelectBorrower: [],
       inputPaymentTitleError: false,
       inputAmountError: false,
@@ -138,6 +143,7 @@ export default {
       travel_key: "",
       inputAmountErrorText: "※半角数字でご記入ください",
       moneyUnit: "円",
+      borrowers: [],
     };
   },
   methods: {
@@ -160,32 +166,9 @@ export default {
       this.originalPaymentName = this.inputPaymentTitle;
       this.inputAmount = response.data.payment.amount;
       this.payer_id = response.data.payment.payer_id;
-      for (let i = 0; i < this.members.length; i++) {
-        if (this.payer_id === this.members[i].id) {
-          this.payer = this.members[i].name;
-        }
+      for (let i = 0; i < response.data.payment.borrowers.length; i++) {
+        this.borrowers.push(response.data.payment.borrowers[i].borrower_id);
       }
-      //メンバーのIDとborrowsのIDが一致していればtrueにする
-      for (let i = 0; i < this.members.length; i++) {
-        for (let j = 0; j < response.data.payment.borrowers.length; j++) {
-          if (
-            this.members[i].id ===
-            response.data.payment.borrowers[j].borrower_id
-          ) {
-            this.isSelectBorrower.push(true);
-          } else {
-            this.isSelectBorrower.push(false);
-          }
-        }
-      }
-    },
-    selectBorrower(index) {
-      if (this.isSelectBorrower[index]) {
-        this.isSelectBorrower[index] = false;
-      } else {
-        this.isSelectBorrower[index] = true;
-      }
-      this.$forceUpdate(); //強制的にコンポーネントを更新
     },
     doValidation() {
       let errors = 0;
@@ -224,24 +207,19 @@ export default {
     },
     async editPayment() {
       //画面から各種データを取得
-      const selected = this.members.find((item) => item.name === this.payer);
-      this.payer_id = selected.id;
-
-      let _borrowers = [];
-      for (let i = 0; i < this.isSelectBorrower.length; i++) {
-        if (this.isSelectBorrower[i]) {
-          let _borrowers_unit = {};
-          _borrowers_unit.borrower_id = this.members[i].id;
-          _borrowers.push(_borrowers_unit);
-        }
+      //借り手の取得
+      let borrowers = [];
+      for (let i = 0; i < this.borrowers.length; i++) {
+        let borrowers_unit = {};
+        borrowers_unit.borrower_id = this.borrowers[i];
+        borrowers.push(borrowers_unit);
       }
-
       let data = {
         payment: {
           id: Number(this.payment_id),
           travel_key: this.travel_key,
           payer_id: this.payer_id,
-          borrowers: _borrowers,
+          borrowers: borrowers,
           title: this.inputPaymentTitle.trim(),
           amount: Number(String(this.inputAmount).trim()),
         },
@@ -250,9 +228,8 @@ export default {
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.editPayment(data);
       console.log(response);
-
       //グループ画面へ
-      //this.toGroup();
+      this.toGroup();
     },
     toGroup() {
       this.$router.push({
@@ -549,7 +526,10 @@ $delete_color: #2c3e50;
             justify-content: start;
             align-items: center;
             margin-top: 4px;
-            .member-name {
+            input {
+              display: none;
+            }
+            label {
               position: relative;
               width: 100%;
               height: $form-h;
@@ -566,28 +546,30 @@ $delete_color: #2c3e50;
                 color: $base_text_color;
                 font-size: 16px;
               }
-              &.select-borrower {
-                background-color: $form-bg;
-                text-decoration-line: none;
-              }
-              &.select-borrower:before {
-                display: block;
-                content: "";
-                position: absolute;
-                top: -100%;
-                bottom: 0%;
-                left: 95%;
-                margin: auto;
-                right: 24px;
-                width: 24px;
-                height: 24px;
-                background-size: 24px;
-                z-index: 100;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-image: url("#{$image_path}/check.png");
-                pointer-events: none;
-              }
+            }
+            input[type="checkbox"]:checked + label {
+              /* チェックされたチェックボックス直後の.labelのスタイル */
+              background-color: $form-bg;
+              text-decoration-line: none;
+            }
+            input[type="checkbox"]:checked + label:before {
+              /* チェックされたチェックボックス直後の.labelのスタイル */
+              display: block;
+              content: "";
+              position: absolute;
+              top: -100%;
+              bottom: 0%;
+              left: 95%;
+              margin: auto;
+              right: 24px;
+              width: 24px;
+              height: 24px;
+              background-size: 24px;
+              z-index: 100;
+              background-position: center;
+              background-repeat: no-repeat;
+              background-image: url("#{$image_path}/check.png");
+              pointer-events: none;
             }
           }
         }
