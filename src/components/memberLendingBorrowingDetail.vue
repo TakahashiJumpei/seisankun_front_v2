@@ -144,6 +144,7 @@
 
 <script>
 import { api_request } from "../js/api.js";
+import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
@@ -184,7 +185,7 @@ export default {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
       this.member_id = this.$route.params.member_id;
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
@@ -198,7 +199,7 @@ export default {
       this.getBorrowingHistory();
     },
     async getBorrowingHistory() {
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getBorrowingHistory(this.member_id);
       console.log(response);

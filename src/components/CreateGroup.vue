@@ -73,6 +73,7 @@
 
 <script>
 import { api_request } from "../js/api.js";
+import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
@@ -138,7 +139,7 @@ export default {
         members: _members,
       };
 
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.createGroup(data);
       console.log(response);

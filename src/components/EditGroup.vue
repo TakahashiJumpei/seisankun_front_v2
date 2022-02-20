@@ -115,6 +115,7 @@
 
 <script>
 import { api_request } from "../js/api.js";
+import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
@@ -150,7 +151,7 @@ export default {
         travel: { travel_key: this.travel_key },
         members: _member,
       };
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.addMember(data);
       console.log(response);
@@ -169,7 +170,7 @@ export default {
       this.delete_member_id = 1;
     },
     async deleteMember() {
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.deleteMember(this.delete_member_id);
       console.log(response);
@@ -200,7 +201,7 @@ export default {
       let data = {
         travel: { name: `${this.inputGroupName}` },
       };
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.editGroup(data);
       console.log(response);
@@ -222,7 +223,7 @@ export default {
       this.confirm = false;
     },
     async deleteGroup() {
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.deleteGroup(this.travel_key);
       console.log(response);
@@ -232,7 +233,7 @@ export default {
     },
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);

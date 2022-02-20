@@ -151,6 +151,7 @@
 
 <script>
 import { api_request } from "../js/api.js";
+import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
@@ -171,7 +172,7 @@ export default {
   methods: {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
@@ -180,7 +181,7 @@ export default {
       this.getPaymentHistory();
     },
     async getPaymentHistory() {
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getPaymentHistory(this.travel_key);
       console.log(response);
@@ -197,7 +198,7 @@ export default {
       this.getCalculationResults();
     },
     async getCalculationResults() {
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getCalculationResults(this.travel_key);
       console.log(response);
@@ -211,7 +212,7 @@ export default {
       this.getBorrowingStatuses();
     },
     async getBorrowingStatuses() {
-      const apihandler = new api_request("http://localhost:10082");
+      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getBorrowingStatuses(this.travel_key);
       console.log(response);
