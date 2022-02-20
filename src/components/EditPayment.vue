@@ -231,7 +231,7 @@ export default {
       for (let i = 0; i < this.isSelectBorrower.length; i++) {
         if (this.isSelectBorrower[i]) {
           let _borrowers_unit = {};
-          _borrowers_unit.member_id = this.members[i].id;
+          _borrowers_unit.borrower_id = this.members[i].id;
           _borrowers.push(_borrowers_unit);
         }
       }
@@ -252,7 +252,7 @@ export default {
       console.log(response);
 
       //グループ画面へ
-      this.toGroup();
+      //this.toGroup();
     },
     toGroup() {
       this.$router.push({
