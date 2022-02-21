@@ -1,0 +1,15 @@
+.back-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 188px;
+  height: 44px;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid $form-border;
+  box-shadow: 0 2px 0 0 #cbcecf;
+  span {
+    color: $base_text_color;
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,48 @@
+#show-member-form-wrapper {
+  margin-top: 12px;
+  .show-member-form {
+    margin-top: 8px;
+    p {
+      color: $base_text_color;
+      font-size: 12px;
+    }
+    .member-name-box {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      margin-top: 4px;
+      .member-name {
+        width: calc(100% - 40px);
+        height: $form-h;
+        text-indent: 1em;
+        background-color: $form-bg;
+        border: 1px solid $form-border;
+        border-radius: 4px 0 0 4px;
+        box-shadow: 0 2px 0 0 #cbcecf;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        span {
+          color: $base_text_color;
+          font-size: 16px;
+        }
+      }
+      .delete {
+        width: $form-h;
+        height: $form-h;
+        background-color: $green;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+        pointer-events: auto;
+        span {
+          color: white;
+          font-size: 22px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+.title-wrapper {
+  .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $base_text_color;
+    font-size: $theme-title-size;
+    font-weight: bold;
+  }
+}

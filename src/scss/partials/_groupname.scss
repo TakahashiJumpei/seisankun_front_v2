@@ -1,0 +1,26 @@
+.input-group-name-form {
+  p {
+    color: $base_text_color;
+    font-size: 12px;
+  }
+  input {
+    margin-top: 4px;
+    width: 100%;
+    height: $form-h;
+    color: $base_text_color;
+    font-size: 16px;
+    text-indent: 1em;
+    background-color: $form-bg;
+    border: 1px solid $form-border;
+    border-radius: 4px;
+    box-shadow: 0 2px 0 0 #cbcecf;
+  }
+  span {
+    color: #a8a8a8;
+    font-size: 10px;
+    &.red {
+      color: $error_color;
+      font-weight: bold;
+    }
+  }
+}

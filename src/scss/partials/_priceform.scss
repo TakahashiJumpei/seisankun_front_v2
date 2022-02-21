@@ -1,0 +1,44 @@
+.input-price-form {
+  margin-top: 4px;
+  p {
+    color: $base_text_color;
+    font-size: 12px;
+  }
+  .price-box {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-top: 4px;
+    input {
+      width: calc(100% - 40px);
+      height: $form-h;
+      color: $base_text_color;
+      font-size: 16px;
+      text-indent: 1em;
+      background-color: $form-bg;
+      border: 1px solid $form-border;
+      border-radius: 4px;
+      box-shadow: 0 2px 0 0 #cbcecf;
+    }
+    .money-unit {
+      width: $form-h;
+      height: $form-h;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        color: $base_text_color;
+        font-size: 16px;
+        font-weight: normal;
+      }
+    }
+  }
+  span {
+    color: #a8a8a8;
+    font-size: 10px;
+    &.red {
+      color: $error_color;
+      font-weight: bold;
+    }
+  }
+}
