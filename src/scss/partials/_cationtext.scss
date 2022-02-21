@@ -1,0 +1,8 @@
+span {
+  color: $light-gray;
+  font-size: 10px;
+  &.red {
+    color: $error_color;
+    font-weight: bold;
+  }
+}
