@@ -169,20 +169,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$base_text_color: #534e4e;
-$light_blue: #1cb7f0;
-$green: #1db8a3;
-$gray: #f4f0f0;
-$yellow: #fff0bf;
-$padding-tb: 32px;
-$padding-lr: 30px;
-$theme-title-size: 16px;
-$header-h: 48px;
-$footer-h: 120px;
-$form-h: 40px;
-$form-bg: #f4f0f0;
-$form-border: #707070;
-$error_color: #cf5271;
+@import "../scss/variables";
 
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});

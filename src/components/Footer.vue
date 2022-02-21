@@ -41,22 +41,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$light_blue: #1cb7f0;
-$green: #1db8a3;
-$footer-h: 120px;
+@import "../scss/variables";
+
 footer {
   width: 100%;
   height: $footer-h;
   background-color: $green;
   color: white;
   font-weight: normal;
-  padding: 0 48px;
-  padding-top: 20px;
+  padding: 20px 48px;
   .footer-1 {
     font-size: 10px;
   }
   .footer-2 {
-    margin-top: 28px;
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -12,9 +12,8 @@
 </template>
 
 <style scoped lang="scss">
-$light_blue: #1cb7f0;
-$green: #1db8a3;
-$headerTop-h: 120px;
+@import "../scss/variables";
+
 nav {
   width: 100%;
   height: $headerTop-h;

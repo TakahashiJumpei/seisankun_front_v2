@@ -19,9 +19,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$light_blue: #1cb7f0;
-$green: #1db8a3;
-$header-h: 48px;
+@import "../scss/variables";
+
 nav {
   width: 100%;
   height: $header-h;

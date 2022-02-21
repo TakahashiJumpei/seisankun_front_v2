@@ -166,16 +166,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$base_text_color: #534e4e;
-$light_blue: #1cb7f0;
-$green: #1db8a3;
-$gray: #f4f0f0;
-$yellow: #fff0bf;
-$padding-tb: 32px;
-$padding-lr: 48px;
-$theme-title-size: 16px;
-$headerTop-h: 120px;
-$footer-h: 120px;
+@import "../scss/variables";
+
 .main {
   min-height: calc(100vh - #{$headerTop-h} - #{$footer-h});
   padding: $padding-tb $padding-lr;
