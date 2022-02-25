@@ -264,6 +264,10 @@ export default {
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});
   padding: $padding-tb $padding-lr;
+  @media screen and(min-width: $min-width) {
+    @import "../scss/breakpoints/768up";
+    padding: $padding-tb $padding-lr;
+  }
   .inner {
     .group-name-wrapper {
       color: $base_text_color;
@@ -302,11 +306,18 @@ export default {
     }
 
     .lending-list-wrapper {
+      background-color: $yellow;
       margin: 0 calc(-#{$padding-lr});
       margin-top: 28px;
-      background-color: $yellow;
       padding: 12px 18px;
       padding-bottom: 30px;
+      @media screen and(min-width: $min-width) {
+        @import "../scss/breakpoints/768up";
+        margin: 0 calc(-#{$padding-lr});
+        margin-top: 28px;
+        padding: 12px $padding-lr;
+        padding-bottom: 30px;
+      }
       color: $base_text_color;
       .lending-list-title {
         display: flex;
@@ -405,11 +416,18 @@ export default {
     }
 
     .borrowing-list-wrapper {
+      background-color: $yellow;
       margin: 0 calc(-#{$padding-lr});
       margin-top: 20px;
-      background-color: $yellow;
       padding: 12px 18px;
       padding-bottom: 30px;
+      @media screen and(min-width: $min-width) {
+        @import "../scss/breakpoints/768up";
+        margin: 0 calc(-#{$padding-lr});
+        margin-top: 20px;
+        padding: 12px $padding-lr;
+        padding-bottom: 30px;
+      }
       color: $base_text_color;
       .borrowing-list-title {
         display: flex;
@@ -515,10 +533,16 @@ export default {
     }
 
     .difference-wrapper {
+      background-color: $yellow;
       margin: 0 calc(-#{$padding-lr});
       margin-top: 20px;
-      background-color: $yellow;
       padding: 12px 18px;
+      @media screen and(min-width: $min-width) {
+        @import "../scss/breakpoints/768up";
+        margin: 0 calc(-#{$padding-lr});
+        margin-top: 20px;
+        padding: 12px $padding-lr;
+      }
       color: $base_text_color;
       .difference-box {
         display: flex;

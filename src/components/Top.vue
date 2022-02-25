@@ -163,6 +163,10 @@ export default {
 .main {
   min-height: calc(100vh - #{$headerTop-h} - #{$footer-h});
   padding: $padding-tb $padding-lr;
+  @media screen and(min-width: $min-width) {
+    @import "../scss/breakpoints/768up";
+    padding: $padding-tb $padding-lr;
+  }
   .inner {
     .explain-wrapper {
       .explain-title {
@@ -253,11 +257,17 @@ export default {
       }
     }
     .feature-wrapper {
+      background-color: $yellow;
+      color: $base_text_color;
       margin: 0 calc(-#{$padding-lr});
       margin-top: 32px;
-      background-color: $yellow;
       padding: $padding-tb $padding-lr;
-      color: $base_text_color;
+      @media screen and(min-width: $min-width) {
+        @import "../scss/breakpoints/768up";
+        margin: 0 calc(-#{$padding-lr});
+        margin-top: 32px;
+        padding: $padding-tb $padding-lr;
+      }
       .feature-title {
         font-size: $theme-title-size;
         @media screen and(min-width: $min-width) {

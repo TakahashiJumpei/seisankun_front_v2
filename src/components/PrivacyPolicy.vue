@@ -13,5 +13,9 @@
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});
   padding: $padding-tb $padding-lr;
+  @media screen and(min-width: $min-width) {
+    @import "../scss/breakpoints/768up";
+    padding: $padding-tb $padding-lr;
+  }
 }
 </style>

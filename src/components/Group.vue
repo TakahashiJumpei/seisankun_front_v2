@@ -303,6 +303,10 @@ export default {
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});
   padding: $padding-tb $padding-lr;
+  @media screen and(min-width: $min-width) {
+    @import "../scss/breakpoints/768up";
+    padding: $padding-tb $padding-lr;
+  }
   .inner {
     .group-top-wrapper {
       .name-and-edit-wrapper {
@@ -427,11 +431,18 @@ export default {
     }
 
     .payment-list-wrapper {
+      background-color: $yellow;
       margin: 0 calc(-#{$padding-lr});
       margin-top: 40px;
-      background-color: $yellow;
       padding: 8px 18px;
       padding-bottom: 24px;
+      @media screen and(min-width: $min-width) {
+        @import "../scss/breakpoints/768up";
+        margin: 0 calc(-#{$padding-lr});
+        margin-top: 40px;
+        padding: 8px $padding-lr;
+        padding-bottom: 24px;
+      }
       color: $base_text_color;
       .payment-list-title {
         display: flex;
@@ -509,11 +520,18 @@ export default {
     }
 
     .seisan-result-wrapper {
+      background-color: $gray;
       margin: 0 calc(-#{$padding-lr});
       margin-top: 28px;
-      background-color: $gray;
       padding: 8px 18px;
       padding-bottom: 24px;
+      @media screen and(min-width: $min-width) {
+        @import "../scss/breakpoints/768up";
+        margin: 0 calc(-#{$padding-lr});
+        margin-top: 28px;
+        padding: 8px $padding-lr;
+        padding-bottom: 24px;
+      }
       color: $base_text_color;
       .seisan-result-title {
         display: flex;
@@ -556,6 +574,12 @@ export default {
       margin: 0 calc(-#{$padding-lr});
       margin-top: 28px;
       padding: 0 18px;
+      @media screen and(min-width: $min-width) {
+        @import "../scss/breakpoints/768up";
+        margin: 0 calc(-#{$padding-lr});
+        margin-top: 28px;
+        padding: 0 $padding-lr;
+      }
       color: $base_text_color;
       .lending-borrowing-title {
         display: flex;
