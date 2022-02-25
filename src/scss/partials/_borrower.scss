@@ -3,6 +3,9 @@
   p {
     color: $base_text_color;
     font-size: 12px;
+    @media screen and(min-width: $min-width) {
+      font-size: 16px;
+    }
   }
   & .select-borrower-box:first-of-type {
     margin-top: 0;
@@ -12,6 +15,9 @@
     p {
       color: $base_text_color;
       font-size: 12px;
+      @media screen and(min-width: $min-width) {
+        font-size: 16px;
+      }
     }
     .member-name-box {
       display: flex;
@@ -25,6 +31,10 @@
         position: relative;
         width: 100%;
         height: $form-h;
+        @media screen and(min-width: $min-width) {
+          @import "../breakpoints/768up";
+          height: $form-h;
+        }
         text-indent: 1em;
         background-color: #707070;
         border: 1px solid $form-border;
@@ -37,6 +47,9 @@
         span {
           color: $base_text_color;
           font-size: 16px;
+          @media screen and(min-width: $min-width) {
+            font-size: 18px;
+          }
         }
       }
       input[type="checkbox"]:checked + label {
@@ -49,9 +62,8 @@
         position: absolute;
         top: -100%;
         bottom: 0%;
-        left: 95%;
         margin: auto;
-        right: 24px;
+        right: -8px;
         width: 24px;
         height: 24px;
         background-size: 24px;

@@ -299,7 +299,6 @@ export default {
 <style scoped lang="scss">
 @import "../scss/variables";
 @import "../scss/breakpoints/base";
-@import "../scss/breakpoints/768up";
 
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});
@@ -309,20 +308,28 @@ export default {
       .name-and-edit-wrapper {
         display: flex;
         justify-content: space-between;
-        //align-items: center;
         color: $base_text_color;
         font-weight: bold;
         .name-wrapper {
           .group-title {
             font-size: 10px;
+            @media screen and(min-width: $min-width) {
+              font-size: 16px;
+            }
           }
           .group-name {
             font-size: 20px;
+            @media screen and(min-width: $min-width) {
+              font-size: 28px;
+            }
           }
         }
         .group-edit-wrapper {
           .group-edit {
             font-size: 10px;
+            @media screen and(min-width: $min-width) {
+              font-size: 16px;
+            }
             text-decoration: underline;
             cursor: pointer;
             pointer-events: auto;
@@ -333,7 +340,11 @@ export default {
         margin-top: 12px;
         margin-bottom: 8px;
         font-size: 10px;
+        @media screen and(min-width: $min-width) {
+          font-size: 16px;
+        }
         font-weight: bold;
+        color: $base_text_color;
         border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
       }
@@ -342,7 +353,11 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        color: $base_text_color;
         font-size: 10px;
+        @media screen and(min-width: $min-width) {
+          font-size: 12px;
+        }
         .url {
           display: flex;
           justify-content: center;
@@ -352,6 +367,10 @@ export default {
           img {
             width: 18px;
             height: 18px;
+            @media screen and(min-width: $min-width) {
+              width: 22px;
+              height: 22px;
+            }
           }
           span {
             margin-left: 4px;
@@ -367,6 +386,10 @@ export default {
           img {
             width: 20px;
             height: 20px;
+            @media screen and(min-width: $min-width) {
+              width: 24px;
+              height: 24px;
+            }
           }
           span {
             margin-left: 4px;
@@ -386,12 +409,19 @@ export default {
         align-items: center;
         width: 200px;
         height: 32px;
+        @media screen and(min-width: $min-width) {
+          width: 240px;
+          height: 44px;
+        }
         border-radius: 4px;
         background-color: $green;
         box-shadow: 0 2px 0 0 #cbcecf;
         span {
           color: white;
           font-size: 14px;
+          @media screen and(min-width: $min-width) {
+            font-size: 18px;
+          }
         }
       }
     }
@@ -408,6 +438,10 @@ export default {
         justify-content: center;
         align-items: center;
         font-size: 20px;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
       }
       .payment-items {
@@ -421,10 +455,16 @@ export default {
           .payment-item-left {
             .payment-item-name {
               font-size: 16px;
+              @media screen and(min-width: $min-width) {
+                font-size: 20px;
+              }
               font-weight: bold;
             }
             .payment-item-member {
               font-size: 10px;
+              @media screen and(min-width: $min-width) {
+                font-size: 14px;
+              }
               font-weight: normal;
             }
           }
@@ -434,12 +474,19 @@ export default {
             align-items: center;
             .payment-item-price {
               font-size: 18px;
+              @media screen and(min-width: $min-width) {
+                font-size: 24px;
+              }
               font-weight: bold;
             }
             .payment-item-edit {
               margin-left: 8px;
               width: 22px;
               height: 22px;
+              @media screen and(min-width: $min-width) {
+                width: 24px;
+                height: 24px;
+              }
               display: flex;
               justify-content: center;
               align-items: center;
@@ -450,6 +497,10 @@ export default {
               img {
                 width: 15px;
                 height: 15px;
+                @media screen and(min-width: $min-width) {
+                  width: 18px;
+                  height: 18px;
+                }
               }
             }
           }
@@ -469,6 +520,10 @@ export default {
         justify-content: center;
         align-items: center;
         font-size: 20px;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
       }
       .seisan-result-items {
@@ -481,10 +536,16 @@ export default {
           padding-bottom: 2px;
           .seisan-result-item-money-flow {
             font-size: 12px;
+            @media screen and(min-width: $min-width) {
+              font-size: 16px;
+            }
             font-weight: bold;
           }
           .seisan-result-item-money {
             font-size: 18px;
+            @media screen and(min-width: $min-width) {
+              font-size: 24px;
+            }
             font-weight: bold;
           }
         }
@@ -501,6 +562,10 @@ export default {
         justify-content: center;
         align-items: center;
         font-size: 20px;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
       }
       .lending-borrowing-items {
@@ -517,6 +582,9 @@ export default {
             align-items: center;
             .lending-borrowing-member {
               font-size: 12px;
+              @media screen and(min-width: $min-width) {
+                font-size: 16px;
+              }
               font-weight: bold;
             }
           }
@@ -526,6 +594,9 @@ export default {
             align-items: center;
             .lending-borrowing-member-money {
               font-size: 16px;
+              @media screen and(min-width: $min-width) {
+                font-size: 24px;
+              }
               font-weight: bold;
               &.plus {
                 color: $plus;
@@ -538,6 +609,10 @@ export default {
               margin-left: 8px;
               width: 22px;
               height: 22px;
+              @media screen and(min-width: $min-width) {
+                width: 24px;
+                height: 24px;
+              }
               display: flex;
               justify-content: center;
               align-items: center;
@@ -546,6 +621,10 @@ export default {
               img {
                 width: 15px;
                 height: 15px;
+                @media screen and(min-width: $min-width) {
+                  width: 18px;
+                  height: 18px;
+                }
               }
             }
           }
@@ -558,6 +637,9 @@ export default {
         align-items: center;
         .lending-borrowing-explain {
           font-size: 10px;
+          @media screen and(min-width: $min-width) {
+            font-size: 14px;
+          }
           color: $base_text_color;
           .blue-explain {
             .blue {

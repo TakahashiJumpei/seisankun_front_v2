@@ -159,7 +159,6 @@ export default {
 <style scoped lang="scss">
 @import "../scss/variables";
 @import "../scss/breakpoints/base";
-@import "../scss/breakpoints/768up";
 
 .main {
   min-height: calc(100vh - #{$headerTop-h} - #{$footer-h});
@@ -216,6 +215,10 @@ export default {
         align-items: center;
         color: $base_text_color;
         font-size: $theme-sub-title-size;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
         border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
@@ -234,11 +237,16 @@ export default {
           .past-group-date {
             font-size: 10px;
             @media screen and(min-width: $min-width) {
+              @import "../scss/breakpoints/768up";
               font-size: 12px;
             }
           }
           .past-group-name {
             font-size: $theme-font-size;
+            @media screen and(min-width: $min-width) {
+              @import "../scss/breakpoints/768up";
+              font-size: $theme-font-size;
+            }
             font-weight: bold;
           }
         }
@@ -252,6 +260,10 @@ export default {
       color: $base_text_color;
       .feature-title {
         font-size: $theme-title-size;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
         border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
@@ -285,6 +297,10 @@ export default {
       color: $base_text_color;
       .howto-title {
         font-size: $theme-title-size;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
         border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;

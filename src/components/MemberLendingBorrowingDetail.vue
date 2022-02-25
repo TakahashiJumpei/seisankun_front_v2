@@ -260,7 +260,6 @@ export default {
 <style scoped lang="scss">
 @import "../scss/variables";
 @import "../scss/breakpoints/base";
-@import "../scss/breakpoints/768up";
 
 .main {
   min-height: calc(100vh - #{$header-h} - #{$footer-h});
@@ -273,9 +272,15 @@ export default {
       border-bottom: solid 1px $base_text_color;
       .group-title {
         font-size: 10px;
+        @media screen and(min-width: $min-width) {
+          font-size: 16px;
+        }
       }
       .group-name {
         font-size: 20px;
+        @media screen and(min-width: $min-width) {
+          font-size: 28px;
+        }
       }
     }
 
@@ -287,6 +292,10 @@ export default {
         align-items: center;
         color: $base_text_color;
         font-size: $theme-title-size;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
         font-size: 20px;
       }
@@ -304,6 +313,10 @@ export default {
         justify-content: center;
         align-items: center;
         font-size: 20px;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
       }
       .lending-items {
@@ -317,6 +330,9 @@ export default {
           .lending-item-left {
             .lending-item-name {
               font-size: 16px;
+              @media screen and(min-width: $min-width) {
+                font-size: 20px;
+              }
               font-weight: bold;
             }
           }
@@ -326,12 +342,19 @@ export default {
             align-items: center;
             .lending-item-price {
               font-size: 18px;
+              @media screen and(min-width: $min-width) {
+                font-size: 24px;
+              }
               font-weight: bold;
             }
             .lending-item-edit {
               margin-left: 8px;
               width: 22px;
               height: 22px;
+              @media screen and(min-width: $min-width) {
+                width: 24px;
+                height: 24px;
+              }
               display: flex;
               justify-content: center;
               align-items: center;
@@ -342,6 +365,10 @@ export default {
               img {
                 width: 15px;
                 height: 15px;
+                @media screen and(min-width: $min-width) {
+                  width: 18px;
+                  height: 18px;
+                }
               }
             }
           }
@@ -360,11 +387,17 @@ export default {
           padding-bottom: 2px;
           .lending-sum-title {
             font-size: 16px;
+            @media screen and(min-width: $min-width) {
+              font-size: 22px;
+            }
             font-weight: bold;
           }
           .lending-sum-price {
             margin-left: 8px;
             font-size: 18px;
+            @media screen and(min-width: $min-width) {
+              font-size: 24px;
+            }
             font-weight: bold;
           }
         }
@@ -383,6 +416,10 @@ export default {
         justify-content: center;
         align-items: center;
         font-size: 20px;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
       }
       .borrowing-items {
@@ -396,10 +433,16 @@ export default {
           .borrowing-item-left {
             .borrowing-item-name {
               font-size: 16px;
+              @media screen and(min-width: $min-width) {
+                font-size: 20px;
+              }
               font-weight: bold;
             }
             .borrowing-item-member {
               font-size: 10px;
+              @media screen and(min-width: $min-width) {
+                font-size: 14px;
+              }
               font-weight: normal;
             }
           }
@@ -409,12 +452,19 @@ export default {
             align-items: center;
             .borrowing-item-price {
               font-size: 18px;
+              @media screen and(min-width: $min-width) {
+                font-size: 24px;
+              }
               font-weight: bold;
             }
             .borrowing-item-edit {
               margin-left: 8px;
               width: 22px;
               height: 22px;
+              @media screen and(min-width: $min-width) {
+                width: 24px;
+                height: 24px;
+              }
               display: flex;
               justify-content: center;
               align-items: center;
@@ -425,6 +475,10 @@ export default {
               img {
                 width: 15px;
                 height: 15px;
+                @media screen and(min-width: $min-width) {
+                  width: 18px;
+                  height: 18px;
+                }
               }
             }
           }
@@ -443,11 +497,17 @@ export default {
           padding-bottom: 2px;
           .borrowing-sum-title {
             font-size: 16px;
+            @media screen and(min-width: $min-width) {
+              font-size: 22px;
+            }
             font-weight: bold;
           }
           .borrowing-sum-price {
             margin-left: 8px;
             font-size: 18px;
+            @media screen and(min-width: $min-width) {
+              font-size: 24px;
+            }
             font-weight: bold;
           }
         }
@@ -473,11 +533,17 @@ export default {
             padding-bottom: 2px;
             .difference-title {
               font-size: 16px;
+              @media screen and(min-width: $min-width) {
+                font-size: 22px;
+              }
               font-weight: bold;
             }
             .difference-price {
               margin-left: 32px;
               font-size: 18px;
+              @media screen and(min-width: $min-width) {
+                font-size: 24px;
+              }
               font-weight: bold;
               &.plus {
                 color: $plus;
@@ -494,6 +560,9 @@ export default {
             align-items: center;
             .difference-lending-borrowing-explain {
               font-size: 10px;
+              @media screen and(min-width: $min-width) {
+                font-size: 14px;
+              }
               color: $base_text_color;
               .blue-explain {
                 .blue {

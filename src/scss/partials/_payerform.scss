@@ -3,6 +3,9 @@
   p {
     color: $base_text_color;
     font-size: 12px;
+    @media screen and(min-width: $min-width) {
+      font-size: 16px;
+    }
   }
   .pulldown-box {
     position: relative;
@@ -27,8 +30,15 @@
       margin-top: 4px;
       width: 100%;
       height: $form-h;
+      @media screen and(min-width: $min-width) {
+        @import "../breakpoints/768up";
+        height: $form-h;
+      }
       color: $base_text_color;
       font-size: 16px;
+      @media screen and(min-width: $min-width) {
+        font-size: 18px;
+      }
       text-indent: 1em;
       background-color: $form-bg;
       border: 1px solid $form-border;

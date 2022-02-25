@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <div class="footer-1">
+    <div class="footer-container">
       <div>
         <span @click="toTos">利用規約</span>
       </div>
@@ -11,10 +11,8 @@
         <span @click="toInquiry">お問い合わせ</span>
       </div>
     </div>
-    <div class="footer-2">
-      <small id="footer-text"
-        >Copyright © 2020-2021 nakazaway All Rights Reserved.</small
-      >
+    <div class="copyright">
+      <p>Copyright © 2020-2022 nakazaway & jump All Rights Reserved.</p>
     </div>
   </footer>
 </template>
@@ -26,15 +24,16 @@ export default {
       //利用規約ページを表示
       this.$router.push({ path: "/Tos/" });
     },
-    toPrivacyPolicy(){
+    toPrivacyPolicy() {
       //プライバシーポリシーページを表示
       this.$router.push({ path: "/PrivacyPolicy/" });
     },
-    toInquiry(){
+    toInquiry() {
       //お問い合わせページを表示
       //11/07v1の問い合わせフォームに遷移、仕様確定後実装
-      const url = 'https://docs.google.com/forms/d/e/1FAIpQLSdcaHWXI4n_lgJXaD4yrGft3_G8-OFI_tqdYhBobbPX8j5j9Q/viewform'
-      window.open(url, '_blank')
+      const url =
+        "https://docs.google.com/forms/d/e/1FAIpQLSdcaHWXI4n_lgJXaD4yrGft3_G8-OFI_tqdYhBobbPX8j5j9Q/viewform";
+      window.open(url, "_blank");
     },
   },
 };
@@ -43,7 +42,6 @@ export default {
 <style scoped lang="scss">
 @import "../scss/variables";
 @import "../scss/breakpoints/base";
-@import "../scss/breakpoints/768up";
 
 footer {
   width: 100%;
@@ -52,15 +50,24 @@ footer {
   color: white;
   font-weight: normal;
   padding: 20px 48px;
-  .footer-1 {
-    font-size: 10px;
+  .footer-container {
+    font-size: 12px;
+    @media screen and(min-width: $min-width) {
+      font-size: 14px;
+    }
+    div {
+      margin-top: 2px;
+    }
   }
-  .footer-2 {
+  .copyright {
     margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 9px;
+    @media screen and(min-width: $min-width) {
+      font-size: 12px;
+    }
   }
 }
 </style>

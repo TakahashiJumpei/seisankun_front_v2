@@ -21,11 +21,14 @@ export default {
 <style scoped lang="scss">
 @import "../scss/variables";
 @import "../scss/breakpoints/base";
-@import "../scss/breakpoints/768up";
 
 nav {
   width: 100%;
   height: $header-h;
+  @media screen and(min-width: $min-width) {
+    @import "../scss/breakpoints/768up";
+    height: $header-h;
+  }
   background-color: $green;
   color: white;
   font-weight: bold;
@@ -38,6 +41,9 @@ nav {
       justify-content: center;
       align-items: center;
       font-size: 20px;
+      @media screen and(min-width: $min-width) {
+        font-size: 32px;
+      }
     }
   }
 }

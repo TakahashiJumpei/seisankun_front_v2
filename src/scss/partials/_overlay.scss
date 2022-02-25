@@ -34,6 +34,9 @@
         .confirm-name {
           color: #272643;
           font-size: 16px;
+          @media screen and(min-width: $min-width) {
+            font-size: 20px;
+          }
           font-weight: bold;
           font-family: Meiryo;
         }
@@ -41,7 +44,9 @@
           margin-top: 8px;
           color: #272643;
           font-size: 14px;
-          //font-weight: bold;
+          @media screen and(min-width: $min-width) {
+            font-size: 18px;
+          }
           font-family: Meiryo;
         }
         .button-wrapper {
@@ -56,11 +61,18 @@
               align-items: center;
               width: 140px;
               height: 32px;
+              @media screen and(min-width: $min-width) {
+                width: 180px;
+                height: 36px;
+              }
               border-radius: 8px;
               background-color: $green;
               box-shadow: 0 2px 0 0 #cbcecf;
               color: white;
               font-size: 16px;
+              @media screen and(min-width: $min-width) {
+                font-size: 18px;
+              }
               cursor: pointer;
               pointer-events: auto;
               &:hover {
@@ -79,6 +91,10 @@
               align-items: center;
               width: 140px;
               height: 32px;
+              @media screen and(min-width: $min-width) {
+                width: 180px;
+                height: 36px;
+              }
               border-radius: 8px;
               background-color: white;
               border: 1px solid $form-border;
@@ -86,6 +102,9 @@
               span {
                 color: $base_text_color;
                 font-size: 16px;
+                @media screen and(min-width: $min-width) {
+                  font-size: 18px;
+                }
               }
             }
           }
