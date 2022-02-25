@@ -114,7 +114,6 @@ export default {
         this.inputGroupNameError = true;
         errors++;
       }
-
       if (errors > 0) {
         console.log("エラー時の処理");
       } else {
@@ -133,12 +132,10 @@ export default {
         _members_unit.name = this.members[i];
         _members.push(_members_unit);
       }
-
       let data = {
         travel: { name: `${this.inputGroupName}` },
         members: _members,
       };
-
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.createGroup(data);

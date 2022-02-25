@@ -162,6 +162,7 @@ export default {
       groupName: "",
       travel_key: "",
       moneyUnit: "円",
+      groupIDs: [],
     };
   },
   filters: {
@@ -170,6 +171,30 @@ export default {
     },
   },
   methods: {
+    saveGroupToLacalStrage() {
+      this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
+      /**
+       * グループIDが一致していなかったら、配列の先頭に追加する
+       * 一致した場合、すでに配列に存在している当該IDを配列の先頭に移動させる
+       * 追加後、配列の要素数が１１個になったら最古の要素を削除する
+       */
+      console.log(this.groupIDs);
+      if (!this.groupIDs === null) {
+        for (let i = 0; i < this.groupIDs.length; i++) {
+          if (this.groupIDs[i] === this.travel_key) {
+            this.groupIDs.splice(i, 1);
+            break;
+          }
+        }
+      }else{
+        this.groupIDs = [];
+      }
+      this.groupIDs.unshift(this.travel_key);
+      if (this.groupIDs.length > 10) {
+        this.groupIDs.pop();
+      }
+      localStorage.setItem("groupIDs", JSON.stringify(this.groupIDs));
+    },
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
@@ -178,6 +203,7 @@ export default {
       console.log(response);
       this.groupName = response.data.travel.name;
       this.members = response.data.members;
+      this.saveGroupToLacalStrage();
       this.getPaymentHistory();
     },
     async getPaymentHistory() {
@@ -185,7 +211,6 @@ export default {
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getPaymentHistory(this.travel_key);
       console.log(response);
-
       for (let i = 0; i < response.data.payments.length; i++) {
         let _payments_unit = {};
         //支払いIDも取得する必要がある。
@@ -232,7 +257,6 @@ export default {
         this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
       }
     },
-
     toEditGroup() {
       //グループの編集ページを表示;
       this.$router.push({

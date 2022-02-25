@@ -131,6 +131,7 @@ export default {
       confirm_group: true,
       originalGroupName: "",
       travel_key: "",
+      groupIDs: [],
     };
   },
   methods: {
@@ -227,8 +228,15 @@ export default {
       //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.deleteGroup(this.travel_key);
       console.log(response);
-      //ローカルストレージ内のグループIDを削除する
-      //localStorage.getItem("group_hash_key"),
+      //当該グループIDをローカルストレージから削除する
+      this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
+      for (let i = 0; i < this.groupIDs.length; i++) {
+        if (this.groupIDs[i] === this.travel_key) {
+          this.groupIDs.splice(i, 1);
+          break;
+        }
+      }
+      localStorage.setItem('groupIDs', JSON.stringify(this.groupIDs));
       this.$router.push({ path: "/" });
     },
     async getGroup() {

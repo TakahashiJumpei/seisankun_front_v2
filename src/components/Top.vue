@@ -16,26 +16,22 @@
           <span>はじめる</span>
         </button>
       </div>
-      <div class="past-groups-wrapper">
+      <div v-if="pastGroupsFlag" class="past-groups-wrapper">
         <div class="past-groups-title">
           <span>過去に閲覧したグループ</span>
         </div>
         <div class="past-groups">
-          <!-- ダミーデータを作成して表示中 -->
-          <div class="past-group" @click="toGroup">
+          <div
+            v-for="pastGroup in pastGroups"
+            :key="pastGroup.id"
+            class="past-group"
+            @click="toGroup(pastGroup.travel_key)"
+          >
             <div class="past-group-date">
-              <span>2021/08/24</span>
+              <span>{{ pastGroup.created_at }}</span>
             </div>
             <div class="past-group-name">
-              <span>渡韓ごっこin新大久保</span>
-            </div>
-          </div>
-          <div class="past-group" @click="toGroup">
-            <div class="past-group-date">
-              <span>2020/07/31</span>
-            </div>
-            <div class="past-group-name">
-              <span>九州旅行！！</span>
+              <span>{{ pastGroup.name }}</span>
             </div>
           </div>
         </div>
@@ -117,37 +113,60 @@
 </template>
 
 <script>
+import { api_request } from "../js/api.js";
+import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
-      travel_key: "",
+      groupIDs: [],
+      pastGroups: [],
+      pastGroupsFlag: false,
     };
   },
   methods: {
     toCreateGroup() {
-      //グループの作成ページを表示
       this.$router.push({ path: "/CreateGroup/" });
     },
-    toGroup() {
-      //どのグループかtravel_keyでを特定する必要あり
-      //グループページを表示
-      this.travel_key = "aaaabbbbccccdddd";
-
+    toGroup(key) {
       this.$router.push({
         name: "Group",
-        params: { travel_key: this.travel_key },
+        params: { travel_key: key },
       });
+    },
+    checkLocalStarage() {
+      this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
+      if (!this.groupIDs || this.groupIDs.length === 0) {
+        this.pastGroupsFlag = false;
+        return;
+      }
+      this.pastGroupsFlag = true;
+      this.getPastGroups();
+    },
+    async getPastGroups() {
+      console.log("getPastGroups");
+      for (let i = 0; i < this.groupIDs.length; i++) {
+        const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+        //APIからレスが来るまで後続の処理を止める
+        let response = await apihandler.getGroup(this.groupIDs[i]);
+        console.log(response);
+        this.pastGroups.push(response.data.travel);
+        this.pastGroups[i].created_at = this.convertDate(
+          this.pastGroups[i].created_at
+        );
+      }
+    },
+    convertDate(created_at) {
+      let yyyy = created_at.substr(0, 4);
+      let mm = created_at.substr(5, 2);
+      let dd = created_at.substr(8, 2);
+      return yyyy + "/" + mm + "/" + dd;
     },
   },
   beforeCreate: function() {},
   created: function() {},
   beforeMount: function() {},
   mounted: function() {
-    /**
-     * ローカルストレージから過去のグループIDを取得する（あれば）
-     * あれば、そのグループIDをkeyにGET /travelでグループデータを取ってくる
-     */
-    // localStorage.getItem("group_hash_key");
+    this.checkLocalStarage();
   },
   beforeUpdate: function() {},
   updated: function() {},
