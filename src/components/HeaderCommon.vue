@@ -20,6 +20,8 @@ export default {
 
 <style scoped lang="scss">
 @import "../scss/variables";
+@import "../scss/breakpoints/base";
+@import "../scss/breakpoints/768up";
 
 nav {
   width: 100%;

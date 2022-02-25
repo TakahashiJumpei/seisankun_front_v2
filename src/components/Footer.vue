@@ -42,6 +42,8 @@ export default {
 
 <style scoped lang="scss">
 @import "../scss/variables";
+@import "../scss/breakpoints/base";
+@import "../scss/breakpoints/768up";
 
 footer {
   width: 100%;

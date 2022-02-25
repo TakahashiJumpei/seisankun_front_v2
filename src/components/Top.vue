@@ -139,34 +139,27 @@ export default {
       });
     },
   },
-  beforeCreate: function() {
-  },
-  created: function() {
-  },
-  beforeMount: function() {
-  },
+  beforeCreate: function() {},
+  created: function() {},
+  beforeMount: function() {},
   mounted: function() {
-
     /**
      * ローカルストレージから過去のグループIDを取得する（あれば）
      * あれば、そのグループIDをkeyにGET /travelでグループデータを取ってくる
      */
-
     // localStorage.getItem("group_hash_key");
   },
-  beforeUpdate: function() {
-  },
-  updated: function() {
-  },
-  beforeDestroy: function() {
-  },
-  destroyed: function() {
-  },
+  beforeUpdate: function() {},
+  updated: function() {},
+  beforeDestroy: function() {},
+  destroyed: function() {},
 };
 </script>
 
 <style scoped lang="scss">
 @import "../scss/variables";
+@import "../scss/breakpoints/base";
+@import "../scss/breakpoints/768up";
 
 .main {
   min-height: calc(100vh - #{$headerTop-h} - #{$footer-h});
@@ -176,6 +169,10 @@ export default {
       .explain-title {
         color: $base_text_color;
         font-size: $theme-title-size;
+        @media screen and(min-width: $min-width) {
+          @import "../scss/breakpoints/768up";
+          font-size: $theme-title-size;
+        }
         font-weight: bold;
         border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
@@ -184,6 +181,9 @@ export default {
         margin-top: 8px;
         color: $base_text_color;
         font-size: 12px;
+        @media screen and(min-width: $min-width) {
+          font-size: 18px;
+        }
         font-weight: normal;
       }
     }
@@ -198,6 +198,10 @@ export default {
         align-items: center;
         width: 200px;
         height: 48px;
+        @media screen and(min-width: $min-width) {
+          width: 240px;
+          height: 56px;
+        }
         border-radius: 8px;
         background-color: $green;
         color: white;
@@ -211,7 +215,7 @@ export default {
         justify-content: center;
         align-items: center;
         color: $base_text_color;
-        font-size: $theme-title-size;
+        font-size: $theme-sub-title-size;
         font-weight: bold;
         border-bottom: solid 1px $base_text_color;
         padding-bottom: 8px;
@@ -229,9 +233,12 @@ export default {
           padding: 12px 24px;
           .past-group-date {
             font-size: 10px;
+            @media screen and(min-width: $min-width) {
+              font-size: 12px;
+            }
           }
           .past-group-name {
-            font-size: $theme-title-size;
+            font-size: $theme-font-size;
             font-weight: bold;
           }
         }
@@ -254,12 +261,18 @@ export default {
           margin-top: 16px;
           .feature-item-title {
             font-size: 12px;
+            @media screen and(min-width: $min-width) {
+              font-size: 18px;
+            }
             font-weight: bold;
           }
           .feature-item-text {
             margin-top: 1em;
             margin-left: 1em;
             font-size: 10px;
+            @media screen and(min-width: $min-width) {
+              font-size: 16px;
+            }
             font-weight: normal;
           }
         }
@@ -268,7 +281,6 @@ export default {
     .howto-wrapper {
       margin: 0 calc(-#{$padding-lr});
       margin-top: 32px;
-      //background-color: $yellow;
       padding: 0 $padding-lr;
       color: $base_text_color;
       .howto-title {
@@ -282,12 +294,18 @@ export default {
           margin-top: 16px;
           .howto-item-title {
             font-size: 12px;
+            @media screen and(min-width: $min-width) {
+              font-size: 18px;
+            }
             font-weight: bold;
           }
           .howto-item-text {
             margin-top: 1em;
             margin-left: 1em;
             font-size: 10px;
+            @media screen and(min-width: $min-width) {
+              font-size: 16px;
+            }
             font-weight: normal;
           }
         }

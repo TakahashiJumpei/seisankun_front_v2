@@ -13,10 +13,15 @@
 
 <style scoped lang="scss">
 @import "../scss/variables";
+@import "../scss/breakpoints/base";
 
 nav {
   width: 100%;
   height: $headerTop-h;
+  @media screen and(min-width: $min-width) {
+    @import "../scss/breakpoints/768up";
+    height: $headerTop-h;
+  }
   background-color: $green;
   color: white;
   font-weight: bold;
@@ -24,11 +29,14 @@ nav {
   justify-content: center;
   align-items: center;
   .title-wrapper {
-    .sub-title-box{
+    .sub-title-box {
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 16px;
+      @media screen and(min-width: $min-width) {
+        font-size: 28px;
+      }
     }
     .title-box {
       margin-top: 8px;
@@ -36,6 +44,9 @@ nav {
       justify-content: center;
       align-items: center;
       font-size: 32px;
+      @media screen and(min-width: $min-width) {
+        font-size: 52px;
+      }
     }
   }
 }
