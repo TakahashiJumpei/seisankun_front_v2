@@ -162,16 +162,9 @@ export default {
       return yyyy + "/" + mm + "/" + dd;
     },
   },
-  beforeCreate: function() {},
-  created: function() {},
-  beforeMount: function() {},
   mounted: function() {
     this.checkLocalStarage();
   },
-  beforeUpdate: function() {},
-  updated: function() {},
-  beforeDestroy: function() {},
-  destroyed: function() {},
 };
 </script>
 

@@ -250,17 +250,10 @@ export default {
       this.members = response.data.members;
     },
   },
-  beforeCreate: function() {},
-  created: function() {},
-  beforeMount: function() {},
   mounted: function() {
     //グループ情報の取得
     this.getGroup();
   },
-  beforeUpdate: function() {},
-  updated: function() {},
-  beforeDestroy: function() {},
-  destroyed: function() {},
 };
 </script>
 

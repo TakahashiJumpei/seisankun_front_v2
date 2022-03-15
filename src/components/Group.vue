@@ -307,16 +307,9 @@ export default {
       });
     },
   },
-  beforeCreate: function() {},
-  created: function() {},
-  beforeMount: function() {},
   mounted: function() {
     this.getGroup();
   },
-  beforeUpdate: function() {},
-  updated: function() {},
-  beforeDestroy: function() {},
-  destroyed: function() {},
 };
 </script>
 

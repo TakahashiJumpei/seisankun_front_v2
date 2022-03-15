@@ -154,14 +154,6 @@ export default {
       this.$router.push({ path: "/" });
     },
   },
-  beforeCreate: function() {},
-  created: function() {},
-  beforeMount: function() {},
-  mounted: function() {},
-  beforeUpdate: function() {},
-  updated: function() {},
-  beforeDestroy: function() {},
-  destroyed: function() {},
 };
 </script>
 

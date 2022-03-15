@@ -192,17 +192,10 @@ export default {
       this.payer_id = this.members[0].id;
     },
   },
-  beforeCreate: function() {},
-  created: function() {},
-  beforeMount: function() {},
   mounted: function() {
     //グループ情報の取得
     this.getGroup();
   },
-  beforeUpdate: function() {},
-  updated: function() {},
-  beforeDestroy: function() {},
-  destroyed: function() {},
 };
 </script>
 
