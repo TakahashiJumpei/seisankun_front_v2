@@ -146,7 +146,6 @@ export default {
       console.log("getPastGroups");
       for (let i = 0; i < this.groupIDs.length; i++) {
         const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-        //APIからレスが来るまで後続の処理を止める
         let response = await apihandler.getGroup(this.groupIDs[i]);
         console.log(response);
         this.pastGroups.push(response.data.travel);

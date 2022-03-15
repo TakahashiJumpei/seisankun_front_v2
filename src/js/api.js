@@ -21,7 +21,6 @@ class api_request {
           data: data,
         };
       }
-      console.log(options)
       axios
         .request(options)
         .then(function(response) {
@@ -42,7 +41,6 @@ class api_request {
           }
         })
         .catch(function(error) {
-          console.log(error);
           reject(new Error(error));
         });
     });

@@ -174,11 +174,11 @@ export default {
     saveGroupToLacalStrage() {
       this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
       /**
+       * NOTE:
        * グループIDが一致していなかったら、配列の先頭に追加する
        * 一致した場合、すでに配列に存在している当該IDを配列の先頭に移動させる
        * 追加後、配列の要素数が１１個になったら最古の要素を削除する
        */
-      console.log(this.groupIDs);
       if (!this.groupIDs === null) {
         for (let i = 0; i < this.groupIDs.length; i++) {
           if (this.groupIDs[i] === this.travel_key) {
@@ -198,7 +198,6 @@ export default {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
       this.groupName = response.data.travel.name;
@@ -208,12 +207,10 @@ export default {
     },
     async getPaymentHistory() {
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getPaymentHistory(this.travel_key);
       console.log(response);
       for (let i = 0; i < response.data.payments.length; i++) {
         let _payments_unit = {};
-        //支払いIDも取得する必要がある。
         _payments_unit.id = response.data.payments[i].id;
         _payments_unit.name = response.data.payments[i].title;
         _payments_unit.member = response.data.payments[i].payer_name;
@@ -224,7 +221,6 @@ export default {
     },
     async getCalculationResults() {
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getCalculationResults(this.travel_key);
       console.log(response);
       for (let i = 0; i < response.data.results.length; i++) {
@@ -238,10 +234,8 @@ export default {
     },
     async getBorrowingStatuses() {
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getBorrowingStatuses(this.travel_key);
       console.log(response);
-
       for (let i = 0; i < response.data.statuses.length; i++) {
         let _lendingBorrowingItems_unit = {};
         _lendingBorrowingItems_unit.id = response.data.statuses[i].member.id;
@@ -258,17 +252,14 @@ export default {
       }
     },
     toEditGroup() {
-      //グループの編集ページを表示;
       this.$router.push({
         name: "EditGroup",
         params: { travel_key: this.travel_key },
       });
     },
     getGroupUrl() {
-      //ダミーで開発サイトのURLを取得
       let dummyUrl = "https://dev-seisan-kun-v2.netlify.app/#/";
       const element = document.createElement("input");
-      //element.value = location.href;
       element.value = dummyUrl;
       document.body.appendChild(element);
       element.select();
@@ -276,31 +267,24 @@ export default {
       document.body.removeChild(element);
     },
     shareForLine() {
-      //現在表示中のURLにグループのIDがつく仕組みなので簡単にできそう
-      //ダミーで開発サイトのURLを取得
       let dummyUrl = "https://dev-seisan-kun-v2.netlify.app/#/";
       let lineHref =
         "https://line.me/R/msg/text/?" + encodeURIComponent(dummyUrl);
-      //let lineHref = "https://line.me/R/msg/text/";
       window.open(lineHref, "_blank");
     },
     addPayment() {
-      //支払いの追加ページを表示
-      //this.$router.push({ path: "/AddPayment/" });
       this.$router.push({
         name: "AddPayment",
         params: { travel_key: this.travel_key },
       });
     },
     editPayment(payment_id) {
-      //支払いの編集ページを表示
       this.$router.push({
         name: "EditPayment",
         params: { travel_key: this.travel_key, payment_id: payment_id },
       });
     },
     memberLendingBorrowingDetail(member_id) {
-      //個人の支払い履歴ページを表示
       this.$router.push({
         name: "MemberLendingBorrowingDetail",
         params: { travel_key: this.travel_key, member_id: member_id },

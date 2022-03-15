@@ -104,7 +104,6 @@ export default {
     },
     doValidation() {
       let errors = 0;
-      //グループ名のバリデーション
       if (
         this.inputGroupName.trim().length >= 1 &&
         this.inputGroupName.trim().length <= 20
@@ -121,11 +120,6 @@ export default {
       }
     },
     async createGroup() {
-      //入力データを取得
-      /**
-       * グループ名は必須
-       * メンバー（任意）
-       */
       let _members = [];
       for (let i = 0; i < this.members.length; i++) {
         let _members_unit = {};
@@ -137,11 +131,9 @@ export default {
         members: _members,
       };
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.createGroup(data);
       console.log(response);
       this.travel_key = response.data.travel_key;
-      //グループ画面へ
       this.toGroup();
     },
     toGroup() {

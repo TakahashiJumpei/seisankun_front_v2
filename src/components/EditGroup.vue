@@ -153,12 +153,11 @@ export default {
         members: _member,
       };
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.addMember(data);
       console.log(response);
-      //エラー時の処理を実装する
+      //TODO: エラー時の処理を実装する
 
-      //APIからID以外の付属情報も返却してもらうようにする
+      //TODO: APIからID以外の付属情報も返却してもらうようにする
       this.members.push(_member);
       this.add_member_name = "";
       console.log(this.members);
@@ -172,7 +171,6 @@ export default {
     },
     async deleteMember() {
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.deleteMember(this.delete_member_id);
       console.log(response);
 
@@ -181,7 +179,6 @@ export default {
     },
     doValidation() {
       let errors = 0;
-      //グループ名のバリデーション
       if (
         this.inputGroupName.trim().length >= 1 &&
         this.inputGroupName.trim().length <= 20
@@ -203,11 +200,9 @@ export default {
         travel: { name: `${this.inputGroupName}` },
       };
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.editGroup(data);
       console.log(response);
-      //エラー時の処理を実装する
-      //グループ画面へ
+      //TODO: エラー時の処理を実装する
       this.toGroup();
     },
     toGroup() {
@@ -225,10 +220,8 @@ export default {
     },
     async deleteGroup() {
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.deleteGroup(this.travel_key);
       console.log(response);
-      //当該グループIDをローカルストレージから削除する
       this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
       for (let i = 0; i < this.groupIDs.length; i++) {
         if (this.groupIDs[i] === this.travel_key) {
@@ -242,7 +235,6 @@ export default {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
       this.inputGroupName = response.data.travel.name;
@@ -251,7 +243,6 @@ export default {
     },
   },
   mounted: function() {
-    //グループ情報の取得
     this.getGroup();
   },
 };

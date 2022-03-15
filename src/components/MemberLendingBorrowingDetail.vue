@@ -170,7 +170,6 @@ export default {
   methods: {
     toEditPayment(id) {
       id = 1;
-      //支払いの編集ページを表示
       this.$router.push({
         name: "EditPayment",
         params: { travel_key: this.travel_key, payment_id: id },
@@ -186,7 +185,6 @@ export default {
       this.travel_key = this.$route.params.travel_key;
       this.member_id = this.$route.params.member_id;
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
       this.groupName = response.data.travel.name;
@@ -200,15 +198,11 @@ export default {
     },
     async getBorrowingHistory() {
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getBorrowingHistory(this.member_id);
       console.log(response);
-
       for (let i = 0; i < response.data.histories.length; i++) {
         if (response.data.histories[i].payment.borrow_money > 0) {
           let _lendings_unit = {};
-          // _lendings_unit.id =
-          //   response.data.histories[i].payment.id;
           _lendings_unit.name = response.data.histories[i].payment.title;
           _lendings_unit.member = response.data.histories[i].user.name;
           _lendings_unit.price =
@@ -216,8 +210,6 @@ export default {
           this.lendings.push(_lendings_unit);
         } else {
           let _borrowings_unit = {};
-          // _borrowings_unit.id =
-          //   response.data.histories[i].payment.id;
           _borrowings_unit.name = response.data.histories[i].payment.title;
           _borrowings_unit.member = response.data.histories[i].user.name;
           _borrowings_unit.price = Math.abs(

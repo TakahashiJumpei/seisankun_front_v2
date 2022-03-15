@@ -21,16 +21,12 @@
 export default {
   methods: {
     toTos() {
-      //利用規約ページを表示
       this.$router.push({ path: "/Tos/" });
     },
     toPrivacyPolicy() {
-      //プライバシーポリシーページを表示
       this.$router.push({ path: "/PrivacyPolicy/" });
     },
     toInquiry() {
-      //お問い合わせページを表示
-      //11/07v1の問い合わせフォームに遷移、仕様確定後実装
       const url =
         "https://docs.google.com/forms/d/e/1FAIpQLSdcaHWXI4n_lgJXaD4yrGft3_G8-OFI_tqdYhBobbPX8j5j9Q/viewform";
       window.open(url, "_blank");

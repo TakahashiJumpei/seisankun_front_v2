@@ -150,7 +150,6 @@ export default {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
       this.members = response.data.members;
@@ -159,7 +158,6 @@ export default {
     async getPayment() {
       this.payment_id = this.$route.params.payment_id;
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.getPayment(this.payment_id);
       console.log(response);
       this.inputPaymentTitle = response.data.payment.title;
@@ -172,7 +170,6 @@ export default {
     },
     doValidation() {
       let errors = 0;
-      //支払い内容のバリデーション
       if (
         this.inputPaymentTitle.trim().length >= 1 &&
         this.inputPaymentTitle.trim().length <= 20
@@ -182,7 +179,6 @@ export default {
         this.inputPaymentTitleError = true;
         errors++;
       }
-      //支払い金額のバリデーション
       if (
         !String(this.inputAmount)
           .trim()
@@ -206,8 +202,6 @@ export default {
       }
     },
     async editPayment() {
-      //画面から各種データを取得
-      //借り手の取得
       let borrowers = [];
       for (let i = 0; i < this.borrowers.length; i++) {
         let borrowers_unit = {};
@@ -225,10 +219,8 @@ export default {
         },
       };
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.editPayment(data);
       console.log(response);
-      //グループ画面へ
       this.toGroup();
     },
     toGroup() {
@@ -245,7 +237,6 @@ export default {
     },
     async deletePayment() {
       const apihandler = new api_request(SEISANKUN_API_BASE_URL);
-      //APIからレスが来るまで後続の処理を止める
       let response = await apihandler.deletePayment(Number(this.payment_id));
       console.log(response);
       this.toGroup();
