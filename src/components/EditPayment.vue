@@ -47,12 +47,11 @@
           >
         </div>
 
-        <div class="input-price-form">
+        <div class="input-amount-form">
           <p>支払い金額</p>
-          <div class="price-box">
+          <div class="amount-box">
             <input
               type="text"
-              id="price"
               placeholder="例：1000"
               v-model="inputAmount"
             />
