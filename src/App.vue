@@ -17,7 +17,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "./css/ress.css";
 #app{
   background-color: #c7cfd665;

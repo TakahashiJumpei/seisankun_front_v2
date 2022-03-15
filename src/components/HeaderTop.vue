@@ -11,7 +11,7 @@
   </nav>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "../scss/variables";
 @import "../scss/breakpoints/base";
 
