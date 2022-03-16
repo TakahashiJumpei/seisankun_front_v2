@@ -144,7 +144,6 @@
 
 <script>
 import { api_request } from "../js/api.js";
-import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
@@ -184,7 +183,7 @@ export default {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
       this.member_id = this.$route.params.member_id;
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
       this.groupName = response.data.travel.name;
@@ -197,7 +196,7 @@ export default {
       this.getBorrowingHistory();
     },
     async getBorrowingHistory() {
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getBorrowingHistory(this.member_id);
       console.log(response);
       for (let i = 0; i < response.data.histories.length; i++) {

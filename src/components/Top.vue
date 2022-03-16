@@ -114,7 +114,6 @@
 
 <script>
 import { api_request } from "../js/api.js";
-import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
@@ -143,9 +142,8 @@ export default {
       this.getPastGroups();
     },
     async getPastGroups() {
-      console.log("getPastGroups");
       for (let i = 0; i < this.groupIDs.length; i++) {
-        const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+        const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
         let response = await apihandler.getGroup(this.groupIDs[i]);
         console.log(response);
         this.pastGroups.push(response.data.travel);

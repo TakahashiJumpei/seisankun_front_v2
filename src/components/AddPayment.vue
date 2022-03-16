@@ -94,7 +94,6 @@
 
 <script>
 import { api_request } from "../js/api.js";
-import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
@@ -160,7 +159,7 @@ export default {
           amount: Number(String(this.inputAmount).trim()),
         },
       };
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.addPayment(data);
       console.log(response);
       this.toGroup();
@@ -173,7 +172,7 @@ export default {
     },
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
       this.members = response.data.members;

@@ -151,7 +151,6 @@
 
 <script>
 import { api_request } from "../js/api.js";
-import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
@@ -197,7 +196,7 @@ export default {
     },
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
       this.groupName = response.data.travel.name;
@@ -206,7 +205,7 @@ export default {
       this.getPaymentHistory();
     },
     async getPaymentHistory() {
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getPaymentHistory(this.travel_key);
       console.log(response);
       for (let i = 0; i < response.data.payments.length; i++) {
@@ -220,7 +219,7 @@ export default {
       this.getCalculationResults();
     },
     async getCalculationResults() {
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getCalculationResults(this.travel_key);
       console.log(response);
       for (let i = 0; i < response.data.results.length; i++) {
@@ -233,7 +232,7 @@ export default {
       this.getBorrowingStatuses();
     },
     async getBorrowingStatuses() {
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getBorrowingStatuses(this.travel_key);
       console.log(response);
       for (let i = 0; i < response.data.statuses.length; i++) {

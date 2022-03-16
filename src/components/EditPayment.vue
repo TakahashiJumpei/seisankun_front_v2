@@ -125,7 +125,6 @@
 
 <script>
 import { api_request } from "../js/api.js";
-import { SEISANKUN_API_BASE_URL } from "../javascripts/config.js";
 export default {
   data() {
     return {
@@ -148,7 +147,7 @@ export default {
   methods: {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
       this.members = response.data.members;
@@ -156,7 +155,7 @@ export default {
     },
     async getPayment() {
       this.payment_id = this.$route.params.payment_id;
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getPayment(this.payment_id);
       console.log(response);
       this.inputPaymentTitle = response.data.payment.title;
@@ -217,7 +216,7 @@ export default {
           amount: Number(String(this.inputAmount).trim()),
         },
       };
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.editPayment(data);
       console.log(response);
       this.toGroup();
@@ -235,7 +234,7 @@ export default {
       this.confirm = false;
     },
     async deletePayment() {
-      const apihandler = new api_request(SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.deletePayment(Number(this.payment_id));
       console.log(response);
       this.toGroup();
