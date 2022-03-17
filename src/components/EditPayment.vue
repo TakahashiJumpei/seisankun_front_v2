@@ -78,6 +78,9 @@
               </option>
             </select>
           </div>
+          <span v-bind:class="{ red: payerError }"
+            >※支払ったメンバーを選択してください</span
+          >
         </div>
 
         <div id="select-borrower-wrapper">
@@ -101,6 +104,9 @@
               </label>
             </div>
           </div>
+          <span v-bind:class="{ red: borrowersError }"
+            >※支払われたメンバーは1人以上指定してください</span
+          >
         </div>
 
         <div class="button-wrapper">
@@ -137,6 +143,8 @@ export default {
       isSelectBorrower: [],
       inputPaymentTitleError: false,
       inputAmountError: false,
+      payerError: false,
+      borrowersError: false,
       payment_id: 0,
       confirm: false,
       originalPaymentName: "",
@@ -144,20 +152,28 @@ export default {
       inputAmountErrorText: "※半角数字でご記入ください",
       moneyUnit: "円",
       borrowers: [],
+      membersIdList: [],
     };
   },
   methods: {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(
+        process.env.VUE_APP_SEISANKUN_API_BASE_URL
+      );
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
       this.members = response.data.members;
+      for (let i = 0; i < this.members.length; i++) {
+        this.membersIdList.push(this.members[i].id);
+      }
       this.getPayment();
     },
     async getPayment() {
       this.payment_id = this.$route.params.payment_id;
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(
+        process.env.VUE_APP_SEISANKUN_API_BASE_URL
+      );
       let response = await apihandler.getPayment(this.payment_id);
       console.log(response);
       this.inputPaymentTitle = response.data.payment.title;
@@ -194,7 +210,21 @@ export default {
       } else {
         this.inputAmountError = false;
       }
-
+      if (!this.payer_id) {
+        this.payerError = true;
+        errors++;
+      } else if (!this.membersIdList.includes(this.payer_id)) {
+        this.payerError = true;
+        errors++;
+      } else {
+        this.payerError = false;
+      }
+      if (this.borrowers.length === 0) {
+        this.borrowersError = true;
+        errors++;
+      } else {
+        this.borrowersError = false;
+      }
       if (errors > 0) {
         scrollTo(0, 0);
       } else {
@@ -218,7 +248,9 @@ export default {
           amount: Number(String(this.inputAmount).trim()),
         },
       };
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(
+        process.env.VUE_APP_SEISANKUN_API_BASE_URL
+      );
       let response = await apihandler.editPayment(data);
       console.log(response);
       this.toGroup();
@@ -236,7 +268,9 @@ export default {
       this.confirm = false;
     },
     async deletePayment() {
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
+      const apihandler = new api_request(
+        process.env.VUE_APP_SEISANKUN_API_BASE_URL
+      );
       let response = await apihandler.deletePayment(Number(this.payment_id));
       console.log(response);
       this.toGroup();
