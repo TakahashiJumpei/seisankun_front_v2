@@ -35,10 +35,10 @@
 
       <div class="input-form-wrapper">
         <div class="input-payment-name-form">
-          <p>支払い内容</p>
+          <label for="payment-name">支払い内容</label>
           <input
             type="text"
-            id="payment-name"
+            name="payment-name"
             placeholder="例：飛行機代"
             v-model="inputPaymentTitle"
           />
@@ -48,10 +48,11 @@
         </div>
 
         <div class="input-amount-form">
-          <p>支払い金額</p>
+          <label for="amount">支払い金額</label>
           <div class="amount-box">
             <input
               type="text"
+              name="amount"
               placeholder="例：1000"
               v-model="inputAmount"
             />
@@ -65,9 +66,9 @@
         </div>
 
         <div class="pulldown-payer-form">
-          <p>支払ったメンバー</p>
+          <label for="payer">支払ったメンバー</label>
           <div class="pulldown-box">
-            <select v-model="payer_id">
+            <select v-model="payer_id" name="payer">
               <option
                 v-for="member in members"
                 :key="member.id"
@@ -80,16 +81,17 @@
         </div>
 
         <div id="select-borrower-wrapper">
-          <p>誰の分を払ったか</p>
+          <label>誰の分を払ったか</label>
           <div
             v-for="(member, index) in members"
             :key="member.id"
             class="select-borrower-box"
           >
-            <p>メンバー{{ index + 1 }}</p>
+            <label for="borrower">メンバー{{ index + 1 }}</label>
             <div class="member-name-box">
               <input
                 type="checkbox"
+                name="borrower"
                 :id="'member' + member.id"
                 :value="member.id"
                 v-model="borrowers"

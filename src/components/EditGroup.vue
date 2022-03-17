@@ -45,9 +45,10 @@
       </div>
       <div class="input-form-wrapper">
         <div class="input-group-name-form">
-          <p>グループ名</p>
+          <label for="group-name">グループ名</label>
           <input
             type="text"
+            name="group-name"
             v-model="inputGroupName"
             id="group-name"
             placeholder="グループ名を入力"
@@ -57,11 +58,11 @@
           >
         </div>
         <div class="input-member-form">
-          <p>メンバーの追加</p>
+          <label for="add-member">メンバーの追加</label>
           <div class="member-name-box">
             <input
               type="text"
-              id="member-name"
+              name="add-member"
               placeholder="メンバーの名前を入力"
               v-model="add_member_name"
             />
@@ -79,7 +80,7 @@
             :key="member.id"
             class="show-member-form"
           >
-            <p>メンバー{{ index + 1 }}</p>
+            <label>メンバー{{ index + 1 }}</label>
             <div class="member-name-box">
               <div class="member-name">
                 <span>{{ member.name }}</span>
