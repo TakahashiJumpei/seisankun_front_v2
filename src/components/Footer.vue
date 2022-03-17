@@ -21,10 +21,10 @@
 export default {
   methods: {
     toTos() {
-      this.$router.push({ path: "/Tos/" });
+      this.$router.push({ path: "/tos/" });
     },
     toPrivacyPolicy() {
-      this.$router.push({ path: "/PrivacyPolicy/" });
+      this.$router.push({ path: "/privacy-policy/" });
     },
     toInquiry() {
       const url =

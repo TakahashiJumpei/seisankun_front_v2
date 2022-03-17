@@ -25,14 +25,14 @@ export default new Router({
       }
     },
     {
-      path: "/CreateGroup/",
+      path: "/group/create",
       components: {
         default: CreateGroup,
         header: HeaderCommon,
       }
     },
     {
-      path: "/Group/:travel_key",
+      path: "/group/:travel_key",
       name: "Group",
       components: {
         default: Group,
@@ -40,7 +40,7 @@ export default new Router({
       }
     },
     {
-      path: "/EditGroup/:travel_key",
+      path: "/group/edit/:travel_key",
       name: 'EditGroup',
       components: {
         default: EditGroup,
@@ -48,7 +48,7 @@ export default new Router({
       }
     },
     {
-      path: "/AddPayment/:travel_key",
+      path: "/payment/add/:travel_key",
       name: "AddPayment",
       components: {
         default: AddPayment,
@@ -56,7 +56,7 @@ export default new Router({
       }
     },
     {
-      path: "/EditPayment/:travel_key/:payment_id",
+      path: "/payment/edit/:travel_key/:payment_id",
       name: "EditPayment",
       components: {
         default: EditPayment,
@@ -64,7 +64,7 @@ export default new Router({
       }
     },
     {
-      path: "/MemberLendingBorrowingDetail/:travel_key/:member_id",
+      path: "/member/history/:travel_key/:member_id",
       name: "MemberLendingBorrowingDetail",
       components: {
         default: MemberLendingBorrowingDetail,
@@ -79,7 +79,7 @@ export default new Router({
       }
     },
     {
-      path: "/PrivacyPolicy/",
+      path: "/privacy-policy/",
       components: {
         default: PrivacyPolicy,
         header: HeaderCommon,

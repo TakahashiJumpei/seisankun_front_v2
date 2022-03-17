@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     toCreateGroup() {
-      this.$router.push({ path: "/CreateGroup/" });
+      this.$router.push({ path: "/group/create" });
     },
     toGroup(key) {
       this.$router.push({
