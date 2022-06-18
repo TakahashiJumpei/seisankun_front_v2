@@ -131,6 +131,7 @@ export default {
       confirm_group: true,
       originalGroupName: "",
       travel_key: "",
+      travel_id: null,
       groupIDs: [],
     };
   },
@@ -197,8 +198,9 @@ export default {
     },
     async editGroup() {
       let data = {
-        travel: { name: `${this.inputGroupName}` },
+        travel: { id: this.travel_id, name: `${this.inputGroupName}` },
       };
+      console.log(data);
       const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.editGroup(data);
       console.log(response);
@@ -237,6 +239,7 @@ export default {
       const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
       let response = await apihandler.getGroup(this.travel_key);
       console.log(response);
+      this.travel_id = response.data.travel.id;
       this.inputGroupName = response.data.travel.name;
       this.originalGroupName = this.inputGroupName;
       this.members = response.data.members;
