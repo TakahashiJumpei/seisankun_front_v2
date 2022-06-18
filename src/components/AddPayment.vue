@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -184,12 +183,29 @@ export default {
           amount: Number(String(this.inputAmount).trim()),
         },
       };
-      const apihandler = new api_request(
-        process.env.VUE_APP_SEISANKUN_API_BASE_URL
-      );
-      let response = await apihandler.addPayment(data);
-      console.log(response);
-      this.toGroup();
+      let options = {
+        method: "POST",
+        url: `/payment`,
+        data: data,
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.toGroup();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     toGroup() {
       this.$router.push({
@@ -199,17 +215,34 @@ export default {
     },
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request(
-        process.env.VUE_APP_SEISANKUN_API_BASE_URL
-      );
-      let response = await apihandler.getGroup(this.travel_key);
-      console.log(response);
-      this.members = response.data.members;
-      for (let i = 0; i < this.members.length; i++) {
-        this.borrowers.push(this.members[i].id);
-        this.membersIdList.push(this.members[i].id);
-      }
-      this.payer_id = this.members[0].id;
+      let options = {
+        method: "GET",
+        url: `/travel`,
+        params: { travel_key: this.travel_key },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.members = response.data.members;
+          for (let i = 0; i < this.members.length; i++) {
+            this.borrowers.push(this.members[i].id);
+            this.membersIdList.push(this.members[i].id);
+          }
+          this.payer_id = this.members[0].id;
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
   },
   mounted: function() {

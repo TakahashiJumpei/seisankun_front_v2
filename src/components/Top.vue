@@ -113,7 +113,6 @@
 </template>
 
 <script>
-import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -143,13 +142,32 @@ export default {
     },
     async getPastGroups() {
       for (let i = 0; i < this.groupIDs.length; i++) {
-        const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-        let response = await apihandler.getGroup(this.groupIDs[i]);
-        console.log(response);
-        this.pastGroups.push(response.data.travel);
-        this.pastGroups[i].created_at = this.convertDate(
-          this.pastGroups[i].created_at
-        );
+        let options = {
+          method: "GET",
+          url: `/travel`,
+          params: { travel_key: this.groupIDs[i] },
+        };
+        this.$seisankunApi
+          .request(options)
+          .then((response) => {
+            console.log(response);
+            this.pastGroups.push(response.data.travel);
+            this.pastGroups[i].created_at = this.convertDate(
+              this.pastGroups[i].created_at
+            );
+          })
+          .catch((err) => {
+            let errStatus;
+            for (let key of Object.keys(err)) {
+              if (key === "response") {
+                errStatus = err[key].status;
+              }
+            }
+            if (typeof errStatus === "undefined") {
+              errStatus = "なし";
+            }
+            console.log("エラー");
+          });
       }
     },
     convertDate(created_at) {

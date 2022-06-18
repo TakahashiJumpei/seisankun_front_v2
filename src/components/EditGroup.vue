@@ -115,7 +115,6 @@
 </template>
 
 <script>
-import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -153,15 +152,33 @@ export default {
         travel: { travel_key: this.travel_key },
         members: _member,
       };
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.addMember(data);
-      console.log(response);
-      //TODO: エラー時の処理を実装する
 
-      //TODO: APIからID以外の付属情報も返却してもらうようにする
-      this.members.push(_member);
-      this.add_member_name = "";
-      console.log(this.members);
+      let options = {
+        method: "POST",
+        url: `/member`,
+        data: data,
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          //TODO: APIからID以外の付属情報も返却してもらうようにする
+          this.members.push(_member);
+          this.add_member_name = "";
+          console.log(this.members);
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     confirmDeleteMember(index) {
       this.confirm = true;
@@ -171,12 +188,30 @@ export default {
       this.delete_member_id = 1;
     },
     async deleteMember() {
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.deleteMember(this.delete_member_id);
-      console.log(response);
-
-      this.members.splice(this.memberIndex, 1);
-      this.hideConfirmModal();
+      let options = {
+        method: "DELETE",
+        url: `/member`,
+        params: { member_id: this.delete_member_id },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.members.splice(this.memberIndex, 1);
+          this.hideConfirmModal();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     doValidation() {
       let errors = 0;
@@ -201,11 +236,29 @@ export default {
         travel: { id: this.travel_id, name: `${this.inputGroupName}` },
       };
       console.log(data);
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.editGroup(data);
-      console.log(response);
-      //TODO: エラー時の処理を実装する
-      this.toGroup();
+      let options = {
+        method: "PUT",
+        url: `/travel`,
+        data: data,
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.toGroup();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     toGroup() {
       this.$router.push({
@@ -221,28 +274,66 @@ export default {
       this.confirm = false;
     },
     async deleteGroup() {
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.deleteGroup(this.travel_key);
-      console.log(response);
-      this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
-      for (let i = 0; i < this.groupIDs.length; i++) {
-        if (this.groupIDs[i] === this.travel_key) {
-          this.groupIDs.splice(i, 1);
-          break;
-        }
-      }
-      localStorage.setItem('groupIDs', JSON.stringify(this.groupIDs));
-      this.$router.push({ path: "/" });
+      let options = {
+        method: "DELETE",
+        url: `/travel`,
+        params: { travel_key: this.travel_key },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
+          for (let i = 0; i < this.groupIDs.length; i++) {
+            if (this.groupIDs[i] === this.travel_key) {
+              this.groupIDs.splice(i, 1);
+              break;
+            }
+          }
+          localStorage.setItem("groupIDs", JSON.stringify(this.groupIDs));
+          this.$router.push({ path: "/" });
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.getGroup(this.travel_key);
-      console.log(response);
-      this.travel_id = response.data.travel.id;
-      this.inputGroupName = response.data.travel.name;
-      this.originalGroupName = this.inputGroupName;
-      this.members = response.data.members;
+      let options = {
+        method: "GET",
+        url: `/travel`,
+        params: { travel_key: this.travel_key },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.travel_id = response.data.travel.id;
+          this.inputGroupName = response.data.travel.name;
+          this.originalGroupName = this.inputGroupName;
+          this.members = response.data.members;
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
   },
   mounted: function() {

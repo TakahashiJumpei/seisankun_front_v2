@@ -132,7 +132,6 @@
 </template>
 
 <script>
-import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -158,31 +157,65 @@ export default {
   methods: {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request(
-        process.env.VUE_APP_SEISANKUN_API_BASE_URL
-      );
-      let response = await apihandler.getGroup(this.travel_key);
-      console.log(response);
-      this.members = response.data.members;
-      for (let i = 0; i < this.members.length; i++) {
-        this.membersIdList.push(this.members[i].id);
-      }
-      this.getPayment();
+      let options = {
+        method: "GET",
+        url: `/travel`,
+        params: { travel_key: this.travel_key },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.members = response.data.members;
+          for (let i = 0; i < this.members.length; i++) {
+            this.membersIdList.push(this.members[i].id);
+          }
+          this.getPayment();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     async getPayment() {
       this.payment_id = this.$route.params.payment_id;
-      const apihandler = new api_request(
-        process.env.VUE_APP_SEISANKUN_API_BASE_URL
-      );
-      let response = await apihandler.getPayment(this.payment_id);
-      console.log(response);
-      this.inputPaymentTitle = response.data.payment.title;
-      this.originalPaymentName = this.inputPaymentTitle;
-      this.inputAmount = response.data.payment.amount;
-      this.payer_id = response.data.payment.payer_id;
-      for (let i = 0; i < response.data.payment.borrowers.length; i++) {
-        this.borrowers.push(response.data.payment.borrowers[i].borrower_id);
-      }
+      let options = {
+        method: "GET",
+        url: `/payment`,
+        params: { payment_id: this.payment_id },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.inputPaymentTitle = response.data.payment.title;
+          this.originalPaymentName = this.inputPaymentTitle;
+          this.inputAmount = response.data.payment.amount;
+          this.payer_id = response.data.payment.payer_id;
+          for (let i = 0; i < response.data.payment.borrowers.length; i++) {
+            this.borrowers.push(response.data.payment.borrowers[i].borrower_id);
+          }
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     doValidation() {
       let errors = 0;
@@ -248,12 +281,29 @@ export default {
           amount: Number(String(this.inputAmount).trim()),
         },
       };
-      const apihandler = new api_request(
-        process.env.VUE_APP_SEISANKUN_API_BASE_URL
-      );
-      let response = await apihandler.editPayment(data);
-      console.log(response);
-      this.toGroup();
+      let options = {
+        method: "PUT",
+        url: `/payment`,
+        data: data,
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.toGroup();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     toGroup() {
       this.$router.push({
@@ -268,12 +318,29 @@ export default {
       this.confirm = false;
     },
     async deletePayment() {
-      const apihandler = new api_request(
-        process.env.VUE_APP_SEISANKUN_API_BASE_URL
-      );
-      let response = await apihandler.deletePayment(Number(this.payment_id));
-      console.log(response);
-      this.toGroup();
+      let options = {
+        method: "DELETE",
+        url: `/payment`,
+        params: { payment_id: this.payment_id },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.toGroup();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
   },
   mounted: function() {

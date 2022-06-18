@@ -143,7 +143,6 @@
 </template>
 
 <script>
-import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -183,56 +182,91 @@ export default {
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
       this.member_id = this.$route.params.member_id;
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.getGroup(this.travel_key);
-      console.log(response);
-      this.groupName = response.data.travel.name;
-      this.members = response.data.members;
-      for (let i = 0; i < this.members.length; i++) {
-        if (Number(this.member_id) === this.members[i].id) {
-          this.member = this.members[i].name;
-        }
-      }
-      this.getBorrowingHistory();
+      let options = {
+        method: "GET",
+        url: `/travel`,
+        params: { travel_key: this.travel_key },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.groupName = response.data.travel.name;
+          this.members = response.data.members;
+          for (let i = 0; i < this.members.length; i++) {
+            if (Number(this.member_id) === this.members[i].id) {
+              this.member = this.members[i].name;
+            }
+          }
+          this.getBorrowingHistory();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     async getBorrowingHistory() {
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.getBorrowingHistory(this.member_id);
-      console.log(response);
-      for (let i = 0; i < response.data.histories.length; i++) {
-        if (response.data.histories[i].payment.borrow_money > 0) {
-          let _lendings_unit = {};
-          _lendings_unit.name = response.data.histories[i].payment.title;
-          _lendings_unit.member = response.data.histories[i].user.name;
-          _lendings_unit.price =
-            response.data.histories[i].payment.borrow_money;
-          this.lendings.push(_lendings_unit);
-        } else {
-          let _borrowings_unit = {};
-          _borrowings_unit.name = response.data.histories[i].payment.title;
-          _borrowings_unit.member = response.data.histories[i].user.name;
-          _borrowings_unit.price = Math.abs(
-            response.data.histories[i].payment.borrow_money
-          );
-          this.borrowings.push(_borrowings_unit);
-        }
-      }
-
-      for (let i = 0; i < this.lendings.length; i++) {
-        this.lendingsSum += Number(this.lendings[i].price);
-      }
-
-      for (let i = 0; i < this.borrowings.length; i++) {
-        this.borrowingsSum += Number(this.borrowings[i].price);
-      }
-
-      this.differencePrice = this.lendingsSum - this.borrowingsSum;
-      if (this.differencePrice > 0) {
-        this.differencePricePlus = true;
-      } else {
-        this.differencePricePlus = false;
-        this.differencePrice = Math.abs(this.differencePrice);
-      }
+      let options = {
+        method: "GET",
+        url: `/borrowing/history`,
+        params: { member_id: this.member_id },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          for (let i = 0; i < response.data.histories.length; i++) {
+            if (response.data.histories[i].payment.borrow_money > 0) {
+              let _lendings_unit = {};
+              _lendings_unit.name = response.data.histories[i].payment.title;
+              _lendings_unit.member = response.data.histories[i].user.name;
+              _lendings_unit.price =
+                response.data.histories[i].payment.borrow_money;
+              this.lendings.push(_lendings_unit);
+            } else {
+              let _borrowings_unit = {};
+              _borrowings_unit.name = response.data.histories[i].payment.title;
+              _borrowings_unit.member = response.data.histories[i].user.name;
+              _borrowings_unit.price = Math.abs(
+                response.data.histories[i].payment.borrow_money
+              );
+              this.borrowings.push(_borrowings_unit);
+            }
+          }
+          for (let i = 0; i < this.lendings.length; i++) {
+            this.lendingsSum += Number(this.lendings[i].price);
+          }
+          for (let i = 0; i < this.borrowings.length; i++) {
+            this.borrowingsSum += Number(this.borrowings[i].price);
+          }
+          this.differencePrice = this.lendingsSum - this.borrowingsSum;
+          if (this.differencePrice > 0) {
+            this.differencePricePlus = true;
+          } else {
+            this.differencePricePlus = false;
+            this.differencePrice = Math.abs(this.differencePrice);
+          }
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
   },
   mounted: function() {

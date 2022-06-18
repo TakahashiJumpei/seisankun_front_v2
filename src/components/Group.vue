@@ -150,7 +150,6 @@
 </template>
 
 <script>
-import { api_request } from "../js/api.js";
 export default {
   data() {
     return {
@@ -185,7 +184,7 @@ export default {
             break;
           }
         }
-      }else{
+      } else {
         this.groupIDs = [];
       }
       this.groupIDs.unshift(this.travel_key);
@@ -196,59 +195,136 @@ export default {
     },
     async getGroup() {
       this.travel_key = this.$route.params.travel_key;
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.getGroup(this.travel_key);
-      console.log(response);
-      this.groupName = response.data.travel.name;
-      this.members = response.data.members;
-      this.saveGroupToLacalStrage();
-      this.getPaymentHistory();
+      let options = {
+        method: "GET",
+        url: `/travel`,
+        params: { travel_key: this.travel_key },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          this.groupName = response.data.travel.name;
+          this.members = response.data.members;
+          this.saveGroupToLacalStrage();
+          this.getPaymentHistory();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     async getPaymentHistory() {
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.getPaymentHistory(this.travel_key);
-      console.log(response);
-      for (let i = 0; i < response.data.payments.length; i++) {
-        let _payments_unit = {};
-        _payments_unit.id = response.data.payments[i].id;
-        _payments_unit.name = response.data.payments[i].title;
-        _payments_unit.member = response.data.payments[i].payer_name;
-        _payments_unit.price = response.data.payments[i].amount;
-        this.payments.push(_payments_unit);
-      }
-      this.getCalculationResults();
+      let options = {
+        method: "GET",
+        url: `/payment/history`,
+        params: { travel_key: this.travel_key },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          for (let i = 0; i < response.data.payments.length; i++) {
+            let _payments_unit = {};
+            _payments_unit.id = response.data.payments[i].id;
+            _payments_unit.name = response.data.payments[i].title;
+            _payments_unit.member = response.data.payments[i].payer_name;
+            _payments_unit.price = response.data.payments[i].amount;
+            this.payments.push(_payments_unit);
+          }
+          this.getCalculationResults();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     async getCalculationResults() {
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.getCalculationResults(this.travel_key);
-      console.log(response);
-      for (let i = 0; i < response.data.results.length; i++) {
-        let _seisanResults_unit = {};
-        _seisanResults_unit.from = response.data.results[i].borrower_name;
-        _seisanResults_unit.to = response.data.results[i].lender_name;
-        _seisanResults_unit.price = response.data.results[i].borrow_money;
-        this.seisanResults.push(_seisanResults_unit);
-      }
-      this.getBorrowingStatuses();
+      let options = {
+        method: "GET",
+        url: `/calculation/results`,
+        params: { travel_key: this.travel_key },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          for (let i = 0; i < response.data.results.length; i++) {
+            let _seisanResults_unit = {};
+            _seisanResults_unit.from = response.data.results[i].borrower_name;
+            _seisanResults_unit.to = response.data.results[i].lender_name;
+            _seisanResults_unit.price = response.data.results[i].borrow_money;
+            this.seisanResults.push(_seisanResults_unit);
+          }
+          this.getBorrowingStatuses();
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     async getBorrowingStatuses() {
-      const apihandler = new api_request(process.env.VUE_APP_SEISANKUN_API_BASE_URL);
-      let response = await apihandler.getBorrowingStatuses(this.travel_key);
-      console.log(response);
-      for (let i = 0; i < response.data.statuses.length; i++) {
-        let _lendingBorrowingItems_unit = {};
-        _lendingBorrowingItems_unit.id = response.data.statuses[i].member.id;
-        _lendingBorrowingItems_unit.member =
-          response.data.statuses[i].member.name;
-        _lendingBorrowingItems_unit.price =
-          response.data.statuses[i].borrow_money;
-        if (_lendingBorrowingItems_unit.price > 0) {
-          _lendingBorrowingItems_unit.plus = true;
-        } else {
-          _lendingBorrowingItems_unit.plus = false;
-        }
-        this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
-      }
+      let options = {
+        method: "GET",
+        url: `/borrowing/statuses`,
+        params: { travel_key: this.travel_key },
+      };
+      this.$seisankunApi
+        .request(options)
+        .then((response) => {
+          console.log(response);
+          for (let i = 0; i < response.data.statuses.length; i++) {
+            let _lendingBorrowingItems_unit = {};
+            _lendingBorrowingItems_unit.id =
+              response.data.statuses[i].member.id;
+            _lendingBorrowingItems_unit.member =
+              response.data.statuses[i].member.name;
+            _lendingBorrowingItems_unit.price =
+              response.data.statuses[i].borrow_money;
+            if (_lendingBorrowingItems_unit.price > 0) {
+              _lendingBorrowingItems_unit.plus = true;
+            } else {
+              _lendingBorrowingItems_unit.plus = false;
+            }
+            this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
+          }
+        })
+        .catch((err) => {
+          let errStatus;
+          for (let key of Object.keys(err)) {
+            if (key === "response") {
+              errStatus = err[key].status;
+            }
+          }
+          if (typeof errStatus === "undefined") {
+            errStatus = "なし";
+          }
+          console.log("エラー");
+        });
     },
     toEditGroup() {
       this.$router.push({
