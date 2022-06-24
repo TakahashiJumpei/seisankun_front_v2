@@ -44,107 +44,122 @@
         </button>
       </div>
 
-      <div class="payment-list-wrapper">
-        <div class="payment-list-title">
-          <span>支払い内容一覧</span>
+      <template v-if="!PaymentExist">
+        <div class="payment-none-wrapper">
+          <div class="payment-none-sentence">
+            <div><span>まだ立替記録がありません。</span></div>
+            <div>
+              <span
+                >「支払いの追加」から立て替えた記録を追加していきましょう。</span
+              >
+            </div>
+            <div><span>支払いの追加をすると精算結果を表示します。</span></div>
+          </div>
         </div>
-        <div class="payment-items">
-          <div
-            v-for="payment in payments"
-            :key="payment.id"
-            class="payment-item"
-          >
-            <div class="payment-item-left">
-              <div class="payment-item-name">
-                <span>{{ payment.name }}</span>
+      </template>
+      <template v-else>
+        <div class="payment-list-wrapper">
+          <div class="payment-list-title">
+            <span>支払い内容一覧</span>
+          </div>
+          <div class="payment-items">
+            <div
+              v-for="payment in payments"
+              :key="payment.id"
+              class="payment-item"
+            >
+              <div class="payment-item-left">
+                <div class="payment-item-name">
+                  <span>{{ payment.name }}</span>
+                </div>
+                <div class="payment-item-member">
+                  <span>{{ payment.member }}が立て替え</span>
+                </div>
               </div>
-              <div class="payment-item-member">
-                <span>{{ payment.member }}が立て替え</span>
+              <div class="payment-item-right">
+                <div class="payment-item-price">
+                  <span>{{ payment.price | numberFormat }}</span>
+                  <span>{{ moneyUnit }}</span>
+                </div>
+                <div class="payment-item-edit" @click="editPayment(payment.id)">
+                  <img src="../assets/edit.png" alt="" />
+                </div>
               </div>
             </div>
-            <div class="payment-item-right">
-              <div class="payment-item-price">
-                <span>{{ payment.price | numberFormat }}</span>
+          </div>
+        </div>
+
+        <div class="seisan-result-wrapper">
+          <div class="seisan-result-title">
+            <span>精算結果</span>
+          </div>
+          <div class="seisan-result-items">
+            <div
+              v-for="seisanResult in seisanResults"
+              :key="seisanResult.id"
+              class="seisan-result-item"
+            >
+              <div class="seisan-result-item-money-flow">
+                <span>{{ seisanResult.from }}</span>
+                <span> → </span>
+                <span>{{ seisanResult.to }}</span>
+              </div>
+              <div class="seisan-result-item-money">
+                <span>{{ seisanResult.price | numberFormat }}</span>
                 <span>{{ moneyUnit }}</span>
               </div>
-              <div class="payment-item-edit" @click="editPayment(payment.id)">
-                <img src="../assets/edit.png" alt="" />
-              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="seisan-result-wrapper">
-        <div class="seisan-result-title">
-          <span>精算結果</span>
-        </div>
-        <div class="seisan-result-items">
-          <div
-            v-for="seisanResult in seisanResults"
-            :key="seisanResult.id"
-            class="seisan-result-item"
-          >
-            <div class="seisan-result-item-money-flow">
-              <span>{{ seisanResult.from }}</span>
-              <span> → </span>
-              <span>{{ seisanResult.to }}</span>
-            </div>
-            <div class="seisan-result-item-money">
-              <span>{{ seisanResult.price | numberFormat }}</span>
-              <span>{{ moneyUnit }}</span>
+        <div class="lending-borrowing-wrapper">
+          <div class="lending-borrowing-title">
+            <span>貸し借りの状況</span>
+          </div>
+          <div class="lending-borrowing-items">
+            <div
+              v-for="lendingBorrowingItem in lendingBorrowingItems"
+              :key="lendingBorrowingItem.id"
+              class="lending-borrowing-item"
+            >
+              <div class="lending-borrowing-item-left">
+                <div class="lending-borrowing-member">
+                  <span>{{ lendingBorrowingItem.member }}</span>
+                </div>
+              </div>
+              <div class="lending-borrowing-item-right">
+                <div
+                  class="lending-borrowing-member-money"
+                  v-bind:class="{
+                    plus: lendingBorrowingItem.plus,
+                    minus: !lendingBorrowingItem.plus,
+                  }"
+                >
+                  <span>{{ lendingBorrowingItem.plus ? "+" : "" }}</span>
+                  <span>{{ lendingBorrowingItem.price | numberFormat }}</span>
+                  <span>{{ moneyUnit }}</span>
+                </div>
+                <div
+                  class="lending-borrowing-member-money-detail"
+                  @click="memberLendingBorrowingDetail(lendingBorrowingItem.id)"
+                >
+                  <img src="../assets/search.png" alt="" />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="lending-borrowing-wrapper">
-        <div class="lending-borrowing-title">
-          <span>貸し借りの状況</span>
-        </div>
-        <div class="lending-borrowing-items">
-          <div
-            v-for="lendingBorrowingItem in lendingBorrowingItems"
-            :key="lendingBorrowingItem.id"
-            class="lending-borrowing-item"
-          >
-            <div class="lending-borrowing-item-left">
-              <div class="lending-borrowing-member">
-                <span>{{ lendingBorrowingItem.member }}</span>
+          <div class="lending-borrowing-explain-wrapper">
+            <div class="lending-borrowing-explain">
+              <div class="blue-explain">
+                <span><span class="blue">青字</span>は受け取るべき金額</span>
               </div>
-            </div>
-            <div class="lending-borrowing-item-right">
-              <div
-                class="lending-borrowing-member-money"
-                v-bind:class="{
-                  plus: lendingBorrowingItem.plus,
-                  minus: !lendingBorrowingItem.plus,
-                }"
-              >
-                <span>{{ lendingBorrowingItem.plus ? "+" : "" }}</span>
-                <span>{{ lendingBorrowingItem.price | numberFormat }}</span>
-                <span>{{ moneyUnit }}</span>
-              </div>
-              <div
-                class="lending-borrowing-member-money-detail"
-                @click="memberLendingBorrowingDetail(lendingBorrowingItem.id)"
-              >
-                <img src="../assets/search.png" alt="" />
+              <div class="red-explain">
+                <span><span class="red">赤字</span>は支払うべき金額</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="lending-borrowing-explain-wrapper">
-          <div class="lending-borrowing-explain">
-            <div class="blue-explain">
-              <span><span class="blue">青字</span>は受け取るべき金額</span>
-            </div>
-            <div class="red-explain">
-              <span><span class="red">赤字</span>は支払うべき金額</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -161,6 +176,7 @@ export default {
       travel_key: "",
       moneyUnit: "円",
       groupIDs: [],
+      PaymentExist: false,
     };
   },
   filters: {
@@ -232,6 +248,11 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          if (response.data.payments.length === 0) {
+            this.PaymentExist = false;
+            return;
+          }
+          this.PaymentExist = true;
           for (let i = 0; i < response.data.payments.length; i++) {
             let _payments_unit = {};
             _payments_unit.id = response.data.payments[i].id;
@@ -501,6 +522,32 @@ export default {
           font-size: 14px;
           @media screen and(min-width: $min-width) {
             font-size: 18px;
+          }
+        }
+      }
+    }
+
+    .payment-none-wrapper {
+      background-color: $gray;
+      margin: 0 calc(-#{$padding-lr});
+      margin-top: 40px;
+      padding: 18px 48px;
+      font-size: 12px;
+      @media screen and(min-width: $min-width) {
+        @import "../scss/breakpoints/768up";
+        margin: 0 calc(-#{$padding-lr});
+        margin-top: 40px;
+        padding: 24px 48px;
+        font-size: 16px;
+      }
+      color: $base_text_color;
+      .payment-none-sentence {
+        div {
+          @media screen and(min-width: $min-width) {
+            @import "../scss/breakpoints/768up";
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
         }
       }
