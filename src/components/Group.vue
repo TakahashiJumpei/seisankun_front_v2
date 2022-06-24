@@ -44,7 +44,7 @@
         </button>
       </div>
 
-      <template v-if="!PaymentExist">
+      <template v-if="!paymentExist">
         <div class="payment-none-wrapper">
           <div class="payment-none-sentence">
             <div><span>まだ立替記録がありません。</span></div>
@@ -88,77 +88,80 @@
             </div>
           </div>
         </div>
-
-        <div class="seisan-result-wrapper">
-          <div class="seisan-result-title">
-            <span>精算結果</span>
-          </div>
-          <div class="seisan-result-items">
-            <div
-              v-for="seisanResult in seisanResults"
-              :key="seisanResult.id"
-              class="seisan-result-item"
-            >
-              <div class="seisan-result-item-money-flow">
-                <span>{{ seisanResult.from }}</span>
-                <span> → </span>
-                <span>{{ seisanResult.to }}</span>
-              </div>
-              <div class="seisan-result-item-money">
-                <span>{{ seisanResult.price | numberFormat }}</span>
-                <span>{{ moneyUnit }}</span>
-              </div>
+        <template v-if="calculationResultsExist">
+          <div class="seisan-result-wrapper">
+            <div class="seisan-result-title">
+              <span>精算結果</span>
             </div>
-          </div>
-        </div>
-
-        <div class="lending-borrowing-wrapper">
-          <div class="lending-borrowing-title">
-            <span>貸し借りの状況</span>
-          </div>
-          <div class="lending-borrowing-items">
-            <div
-              v-for="lendingBorrowingItem in lendingBorrowingItems"
-              :key="lendingBorrowingItem.id"
-              class="lending-borrowing-item"
-            >
-              <div class="lending-borrowing-item-left">
-                <div class="lending-borrowing-member">
-                  <span>{{ lendingBorrowingItem.member }}</span>
+            <div class="seisan-result-items">
+              <div
+                v-for="seisanResult in seisanResults"
+                :key="seisanResult.id"
+                class="seisan-result-item"
+              >
+                <div class="seisan-result-item-money-flow">
+                  <span>{{ seisanResult.from }}</span>
+                  <span> → </span>
+                  <span>{{ seisanResult.to }}</span>
                 </div>
-              </div>
-              <div class="lending-borrowing-item-right">
-                <div
-                  class="lending-borrowing-member-money"
-                  v-bind:class="{
-                    plus: lendingBorrowingItem.plus,
-                    minus: !lendingBorrowingItem.plus,
-                  }"
-                >
-                  <span>{{ lendingBorrowingItem.plus ? "+" : "" }}</span>
-                  <span>{{ lendingBorrowingItem.price | numberFormat }}</span>
+                <div class="seisan-result-item-money">
+                  <span>{{ seisanResult.price | numberFormat }}</span>
                   <span>{{ moneyUnit }}</span>
                 </div>
-                <div
-                  class="lending-borrowing-member-money-detail"
-                  @click="memberLendingBorrowingDetail(lendingBorrowingItem.id)"
-                >
-                  <img src="../assets/search.png" alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div class="lending-borrowing-wrapper">
+            <div class="lending-borrowing-title">
+              <span>貸し借りの状況</span>
+            </div>
+            <div class="lending-borrowing-items">
+              <div
+                v-for="lendingBorrowingItem in lendingBorrowingItems"
+                :key="lendingBorrowingItem.id"
+                class="lending-borrowing-item"
+              >
+                <div class="lending-borrowing-item-left">
+                  <div class="lending-borrowing-member">
+                    <span>{{ lendingBorrowingItem.member }}</span>
+                  </div>
+                </div>
+                <div class="lending-borrowing-item-right">
+                  <div
+                    class="lending-borrowing-member-money"
+                    v-bind:class="{
+                      plus: lendingBorrowingItem.plus,
+                      minus: !lendingBorrowingItem.plus,
+                    }"
+                  >
+                    <span>{{ lendingBorrowingItem.plus ? "+" : "" }}</span>
+                    <span>{{ lendingBorrowingItem.price | numberFormat }}</span>
+                    <span>{{ moneyUnit }}</span>
+                  </div>
+                  <div
+                    class="lending-borrowing-member-money-detail"
+                    @click="
+                      memberLendingBorrowingDetail(lendingBorrowingItem.id)
+                    "
+                  >
+                    <img src="../assets/search.png" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="lending-borrowing-explain-wrapper">
+              <div class="lending-borrowing-explain">
+                <div class="blue-explain">
+                  <span><span class="blue">青字</span>は受け取るべき金額</span>
+                </div>
+                <div class="red-explain">
+                  <span><span class="red">赤字</span>は支払うべき金額</span>
                 </div>
               </div>
             </div>
           </div>
-          <div class="lending-borrowing-explain-wrapper">
-            <div class="lending-borrowing-explain">
-              <div class="blue-explain">
-                <span><span class="blue">青字</span>は受け取るべき金額</span>
-              </div>
-              <div class="red-explain">
-                <span><span class="red">赤字</span>は支払うべき金額</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        </template>
       </template>
     </div>
   </div>
@@ -176,7 +179,8 @@ export default {
       travel_key: "",
       moneyUnit: "円",
       groupIDs: [],
-      PaymentExist: false,
+      paymentExist: false,
+      calculationResultsExist: false,
     };
   },
   filters: {
@@ -248,11 +252,12 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           if (response.data.payments.length === 0) {
-            this.PaymentExist = false;
+            this.paymentExist = false;
             return;
           }
-          this.PaymentExist = true;
+          this.paymentExist = true;
           for (let i = 0; i < response.data.payments.length; i++) {
             let _payments_unit = {};
             _payments_unit.id = response.data.payments[i].id;
@@ -286,6 +291,15 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
+          /**
+           * NOTE:グループにメンバーが１名のみの状況で支払いが1件以上ある場合、精算結果は未返却となる？
+           */
+          if (response.data.length === 0) {
+            this.calculationResultsExist = false;
+            return;
+          }
+          this.calculationResultsExist = true;
           for (let i = 0; i < response.data.results.length; i++) {
             let _seisanResults_unit = {};
             _seisanResults_unit.from = response.data.results[i].borrower_name;
