@@ -33,9 +33,9 @@
               <span>+</span>
             </div>
           </div>
-          <span v-bind:class="{ red: isAddMemberError }"
-            >※1文字以上20文字以内でご記入ください</span
-          >
+          <span v-bind:class="{ red: isAddMemberError || noMemberError }">{{
+            member_error_message
+          }}</span>
         </div>
         <div id="show-member-form-wrapper">
           <div
@@ -77,8 +77,11 @@ export default {
   data() {
     return {
       add_member_name: "",
-      add_member_name_error_message: "",
       isAddMemberError: false,
+      noMemberError: false,
+      member_error_message: "※1文字以上20文字以内でご記入ください",
+      text_count_member_error_message: "※1文字以上20文字以内でご記入ください",
+      no_member_error_message: "※メンバーは1人以上追加してください",
       members: [],
       inputGroupName: "",
       inputGroupNameError: false,
@@ -92,11 +95,14 @@ export default {
         this.add_member_name.trim().length > 20
       ) {
         this.isAddMemberError = true;
+        this.member_error_message = this.text_count_member_error_message;
         return;
       }
       this.isAddMemberError = false;
       this.members.push(this.add_member_name.trim());
       this.add_member_name = "";
+      this.noMemberError = false;
+      this.member_error_message = this.text_count_member_error_message;
     },
     deleteMember(index) {
       this.members.splice(index, 1);
@@ -112,9 +118,12 @@ export default {
         this.inputGroupNameError = true;
         errors++;
       }
-      if (errors > 0) {
-        console.log("エラー時の処理");
-      } else {
+      if (this.members.length === 0) {
+        this.noMemberError = true;
+        this.member_error_message = this.no_member_error_message;
+        errors++;
+      }
+      if (errors === 0) {
         this.createGroup();
       }
     },
@@ -134,6 +143,7 @@ export default {
         url: `/travel`,
         data: data,
       };
+      console.log(options);
       this.$seisankunApi
         .request(options)
         .then((response) => {
@@ -142,6 +152,8 @@ export default {
           this.toGroup();
         })
         .catch((err) => {
+          console.log(err.response);
+          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
@@ -151,7 +163,11 @@ export default {
           if (typeof errStatus === "undefined") {
             errStatus = "なし";
           }
-          console.log("エラー");
+          console.log(
+            "ステータスコード：" +
+              errStatus +
+              "\nシステムエラーが発生しました。"
+          );
         });
     },
     toGroup() {
