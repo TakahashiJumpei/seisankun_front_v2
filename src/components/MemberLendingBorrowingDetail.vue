@@ -191,6 +191,7 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           this.groupName = response.data.travel.name;
           this.members = response.data.members;
           for (let i = 0; i < this.members.length; i++) {
@@ -223,21 +224,26 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           for (let i = 0; i < response.data.histories.length; i++) {
-            if (response.data.histories[i].payment.borrow_money > 0) {
+            if (
+              response.data.histories[i].lend.title &&
+              response.data.histories[i].lend.money !== 0
+            ) {
               let _lendings_unit = {};
-              _lendings_unit.name = response.data.histories[i].payment.title;
-              _lendings_unit.member = response.data.histories[i].user.name;
-              _lendings_unit.price =
-                response.data.histories[i].payment.borrow_money;
+              _lendings_unit.name = response.data.histories[i].lend.title;
+              _lendings_unit.price = response.data.histories[i].lend.money;
+              _lendings_unit.member = response.data.histories[i].member.name;
               this.lendings.push(_lendings_unit);
-            } else {
+            }
+            if (
+              response.data.histories[i].borrow.title &&
+              response.data.histories[i].borrow.money !== 0
+            ) {
               let _borrowings_unit = {};
-              _borrowings_unit.name = response.data.histories[i].payment.title;
-              _borrowings_unit.member = response.data.histories[i].user.name;
-              _borrowings_unit.price = Math.abs(
-                response.data.histories[i].payment.borrow_money
-              );
+              _borrowings_unit.name = response.data.histories[i].borrow.title;
+              _borrowings_unit.price = response.data.histories[i].borrow.money;
+              _borrowings_unit.member = response.data.histories[i].member.name;
               this.borrowings.push(_borrowings_unit);
             }
           }
@@ -256,6 +262,8 @@ export default {
           }
         })
         .catch((err) => {
+          console.log(err.response);
+          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
