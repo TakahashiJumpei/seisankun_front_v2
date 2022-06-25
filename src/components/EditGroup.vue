@@ -150,7 +150,7 @@ export default {
 
       let data = {
         travel: { travel_key: this.travel_key },
-        members: _member,
+        member: _member,
       };
       let options = {
         method: "POST",
