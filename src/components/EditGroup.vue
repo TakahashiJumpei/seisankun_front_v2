@@ -152,7 +152,6 @@ export default {
         travel: { travel_key: this.travel_key },
         members: _member,
       };
-
       let options = {
         method: "POST",
         url: `/member`,
@@ -162,6 +161,7 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           //TODO: APIからID以外の付属情報も返却してもらうようにする
           this.members.push(_member);
           this.add_member_name = "";
@@ -201,6 +201,8 @@ export default {
           this.hideConfirmModal();
         })
         .catch((err) => {
+          console.log(err.response);
+          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
@@ -283,6 +285,7 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
           for (let i = 0; i < this.groupIDs.length; i++) {
             if (this.groupIDs[i] === this.travel_key) {
@@ -294,6 +297,8 @@ export default {
           this.$router.push({ path: "/" });
         })
         .catch((err) => {
+          console.log(err.response);
+          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
@@ -317,6 +322,7 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           this.travel_id = response.data.travel.id;
           this.inputGroupName = response.data.travel.name;
           this.originalGroupName = this.inputGroupName;

@@ -224,6 +224,7 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           this.groupName = response.data.travel.name;
           this.members = response.data.members;
           this.saveGroupToLacalStrage();
@@ -300,16 +301,19 @@ export default {
             return;
           }
           this.calculationResultsExist = true;
-          for (let i = 0; i < response.data.results.length; i++) {
+          for (let i = 0; i < response.data.length; i++) {
             let _seisanResults_unit = {};
-            _seisanResults_unit.from = response.data.results[i].borrower_name;
-            _seisanResults_unit.to = response.data.results[i].lender_name;
-            _seisanResults_unit.price = response.data.results[i].borrow_money;
+            _seisanResults_unit.from = response.data[i].borrower_name;
+            _seisanResults_unit.to = response.data[i].lender_name;
+            _seisanResults_unit.price = response.data[i].borrow_money;
             this.seisanResults.push(_seisanResults_unit);
           }
+          console.log(this.seisanResults);
           this.getBorrowingStatuses();
         })
         .catch((err) => {
+          console.log(err.response);
+          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
@@ -332,6 +336,7 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           for (let i = 0; i < response.data.statuses.length; i++) {
             let _lendingBorrowingItems_unit = {};
             _lendingBorrowingItems_unit.id =
@@ -339,7 +344,7 @@ export default {
             _lendingBorrowingItems_unit.member =
               response.data.statuses[i].member.name;
             _lendingBorrowingItems_unit.price =
-              response.data.statuses[i].borrow_money;
+              response.data.statuses[i].lend_borrow_money;
             if (_lendingBorrowingItems_unit.price > 0) {
               _lendingBorrowingItems_unit.plus = true;
             } else {
@@ -347,6 +352,7 @@ export default {
             }
             this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
           }
+          console.log(this.lendingBorrowingItems);
         })
         .catch((err) => {
           let errStatus;

@@ -192,9 +192,12 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           this.toGroup();
         })
         .catch((err) => {
+          console.log(err.response);
+          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {

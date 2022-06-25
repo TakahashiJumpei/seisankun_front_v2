@@ -196,6 +196,7 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(JSON.stringify(response));
           this.inputPaymentTitle = response.data.payment.title;
           this.originalPaymentName = this.inputPaymentTitle;
           this.inputAmount = response.data.payment.amount;
@@ -293,6 +294,8 @@ export default {
           this.toGroup();
         })
         .catch((err) => {
+          console.log(err.response);
+          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
@@ -330,6 +333,8 @@ export default {
           this.toGroup();
         })
         .catch((err) => {
+          console.log(err.response);
+          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
