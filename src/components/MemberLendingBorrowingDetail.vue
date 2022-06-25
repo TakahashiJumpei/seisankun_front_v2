@@ -23,7 +23,7 @@
         <div class="lending-items">
           <div
             v-for="lending in lendings"
-            :key="lending.id"
+            :key="lending.payment_id"
             class="lending-item"
           >
             <div class="lending-item-left">
@@ -36,7 +36,7 @@
                 <span>{{ lending.price | numberFormat }}</span>
                 <span>{{ moneyUnit }}</span>
               </div>
-              <div class="lending-item-edit" @click="toEditPayment(lending.id)">
+              <div class="lending-item-edit" @click="toEditPayment(lending.payment_id)">
                 <img src="../assets/edit.png" alt="" />
               </div>
             </div>
@@ -62,7 +62,7 @@
         <div class="borrowing-items">
           <div
             v-for="borrowing in borrowings"
-            :key="borrowing.id"
+            :key="borrowing.payment_id"
             class="borrowing-item"
           >
             <div class="borrowing-item-left">
@@ -80,7 +80,7 @@
               </div>
               <div
                 class="borrowing-item-edit"
-                @click="toEditPayment(borrowing.id)"
+                @click="toEditPayment(borrowing.payment_id)"
               >
                 <img src="../assets/edit.png" alt="" />
               </div>
@@ -167,7 +167,6 @@ export default {
   },
   methods: {
     toEditPayment(id) {
-      id = 1;
       this.$router.push({
         name: "EditPayment",
         params: { travel_key: this.travel_key, payment_id: id },
@@ -231,6 +230,7 @@ export default {
               response.data.histories[i].lend.money !== 0
             ) {
               let _lendings_unit = {};
+              _lendings_unit.payment_id = response.data.histories[i].lend.payment_id;
               _lendings_unit.name = response.data.histories[i].lend.title;
               _lendings_unit.price = response.data.histories[i].lend.money;
               _lendings_unit.member = response.data.histories[i].member.name;
@@ -241,6 +241,7 @@ export default {
               response.data.histories[i].borrow.money !== 0
             ) {
               let _borrowings_unit = {};
+              _borrowings_unit.payment_id = response.data.histories[i].borrow.payment_id;
               _borrowings_unit.name = response.data.histories[i].borrow.title;
               _borrowings_unit.price = response.data.histories[i].borrow.money;
               _borrowings_unit.member = response.data.histories[i].member.name;
