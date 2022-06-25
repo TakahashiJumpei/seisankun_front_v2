@@ -37,6 +37,27 @@
         </div>
       </transition>
     </div>
+    <div id="overlay" v-bind:class="{ 'error-modal': delete_member_error }">
+      <transition name="fade">
+        <div v-if="delete_member_error" id="popup-error">
+          <div class="popup-error-sub">
+            <div class="error-name">
+              <span>{{ error_delete_member_name }}</span>
+            </div>
+            <div class="error-message">
+              <span>このメンバーは、立て替えに関与しているため削除ができません</span>
+            </div>
+            <div class="button-wrapper">
+              <div class="back-button-wrapper">
+                <button class="back-button" @click="hideErrorModal">
+                  <span>戻る</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
     <div class="inner">
       <div class="title-wrapper">
         <div class="title">
@@ -85,7 +106,7 @@
               <div class="member-name">
                 <span>{{ member.name }}</span>
               </div>
-              <div class="delete" @click="confirmDeleteMember(index)">
+              <div class="delete" @click="doValidationDeleteMember(index)">
                 <span>-</span>
               </div>
             </div>
@@ -123,11 +144,13 @@ export default {
       isAddMemberError: false,
       members: [],
       delete_member_name: "",
+      error_delete_member_name: "",
       memberIndex: 0,
       inputGroupName: "",
       inputGroupNameError: false,
       confirm: false,
       confirm_group: true,
+      delete_member_error: false,
       originalGroupName: "",
       travel_key: "",
       travel_id: null,
@@ -180,12 +203,19 @@ export default {
           console.log("エラー");
         });
     },
+    doValidationDeleteMember(index){
+      if(!this.members[index].can_delete){
+        this.delete_member_error = true;
+        this.error_delete_member_name = this.members[index].name;
+        return;
+      }
+      this.confirmDeleteMember(index);
+    },
     confirmDeleteMember(index) {
       this.confirm = true;
       this.confirm_group = false;
       this.delete_member_name = this.members[index].name;
       this.memberIndex = index;
-      this.delete_member_id = 1;
     },
     async deleteMember() {
       let options = {
@@ -274,6 +304,9 @@ export default {
     },
     hideConfirmModal() {
       this.confirm = false;
+    },
+    hideErrorModal() {
+      this.delete_member_error = false;
     },
     async deleteGroup() {
       let options = {
