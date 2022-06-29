@@ -186,7 +186,8 @@ export default {
         .then((response) => {
           console.log(response);
           console.log(JSON.stringify(response));
-          //TODO: APIからID以外の付属情報も返却してもらうようにする
+          _member.id = response.data.member_id;
+          _member.can_delete = true;
           this.members.push(_member);
           this.add_member_name = "";
           console.log(this.members);
