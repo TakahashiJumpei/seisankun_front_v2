@@ -155,6 +155,7 @@ export default {
       travel_key: "",
       travel_id: null,
       groupIDs: [],
+      delete_member_id: 0,
     };
   },
   methods: {
@@ -212,12 +213,15 @@ export default {
       this.confirmDeleteMember(index);
     },
     confirmDeleteMember(index) {
+      console.log(index)
       this.confirm = true;
       this.confirm_group = false;
       this.delete_member_name = this.members[index].name;
       this.memberIndex = index;
+      this.delete_member_id = this.members[index].id;
     },
     async deleteMember() {
+      console.log(this.delete_member_id);
       let options = {
         method: "DELETE",
         url: `/member`,
@@ -227,6 +231,7 @@ export default {
         .request(options)
         .then((response) => {
           console.log(response);
+          console.log(this.members);
           this.members.splice(this.memberIndex, 1);
           this.hideConfirmModal();
         })
