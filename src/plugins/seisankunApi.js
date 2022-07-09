@@ -5,6 +5,10 @@ const SeisankunApi = {
     const seisankunApi = axios.create({
       baseURL: process.env.VUE_APP_SEISANKUN_API_BASE_URL,
       timeout: 10000,
+      auth: {
+        username: process.env.VUE_APP_BASIC_AUTH_API_USER_NAME,
+        password: process.env.VUE_APP_BASIC_AUTH_API_PASSWORD
+      }
     })
     seisankunApi.interceptors.request.use((config) => {
       config.headers.common = {
