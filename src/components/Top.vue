@@ -140,15 +140,23 @@ export default {
     },
     checkLocalStarage() {
       this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
+
       if (!this.groupIDs || this.groupIDs.length === 0) {
         this.pastGroupsFlag = false;
+
+        this.hideLoding();
         return;
       }
       this.pastGroupsFlag = true;
+
       this.getPastGroups();
     },
-    async getPastGroups() {
+    getPastGroups() {
+
+      let count = 0;
+      let tmpPastGroups = [];
       for (let i = 0; i < this.groupIDs.length; i++) {
+
         let options = {
           method: "GET",
           url: `/travel`,
@@ -157,19 +165,29 @@ export default {
         this.$seisankunApi
           .request(options)
           .then((response) => {
-            console.log(response);
-            console.log(JSON.stringify(response));
+            tmpPastGroups.push(response.data.travel);
+            count++;
+            if (count == this.groupIDs.length) {
+              //本来の順番にソートする
+              for (let j = 0; j < this.groupIDs.length; j++) {
+                for (let k = 0; k < tmpPastGroups.length; k++) {
+                  if (this.groupIDs[j] === tmpPastGroups[k].travel_key) {
+                    this.pastGroups.push(tmpPastGroups[k]);
+                    this.pastGroups[j].created_at = this.convertDate(
+                      this.pastGroups[j].CreatedAt
+                    );
+                    break;
+                  }
+                }
+              }
 
-            this.pastGroups.push(response.data.travel);
-            console.log(this.pastGroups);
-            this.pastGroups[i].created_at = this.convertDate(
-              this.pastGroups[i].CreatedAt
-            );
-            console.log(this.pastGroups[i].created_at);
-
-            this.hideLoding();
+              this.hideLoding();
+            }
           })
           .catch((err) => {
+            console.log(err);
+            console.log(err.response);
+            console.log(JSON.stringify(err.response));
             let errStatus;
             for (let key of Object.keys(err)) {
               if (key === "response") {

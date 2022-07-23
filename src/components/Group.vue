@@ -204,14 +204,16 @@ export default {
   },
   methods: {
     saveGroupToLacalStrage() {
+      console.log(this.travel_key);
       this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
+      console.log(this.groupIDs);
       /**
        * NOTE:
        * グループIDが一致していなかったら、配列の先頭に追加する
        * 一致した場合、すでに配列に存在している当該IDを配列の先頭に移動させる
        * 追加後、配列の要素数が１１個になったら最古の要素を削除する
        */
-      if (!this.groupIDs === null) {
+      if (this.groupIDs !== null) {
         for (let i = 0; i < this.groupIDs.length; i++) {
           if (this.groupIDs[i] === this.travel_key) {
             this.groupIDs.splice(i, 1);
@@ -270,7 +272,7 @@ export default {
           console.log(JSON.stringify(response));
           if (response.data.payments.length === 0) {
             this.paymentExist = false;
-            
+
             this.hideLoding();
             return;
           }
