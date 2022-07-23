@@ -185,9 +185,6 @@ export default {
             }
           })
           .catch((err) => {
-            console.log(err);
-            console.log(err.response);
-            console.log(JSON.stringify(err.response));
             let errStatus;
             for (let key of Object.keys(err)) {
               if (key === "response") {

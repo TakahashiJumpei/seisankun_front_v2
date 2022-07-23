@@ -202,8 +202,6 @@ export default {
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
           this.groupName = response.data.travel.name;
           this.members = response.data.members;
           for (let i = 0; i < this.members.length; i++) {
@@ -235,8 +233,6 @@ export default {
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
           for (let i = 0; i < response.data.histories.length; i++) {
             if (
               response.data.histories[i].lend.title &&
@@ -280,8 +276,6 @@ export default {
           this.hideLoding();
         })
         .catch((err) => {
-          console.log(err.response);
-          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {

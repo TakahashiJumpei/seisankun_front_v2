@@ -193,13 +193,10 @@ export default {
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
           _member.id = response.data.member_id;
           _member.can_delete = true;
           this.members.push(_member);
           this.add_member_name = "";
-          console.log(this.members);
         })
         .catch((err) => {
           let errStatus;
@@ -223,7 +220,6 @@ export default {
       this.confirmDeleteMember(index);
     },
     confirmDeleteMember(index) {
-      console.log(index);
       this.confirm = true;
       this.confirm_group = false;
       this.delete_member_name = this.members[index].name;
@@ -231,7 +227,6 @@ export default {
       this.delete_member_id = this.members[index].id;
     },
     async deleteMember() {
-      console.log(this.delete_member_id);
       let options = {
         method: "DELETE",
         url: `/member`,
@@ -239,15 +234,11 @@ export default {
       };
       this.$seisankunApi
         .request(options)
-        .then((response) => {
-          console.log(response);
-          console.log(this.members);
+        .then(() => {
           this.members.splice(this.memberIndex, 1);
           this.hideConfirmModal();
         })
         .catch((err) => {
-          console.log(err.response);
-          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
@@ -272,9 +263,7 @@ export default {
         errors++;
       }
 
-      if (errors > 0) {
-        console.log("エラー時の処理");
-      } else {
+      if (errors == 0) {
         this.editGroup();
       }
     },
@@ -282,7 +271,6 @@ export default {
       let data = {
         travel: { id: this.travel_id, name: `${this.inputGroupName}` },
       };
-      console.log(data);
       let options = {
         method: "PUT",
         url: `/travel`,
@@ -290,8 +278,7 @@ export default {
       };
       this.$seisankunApi
         .request(options)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           this.toGroup();
         })
         .catch((err) => {
@@ -331,9 +318,7 @@ export default {
       };
       this.$seisankunApi
         .request(options)
-        .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
+        .then(() => {
           this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
           for (let i = 0; i < this.groupIDs.length; i++) {
             if (this.groupIDs[i] === this.travel_key) {
@@ -345,8 +330,6 @@ export default {
           this.$router.push({ path: "/" });
         })
         .catch((err) => {
-          console.log(err.response);
-          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
@@ -369,8 +352,6 @@ export default {
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
           this.travel_id = response.data.travel.id;
           this.inputGroupName = response.data.travel.name;
           this.originalGroupName = this.inputGroupName;

@@ -143,17 +143,13 @@ export default {
         url: `/travel`,
         data: data,
       };
-      console.log(options);
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          console.log(response);
           this.travel_key = response.data.travel_key;
           this.toGroup();
         })
         .catch((err) => {
-          console.log(err.response);
-          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
@@ -163,11 +159,7 @@ export default {
           if (typeof errStatus === "undefined") {
             errStatus = "なし";
           }
-          console.log(
-            "ステータスコード：" +
-              errStatus +
-              "\nシステムエラーが発生しました。"
-          );
+          console.log("エラー");
         });
     },
     toGroup() {

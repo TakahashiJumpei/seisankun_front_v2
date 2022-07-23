@@ -204,9 +204,7 @@ export default {
   },
   methods: {
     saveGroupToLacalStrage() {
-      console.log(this.travel_key);
       this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
-      console.log(this.groupIDs);
       /**
        * NOTE:
        * グループIDが一致していなかったら、配列の先頭に追加する
@@ -239,8 +237,6 @@ export default {
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
           this.groupName = response.data.travel.name;
           this.members = response.data.members;
           this.saveGroupToLacalStrage();
@@ -268,8 +264,6 @@ export default {
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
           if (response.data.payments.length === 0) {
             this.paymentExist = false;
 
@@ -309,8 +303,6 @@ export default {
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
           /**
            * NOTE:グループにメンバーが１名のみの状況で支払いが1件以上ある場合、精算結果は未返却となる？
            */
@@ -328,12 +320,9 @@ export default {
             _seisanResults_unit.price = response.data[i].borrow_money;
             this.seisanResults.push(_seisanResults_unit);
           }
-          console.log(this.seisanResults);
           this.getBorrowingStatuses();
         })
         .catch((err) => {
-          console.log(err.response);
-          console.log(JSON.stringify(err.response));
           let errStatus;
           for (let key of Object.keys(err)) {
             if (key === "response") {
@@ -355,8 +344,6 @@ export default {
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
           for (let i = 0; i < response.data.statuses.length; i++) {
             let _lendingBorrowingItems_unit = {};
             _lendingBorrowingItems_unit.id =
@@ -372,7 +359,6 @@ export default {
             }
             this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
           }
-          console.log(this.lendingBorrowingItems);
 
           this.hideLoding();
         })
