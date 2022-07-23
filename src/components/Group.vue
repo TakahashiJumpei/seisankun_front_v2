@@ -78,7 +78,7 @@
               </div>
               <div class="payment-item-right">
                 <div class="payment-item-price">
-                  <span>{{ payment.price | numberFormat }}</span>
+                  <span>{{ payment.price | numberRound | numberFormat }}</span>
                   <span>{{ moneyUnit }}</span>
                 </div>
                 <div class="payment-item-edit" @click="editPayment(payment.id)">
@@ -105,7 +105,9 @@
                   <span>{{ seisanResult.to }}</span>
                 </div>
                 <div class="seisan-result-item-money">
-                  <span>{{ seisanResult.price | numberFormat }}</span>
+                  <span>{{
+                    seisanResult.price | numberRound | numberFormat
+                  }}</span>
                   <span>{{ moneyUnit }}</span>
                 </div>
               </div>
@@ -136,7 +138,9 @@
                     }"
                   >
                     <span>{{ lendingBorrowingItem.plus ? "+" : "" }}</span>
-                    <span>{{ lendingBorrowingItem.price | numberFormat }}</span>
+                    <span>{{
+                      lendingBorrowingItem.price | numberRound | numberFormat
+                    }}</span>
                     <span>{{ moneyUnit }}</span>
                   </div>
                   <div
@@ -184,6 +188,9 @@ export default {
     };
   },
   filters: {
+    numberRound: function(num) {
+      return Math.round(num);
+    },
     numberFormat: function(num) {
       return num.toLocaleString();
     },

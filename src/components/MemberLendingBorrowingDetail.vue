@@ -33,10 +33,13 @@
             </div>
             <div class="lending-item-right">
               <div class="lending-item-price">
-                <span>{{ lending.price | numberFormat }}</span>
+                <span>{{ lending.price | numberRound | numberFormat }}</span>
                 <span>{{ moneyUnit }}</span>
               </div>
-              <div class="lending-item-edit" @click="toEditPayment(lending.payment_id)">
+              <div
+                class="lending-item-edit"
+                @click="toEditPayment(lending.payment_id)"
+              >
                 <img src="../assets/edit.png" alt="" />
               </div>
             </div>
@@ -48,7 +51,7 @@
               <span>①支払い合計</span>
             </div>
             <div class="lending-sum-price">
-              <span>{{ lendingsSum | numberFormat }}</span>
+              <span>{{ lendingsSum | numberRound | numberFormat }}</span>
               <span>{{ moneyUnit }}</span>
             </div>
           </div>
@@ -75,7 +78,7 @@
             </div>
             <div class="borrowing-item-right">
               <div class="borrowing-item-price">
-                <span>{{ borrowing.price | numberFormat }}</span>
+                <span>{{ borrowing.price | numberRound | numberFormat }}</span>
                 <span>{{ moneyUnit }}</span>
               </div>
               <div
@@ -93,7 +96,7 @@
               <span>②立て替えられた合計</span>
             </div>
             <div class="borrowing-sum-price">
-              <span>{{ borrowingsSum | numberFormat }}</span>
+              <span>{{ borrowingsSum | numberRound | numberFormat }}</span>
               <span>{{ moneyUnit }}</span>
             </div>
           </div>
@@ -115,7 +118,7 @@
                 }"
               >
                 <span>{{ differencePricePlus ? "+" : "-" }}</span>
-                <span>{{ differencePrice | numberFormat }}</span>
+                <span>{{ differencePrice | numberRound | numberFormat }}</span>
                 <span>{{ moneyUnit }}</span>
               </div>
             </div>
@@ -161,6 +164,9 @@ export default {
     };
   },
   filters: {
+    numberRound: function(num) {
+      return Math.round(num);
+    },
     numberFormat: function(num) {
       return num.toLocaleString();
     },
@@ -230,7 +236,8 @@ export default {
               response.data.histories[i].lend.money !== 0
             ) {
               let _lendings_unit = {};
-              _lendings_unit.payment_id = response.data.histories[i].lend.payment_id;
+              _lendings_unit.payment_id =
+                response.data.histories[i].lend.payment_id;
               _lendings_unit.name = response.data.histories[i].lend.title;
               _lendings_unit.price = response.data.histories[i].lend.money;
               _lendings_unit.member = response.data.histories[i].member.name;
@@ -241,7 +248,8 @@ export default {
               response.data.histories[i].borrow.money !== 0
             ) {
               let _borrowings_unit = {};
-              _borrowings_unit.payment_id = response.data.histories[i].borrow.payment_id;
+              _borrowings_unit.payment_id =
+                response.data.histories[i].borrow.payment_id;
               _borrowings_unit.name = response.data.histories[i].borrow.title;
               _borrowings_unit.price = response.data.histories[i].borrow.money;
               _borrowings_unit.member = response.data.histories[i].member.name;
