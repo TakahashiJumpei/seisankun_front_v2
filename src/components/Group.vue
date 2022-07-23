@@ -316,6 +316,8 @@ export default {
            */
           if (response.data.length === 0) {
             this.calculationResultsExist = false;
+
+            this.hideLoding();
             return;
           }
           this.calculationResultsExist = true;
