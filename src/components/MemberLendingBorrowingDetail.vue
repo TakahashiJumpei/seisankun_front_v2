@@ -1,6 +1,12 @@
 <template>
   <div class="main">
-    <div class="inner">
+    <div class="loding" v-bind:class="{ 'loding-active': loding }">
+      <div>
+        <span>読み込み中...</span>
+      </div>
+      <img src="../assets/loding.gif" alt="" />
+    </div>
+    <div class="inner" v-bind:class="{ 'loding-active': loding }">
       <div class="group-name-wrapper">
         <div class="group-title">
           <span>グループ</span>
@@ -161,6 +167,7 @@ export default {
       groupName: "",
       travel_key: "",
       moneyUnit: "円",
+      loding: true,
     };
   },
   filters: {
@@ -269,6 +276,8 @@ export default {
             this.differencePricePlus = false;
             this.differencePrice = Math.abs(this.differencePrice);
           }
+
+          this.hideLoding();
         })
         .catch((err) => {
           console.log(err.response);
@@ -284,6 +293,9 @@ export default {
           }
           console.log("エラー");
         });
+    },
+    hideLoding() {
+      this.loding = false;
     },
   },
   mounted: function() {
@@ -303,7 +315,12 @@ export default {
     @import "../scss/breakpoints/768up";
     padding: $padding-tb $padding-lr;
   }
+  @import "../scss/partials/loding";
   .inner {
+    display: block;
+    &.loding-active {
+      display: none;
+    }
     .group-name-wrapper {
       color: $base_text_color;
       font-weight: bold;

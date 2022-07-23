@@ -45,7 +45,9 @@
               <span>{{ error_delete_member_name }}</span>
             </div>
             <div class="error-message">
-              <span>このメンバーは、立て替えに関与しているため削除ができません</span>
+              <span
+                >このメンバーは、立て替えに関与しているため削除ができません</span
+              >
             </div>
             <div class="button-wrapper">
               <div class="back-button-wrapper">
@@ -58,7 +60,13 @@
         </div>
       </transition>
     </div>
-    <div class="inner">
+    <div class="loding" v-bind:class="{ 'loding-active': loding }">
+      <div>
+        <span>読み込み中...</span>
+      </div>
+      <img src="../assets/loding.gif" alt="" />
+    </div>
+    <div class="inner" v-bind:class="{ 'loding-active': loding }">
       <div class="title-wrapper">
         <div class="title">
           <span>グループの編集</span>
@@ -156,6 +164,7 @@ export default {
       travel_id: null,
       groupIDs: [],
       delete_member_id: 0,
+      loding: true,
     };
   },
   methods: {
@@ -205,8 +214,8 @@ export default {
           console.log("エラー");
         });
     },
-    doValidationDeleteMember(index){
-      if(!this.members[index].can_delete){
+    doValidationDeleteMember(index) {
+      if (!this.members[index].can_delete) {
         this.delete_member_error = true;
         this.error_delete_member_name = this.members[index].name;
         return;
@@ -214,7 +223,7 @@ export default {
       this.confirmDeleteMember(index);
     },
     confirmDeleteMember(index) {
-      console.log(index)
+      console.log(index);
       this.confirm = true;
       this.confirm_group = false;
       this.delete_member_name = this.members[index].name;
@@ -366,6 +375,8 @@ export default {
           this.inputGroupName = response.data.travel.name;
           this.originalGroupName = this.inputGroupName;
           this.members = response.data.members;
+
+          this.hideLoding();
         })
         .catch((err) => {
           let errStatus;
@@ -379,6 +390,9 @@ export default {
           }
           console.log("エラー");
         });
+    },
+    hideLoding() {
+      this.loding = false;
     },
   },
   mounted: function() {
@@ -399,7 +413,12 @@ export default {
     padding: $padding-tb $padding-lr;
   }
   @import "../scss/partials/overlay";
+  @import "../scss/partials/loding";
   .inner {
+    display: block;
+    &.loding-active {
+      display: none;
+    }
     @import "../scss/partials/title";
     .input-form-wrapper {
       margin-top: 32px;

@@ -1,6 +1,12 @@
 <template>
   <div class="main">
-    <div class="inner">
+    <div class="loding" v-bind:class="{ 'loding-active': loding }">
+      <div>
+        <span>読み込み中...</span>
+      </div>
+      <img src="../assets/loding.gif" alt="" />
+    </div>
+    <div class="inner" v-bind:class="{ 'loding-active': loding }">
       <div class="group-top-wrapper">
         <div class="name-and-edit-wrapper">
           <div class="name-wrapper">
@@ -185,6 +191,7 @@ export default {
       groupIDs: [],
       paymentExist: false,
       calculationResultsExist: false,
+      loding: true,
     };
   },
   filters: {
@@ -263,6 +270,8 @@ export default {
           console.log(JSON.stringify(response));
           if (response.data.payments.length === 0) {
             this.paymentExist = false;
+            
+            this.hideLoding();
             return;
           }
           this.paymentExist = true;
@@ -360,6 +369,8 @@ export default {
             this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
           }
           console.log(this.lendingBorrowingItems);
+
+          this.hideLoding();
         })
         .catch((err) => {
           let errStatus;
@@ -413,6 +424,9 @@ export default {
         params: { travel_key: this.travel_key, member_id: member_id },
       });
     },
+    hideLoding() {
+      this.loding = false;
+    },
   },
   mounted: function() {
     this.getGroup();
@@ -431,7 +445,12 @@ export default {
     @import "../scss/breakpoints/768up";
     padding: $padding-tb $padding-lr;
   }
+  @import "../scss/partials/loding";
   .inner {
+    display: block;
+    &.loding-active {
+      display: none;
+    }
     .group-top-wrapper {
       .name-and-edit-wrapper {
         display: flex;

@@ -26,7 +26,13 @@
         </div>
       </transition>
     </div>
-    <div class="inner">
+    <div class="loding" v-bind:class="{ 'loding-active': loding }">
+      <div>
+        <span>読み込み中...</span>
+      </div>
+      <img src="../assets/loding.gif" alt="" />
+    </div>
+    <div class="inner" v-bind:class="{ 'loding-active': loding }">
       <div class="title-wrapper">
         <div class="title">
           <span>支払いの編集</span>
@@ -152,6 +158,7 @@ export default {
       moneyUnit: "円",
       borrowers: [],
       membersIdList: [],
+      loding: true,
     };
   },
   methods: {
@@ -204,6 +211,8 @@ export default {
           for (let i = 0; i < response.data.payment.borrowers.length; i++) {
             this.borrowers.push(response.data.payment.borrowers[i].borrower_id);
           }
+
+          this.hideLoding();
         })
         .catch((err) => {
           let errStatus;
@@ -347,6 +356,9 @@ export default {
           console.log("エラー");
         });
     },
+    hideLoding() {
+      this.loding = false;
+    },
   },
   mounted: function() {
     this.getGroup();
@@ -366,7 +378,12 @@ export default {
     padding: $padding-tb $padding-lr;
   }
   @import "../scss/partials/overlay";
+  @import "../scss/partials/loding";
   .inner {
+    display: block;
+    &.loding-active {
+      display: none;
+    }
     @import "../scss/partials/title";
     .input-form-wrapper {
       margin-top: 32px;

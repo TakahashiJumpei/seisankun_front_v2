@@ -1,6 +1,12 @@
 <template>
   <div class="main">
-    <div class="inner">
+    <div class="loding" v-bind:class="{ 'loding-active': loding }">
+      <div>
+        <span>読み込み中...</span>
+      </div>
+      <img src="../assets/loding.gif" alt="" />
+    </div>
+    <div class="inner" v-bind:class="{ 'loding-active': loding }">
       <div class="explain-wrapper">
         <div class="explain-title">
           <span>Seisan-kunとは？</span>
@@ -119,6 +125,7 @@ export default {
       groupIDs: [],
       pastGroups: [],
       pastGroupsFlag: false,
+      loding: true,
     };
   },
   methods: {
@@ -151,10 +158,16 @@ export default {
           .request(options)
           .then((response) => {
             console.log(response);
+            console.log(JSON.stringify(response));
+
             this.pastGroups.push(response.data.travel);
+            console.log(this.pastGroups);
             this.pastGroups[i].created_at = this.convertDate(
-              this.pastGroups[i].created_at
+              this.pastGroups[i].CreatedAt
             );
+            console.log(this.pastGroups[i].created_at);
+
+            this.hideLoding();
           })
           .catch((err) => {
             let errStatus;
@@ -176,6 +189,9 @@ export default {
       let dd = created_at.substr(8, 2);
       return yyyy + "/" + mm + "/" + dd;
     },
+    hideLoding() {
+      this.loding = false;
+    },
   },
   mounted: function() {
     this.checkLocalStarage();
@@ -194,7 +210,12 @@ export default {
     @import "../scss/breakpoints/768up";
     padding: $padding-tb $padding-lr;
   }
+  @import "../scss/partials/loding";
   .inner {
+    display: block;
+    &.loding-active {
+      display: none;
+    }
     .explain-wrapper {
       .explain-title {
         color: $base_text_color;

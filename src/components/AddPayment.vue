@@ -1,6 +1,12 @@
 <template>
   <div class="main">
-    <div class="inner">
+    <div class="loding" v-bind:class="{ 'loding-active': loding }">
+      <div>
+        <span>読み込み中...</span>
+      </div>
+      <img src="../assets/loding.gif" alt="" />
+    </div>
+    <div class="inner" v-bind:class="{ 'loding-active': loding }">
       <div class="title-wrapper">
         <div class="title">
           <span>支払いの追加</span>
@@ -117,6 +123,7 @@ export default {
       moneyUnit: "円",
       borrowers: [],
       membersIdList: [],
+      loding: true,
     };
   },
   methods: {
@@ -233,6 +240,8 @@ export default {
             this.membersIdList.push(this.members[i].id);
           }
           this.payer_id = this.members[0].id;
+
+          this.hideLoding();
         })
         .catch((err) => {
           let errStatus;
@@ -246,6 +255,9 @@ export default {
           }
           console.log("エラー");
         });
+    },
+    hideLoding() {
+      this.loding = false;
     },
   },
   mounted: function() {
@@ -265,7 +277,12 @@ export default {
     @import "../scss/breakpoints/768up";
     padding: $padding-tb $padding-lr;
   }
+  @import "../scss/partials/loding";
   .inner {
+    display: block;
+    &.loding-active {
+      display: none;
+    }
     @import "../scss/partials/title";
     .input-form-wrapper {
       margin-top: 32px;
