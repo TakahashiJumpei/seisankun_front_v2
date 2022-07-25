@@ -252,7 +252,9 @@ export default {
           if (typeof errStatus === "undefined") {
             errStatus = "なし";
           }
-          console.log("エラー");
+          if (errStatus == 404 || errStatus == "なし") {
+            this.notFound();
+          }
         });
     },
     async getPaymentHistory() {
@@ -291,7 +293,9 @@ export default {
           if (typeof errStatus === "undefined") {
             errStatus = "なし";
           }
-          console.log("エラー");
+          if (errStatus == 404 || errStatus == "なし") {
+            this.notFound();
+          }
         });
     },
     async getCalculationResults() {
@@ -332,7 +336,9 @@ export default {
           if (typeof errStatus === "undefined") {
             errStatus = "なし";
           }
-          console.log("エラー");
+          if (errStatus == 404 || errStatus == "なし") {
+            this.notFound();
+          }
         });
     },
     async getBorrowingStatuses() {
@@ -372,7 +378,9 @@ export default {
           if (typeof errStatus === "undefined") {
             errStatus = "なし";
           }
-          console.log("エラー");
+          if (errStatus == 404 || errStatus == "なし") {
+            this.notFound();
+          }
         });
     },
     toEditGroup() {
@@ -416,6 +424,11 @@ export default {
     },
     hideLoding() {
       this.loding = false;
+    },
+    notFound() {
+      this.$router.push({
+        name: "NotFound",
+      });
     },
   },
   mounted: function() {

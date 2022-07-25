@@ -248,11 +248,18 @@ export default {
           if (typeof errStatus === "undefined") {
             errStatus = "なし";
           }
-          console.log("エラー");
+          if (errStatus == 404 || errStatus == "なし") {
+            this.notFound();
+          }
         });
     },
     hideLoding() {
       this.loding = false;
+    },
+    notFound() {
+      this.$router.push({
+        name: "NotFound",
+      });
     },
   },
   mounted: function() {
