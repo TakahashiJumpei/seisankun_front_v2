@@ -142,21 +142,22 @@ export default {
       this.groupIDs = JSON.parse(localStorage.getItem("groupIDs"));
 
       if (!this.groupIDs || this.groupIDs.length === 0) {
-        this.pastGroupsFlag = false;
-
         this.hideLoding();
         return;
       }
-      this.pastGroupsFlag = true;
 
       this.getPastGroups();
     },
     getPastGroups() {
-
-      let count = 0;
+      /**
+       * NOTE:
+       * 仕様：複数エラーとなる場合があるので、200の場合とエラーの場合で個数を数えて、総リクエスト数と一致した場合、ローディングアニメーションを終了させるようにする。
+       * 最後のレスポンスが、成功orエラーで返ってくるかはわからないので、両方にif文でのローディングアニメーションを終了する処理へ繋がるようにしておく。
+       */
+      let success_count = 0;
+      let error_count = 0;
       let tmpPastGroups = [];
       for (let i = 0; i < this.groupIDs.length; i++) {
-
         let options = {
           method: "GET",
           url: `/travel`,
@@ -166,8 +167,8 @@ export default {
           .request(options)
           .then((response) => {
             tmpPastGroups.push(response.data.travel);
-            count++;
-            if (count == this.groupIDs.length) {
+            success_count++;
+            if (success_count + error_count == this.groupIDs.length) {
               //本来の順番にソートする
               for (let j = 0; j < this.groupIDs.length; j++) {
                 for (let k = 0; k < tmpPastGroups.length; k++) {
@@ -180,7 +181,7 @@ export default {
                   }
                 }
               }
-
+              this.pastGroupsFlag = true;
               this.hideLoding();
             }
           })
@@ -194,7 +195,26 @@ export default {
             if (typeof errStatus === "undefined") {
               errStatus = "なし";
             }
-            console.log("エラー");
+
+            error_count++;
+            if (success_count + error_count == this.groupIDs.length) {
+              //本来の順番にソートする
+              for (let j = 0; j < this.groupIDs.length; j++) {
+                for (let k = 0; k < tmpPastGroups.length; k++) {
+                  if (this.groupIDs[j] === tmpPastGroups[k].travel_key) {
+                    this.pastGroups.push(tmpPastGroups[k]);
+                    this.pastGroups[j].created_at = this.convertDate(
+                      this.pastGroups[j].CreatedAt
+                    );
+                    break;
+                  }
+                }
+              }
+              if (this.pastGroups.length > 0) {
+                this.pastGroupsFlag = true;
+              }
+              this.hideLoding();
+            }
           });
       }
     },
