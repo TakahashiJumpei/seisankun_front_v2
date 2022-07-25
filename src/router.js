@@ -11,6 +11,7 @@ const Tos = () => import(/* webpackChunkName: "Tos" */ "./components/Tos.vue");
 const PrivacyPolicy = () => import(/* webpackChunkName: "PrivacyPolicy" */ "./components/PrivacyPolicy.vue");
 const HeaderTop = () => import(/* webpackChunkName: "HeaderTop" */ "./components/HeaderTop.vue");
 const HeaderCommon = () => import(/* webpackChunkName: "HeaderCommon" */ "./components/HeaderCommon.vue");
+const NotFound = () => import(/* webpackChunkName: "NotFound" */ "./components/NotFound.vue");
 
 Vue.use(Router);
 
@@ -82,6 +83,14 @@ export default new Router({
       path: "/privacy-policy/",
       components: {
         default: PrivacyPolicy,
+        header: HeaderCommon,
+      }
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      components: {
+        default: NotFound,
         header: HeaderCommon,
       }
     },
