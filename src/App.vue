@@ -27,5 +27,6 @@ export default {
   max-width: 834px;
   margin: 0 auto;
   background-color: #FFF;
+  font-family: sans-serif;
 }
 </style>
