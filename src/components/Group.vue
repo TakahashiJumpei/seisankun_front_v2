@@ -36,6 +36,7 @@
           <div class="url" @click="getGroupUrl">
             <img src="../assets/link.png" alt="" />
             <span>リンクをコピー</span>
+            <input type="text" id="copy_url" v-model="url" />
           </div>
           <div class="line" @click="shareForLine">
             <img src="../assets/line.gif" alt="" />
@@ -202,6 +203,7 @@ export default {
       paymentExist: false,
       calculationResultsExist: false,
       loding: true,
+      url: null,
     };
   },
   filters: {
@@ -249,6 +251,10 @@ export default {
         .then((response) => {
           this.groupName = response.data.travel.name;
           this.members = response.data.members;
+          this.url =
+            process.env.VUE_APP_SEISANKUN_WEB_APP_BASE_URL +
+            "group/" +
+            this.travel_key;
           this.saveGroupToLacalStrage();
           this.getPaymentHistory();
         })
@@ -464,13 +470,9 @@ export default {
       });
     },
     getGroupUrl() {
-      let url = process.env.VUE_APP_SEISANKUN_WEB_APP_BASE_URL;
-      const element = document.createElement("input");
-      element.value = url + "group/" + this.travel_key;
-      document.body.appendChild(element);
-      element.select();
+      let copyUrl = document.querySelector("#copy_url");
+      copyUrl.select();
       document.execCommand("copy");
-      document.body.removeChild(element);
       document.querySelector(".copied").style.visibility = "visible";
       setTimeout(fn, 1000);
       function fn() {
@@ -619,6 +621,10 @@ export default {
           }
           span {
             margin-left: 4px;
+          }
+          input {
+            width:1px;
+            opacity: 0;
           }
         }
         .line {
