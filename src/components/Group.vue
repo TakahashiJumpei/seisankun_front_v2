@@ -465,7 +465,7 @@ export default {
     shareForLine() {
       let url = process.env.VUE_APP_SEISANKUN_WEB_APP_BASE_URL;
       let lineHref =
-        "https://line.me/R/msg/text/?" +
+        "https://social-plugins.line.me/lineit/share?url=" +
         encodeURIComponent(url + "group/" + this.travel_key);
       window.open(lineHref, "_blank");
     },
