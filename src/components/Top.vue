@@ -175,7 +175,7 @@ export default {
                   if (this.groupIDs[j] === tmpPastGroups[k].travel_key) {
                     this.pastGroups.push(tmpPastGroups[k]);
                     this.pastGroups[j].created_at = this.convertDate(
-                      this.pastGroups[j].CreatedAt
+                      this.pastGroups[j].created_at
                     );
                     break;
                   }
@@ -204,7 +204,7 @@ export default {
                   if (this.groupIDs[j] === tmpPastGroups[k].travel_key) {
                     this.pastGroups.push(tmpPastGroups[k]);
                     this.pastGroups[j].created_at = this.convertDate(
-                      this.pastGroups[j].CreatedAt
+                      this.pastGroups[j].created_at
                     );
                     break;
                   }
