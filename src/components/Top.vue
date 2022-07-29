@@ -174,12 +174,14 @@ export default {
                 for (let k = 0; k < tmpPastGroups.length; k++) {
                   if (this.groupIDs[j] === tmpPastGroups[k].travel_key) {
                     this.pastGroups.push(tmpPastGroups[k]);
-                    this.pastGroups[j].created_at = this.convertDate(
-                      this.pastGroups[j].created_at
-                    );
                     break;
                   }
                 }
+              }
+              for (let j = 0; j < tmpPastGroups.length; j++) {
+                this.pastGroups[j].created_at = this.convertDate(
+                  this.pastGroups[j].created_at
+                );
               }
               this.pastGroupsFlag = true;
               this.hideLoding();
@@ -195,7 +197,6 @@ export default {
             if (typeof errStatus === "undefined") {
               errStatus = "なし";
             }
-
             error_count++;
             if (success_count + error_count == this.groupIDs.length) {
               //本来の順番にソートする
@@ -203,12 +204,14 @@ export default {
                 for (let k = 0; k < tmpPastGroups.length; k++) {
                   if (this.groupIDs[j] === tmpPastGroups[k].travel_key) {
                     this.pastGroups.push(tmpPastGroups[k]);
-                    this.pastGroups[j].created_at = this.convertDate(
-                      this.pastGroups[j].created_at
-                    );
                     break;
                   }
                 }
+              }
+              for (let j = 0; j < tmpPastGroups.length; j++) {
+                this.pastGroups[j].created_at = this.convertDate(
+                  this.pastGroups[j].created_at
+                );
               }
               if (this.pastGroups.length > 0) {
                 this.pastGroupsFlag = true;
