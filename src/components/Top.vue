@@ -324,6 +324,7 @@ export default {
           border-radius: 8px;
           background-color: $gray;
           padding: 12px 24px;
+          cursor: pointer;
           .past-group-date {
             font-size: 10px;
             @media screen and(min-width: $min-width) {

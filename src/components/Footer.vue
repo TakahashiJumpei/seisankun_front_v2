@@ -53,6 +53,9 @@ footer {
     }
     div {
       margin-top: 2px;
+      span {
+        cursor: pointer;
+      }
     }
   }
   .copyright {

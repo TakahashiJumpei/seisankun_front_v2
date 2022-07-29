@@ -44,6 +44,9 @@ nav {
       @media screen and(min-width: $min-width) {
         font-size: 32px;
       }
+      .title {
+        cursor: pointer;
+      }
     }
   }
 }
