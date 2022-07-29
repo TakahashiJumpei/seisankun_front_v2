@@ -454,18 +454,19 @@ export default {
       });
     },
     getGroupUrl() {
-      let dummyUrl = "https://dev-seisan-kun-v2.netlify.app/#/";
+      let url = process.env.VUE_APP_SEISANKUN_WEB_APP_BASE_URL;
       const element = document.createElement("input");
-      element.value = dummyUrl;
+      element.value = url + "group/" + this.travel_key;
       document.body.appendChild(element);
       element.select();
       document.execCommand("copy");
       document.body.removeChild(element);
     },
     shareForLine() {
-      let dummyUrl = "https://dev-seisan-kun-v2.netlify.app/#/";
+      let url = process.env.VUE_APP_SEISANKUN_WEB_APP_BASE_URL;
       let lineHref =
-        "https://line.me/R/msg/text/?" + encodeURIComponent(dummyUrl);
+        "https://line.me/R/msg/text/?" +
+        encodeURIComponent(url + "group/" + this.travel_key);
       window.open(lineHref, "_blank");
     },
     addPayment() {
