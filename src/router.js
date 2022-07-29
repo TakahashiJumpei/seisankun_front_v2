@@ -1,17 +1,45 @@
 import Vue from "vue";
 import Router from "vue-router";
 const Top = () => import(/* webpackChunkName: "Top" */ "./components/Top.vue");
-const CreateGroup = () => import(/* webpackChunkName: "CreateGroup" */ "./components/CreateGroup.vue");
-const Group = () => import(/* webpackChunkName: "Group" */ "./components/Group.vue");
-const EditGroup = () => import(/* webpackChunkName: "EditGroup" */ "./components/EditGroup.vue");
-const AddPayment = () => import(/* webpackChunkName: "AddPayment" */ "./components/AddPayment.vue");
-const EditPayment = () => import(/* webpackChunkName: "EditPayment" */ "./components/EditPayment.vue");
-const MemberLendingBorrowingDetail = () => import(/* webpackChunkName: "MemberLendingBorrowingDetail" */ "./components/MemberLendingBorrowingDetail.vue");
+const CreateGroup = () =>
+  import(/* webpackChunkName: "CreateGroup" */ "./components/CreateGroup.vue");
+const Group = () =>
+  import(/* webpackChunkName: "Group" */ "./components/Group.vue");
+const EditGroup = () =>
+  import(/* webpackChunkName: "EditGroup" */ "./components/EditGroup.vue");
+const AddPayment = () =>
+  import(/* webpackChunkName: "AddPayment" */ "./components/AddPayment.vue");
+const EditPayment = () =>
+  import(/* webpackChunkName: "EditPayment" */ "./components/EditPayment.vue");
+const MemberLendingBorrowingDetail = () =>
+  import(
+    /* webpackChunkName: "MemberLendingBorrowingDetail" */ "./components/MemberLendingBorrowingDetail.vue"
+  );
 const Tos = () => import(/* webpackChunkName: "Tos" */ "./components/Tos.vue");
-const PrivacyPolicy = () => import(/* webpackChunkName: "PrivacyPolicy" */ "./components/PrivacyPolicy.vue");
-const HeaderTop = () => import(/* webpackChunkName: "HeaderTop" */ "./components/HeaderTop.vue");
-const HeaderCommon = () => import(/* webpackChunkName: "HeaderCommon" */ "./components/HeaderCommon.vue");
-const NotFound = () => import(/* webpackChunkName: "NotFound" */ "./components/NotFound.vue");
+const PrivacyPolicy = () =>
+  import(
+    /* webpackChunkName: "PrivacyPolicy" */ "./components/PrivacyPolicy.vue"
+  );
+const HeaderTop = () =>
+  import(/* webpackChunkName: "HeaderTop" */ "./components/HeaderTop.vue");
+const HeaderCommon = () =>
+  import(
+    /* webpackChunkName: "HeaderCommon" */ "./components/HeaderCommon.vue"
+  );
+const NotFound = () =>
+  import(/* webpackChunkName: "NotFound" */ "./components/NotFound.vue");
+const Unauthorized = () =>
+  import(
+    /* webpackChunkName: "Unauthorized" */ "./components/Unauthorized.vue"
+  );
+const Forbidden = () =>
+  import(
+    /* webpackChunkName: "Forbidden" */ "./components/Forbidden.vue"
+  );
+const ServerError = () =>
+  import(
+    /* webpackChunkName: "ServerError" */ "./components/ServerError.vue"
+  );
 
 Vue.use(Router);
 
@@ -23,14 +51,14 @@ export default new Router({
       components: {
         default: Top,
         header: HeaderTop,
-      }
+      },
     },
     {
       path: "/group/create",
       components: {
         default: CreateGroup,
         header: HeaderCommon,
-      }
+      },
     },
     {
       path: "/group/:travel_key",
@@ -38,15 +66,15 @@ export default new Router({
       components: {
         default: Group,
         header: HeaderCommon,
-      }
+      },
     },
     {
       path: "/group/edit/:travel_key",
-      name: 'EditGroup',
+      name: "EditGroup",
       components: {
         default: EditGroup,
         header: HeaderCommon,
-      }
+      },
     },
     {
       path: "/payment/add/:travel_key",
@@ -54,7 +82,7 @@ export default new Router({
       components: {
         default: AddPayment,
         header: HeaderCommon,
-      }
+      },
     },
     {
       path: "/payment/edit/:travel_key/:payment_id",
@@ -62,7 +90,7 @@ export default new Router({
       components: {
         default: EditPayment,
         header: HeaderCommon,
-      }
+      },
     },
     {
       path: "/member/history/:travel_key/:member_id",
@@ -70,29 +98,53 @@ export default new Router({
       components: {
         default: MemberLendingBorrowingDetail,
         header: HeaderCommon,
-      }
+      },
     },
     {
       path: "/tos/",
       components: {
         default: Tos,
         header: HeaderCommon,
-      }
+      },
     },
     {
       path: "/privacy-policy/",
       components: {
         default: PrivacyPolicy,
         header: HeaderCommon,
-      }
+      },
     },
     {
-      path: '*',
+      path: 'NotFound',
       name: 'NotFound',
       components: {
         default: NotFound,
         header: HeaderCommon,
       }
     },
-  ]
+    {
+      path: "*",
+      name: "Unauthorized",
+      components: {
+        default: Unauthorized,
+        header: HeaderCommon,
+      },
+    },
+    {
+      path: "*",
+      name: "Forbidden",
+      components: {
+        default: Forbidden,
+        header: HeaderCommon,
+      },
+    },
+    {
+      path: "*",
+      name: "ServerError",
+      components: {
+        default: ServerError,
+        header: HeaderCommon,
+      },
+    },
+  ],
 });

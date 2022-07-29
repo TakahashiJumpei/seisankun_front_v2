@@ -191,6 +191,22 @@ export default {
           if (errStatus == 404 || errStatus == "なし") {
             this.notFound();
           }
+          if (errStatus == 401) {
+            this.unauthorized();
+          }
+          if (errStatus == 403) {
+            this.forbidden();
+          }
+          if (
+            errStatus == 400 ||
+            errStatus == 500 ||
+            errStatus == 502 ||
+            errStatus == 503
+          ) {
+            this.serverError();
+          } else {
+            this.serverError();
+          }
         });
     },
     async getPayment() {
@@ -225,6 +241,22 @@ export default {
           }
           if (errStatus == 404 || errStatus == "なし") {
             this.notFound();
+          }
+          if (errStatus == 401) {
+            this.unauthorized();
+          }
+          if (errStatus == 403) {
+            this.forbidden();
+          }
+          if (
+            errStatus == 400 ||
+            errStatus == 500 ||
+            errStatus == 502 ||
+            errStatus == 503
+          ) {
+            this.serverError();
+          } else {
+            this.serverError();
           }
         });
     },
@@ -312,7 +344,25 @@ export default {
           if (typeof errStatus === "undefined") {
             errStatus = "なし";
           }
-          console.log("エラー");
+          if (errStatus == 404 || errStatus == "なし") {
+            this.notFound();
+          }
+          if (errStatus == 401) {
+            this.unauthorized();
+          }
+          if (errStatus == 403) {
+            this.forbidden();
+          }
+          if (
+            errStatus == 400 ||
+            errStatus == 500 ||
+            errStatus == 502 ||
+            errStatus == 503
+          ) {
+            this.serverError();
+          } else {
+            this.serverError();
+          }
         });
     },
     toGroup() {
@@ -348,7 +398,25 @@ export default {
           if (typeof errStatus === "undefined") {
             errStatus = "なし";
           }
-          console.log("エラー");
+          if (errStatus == 404 || errStatus == "なし") {
+            this.notFound();
+          }
+          if (errStatus == 401) {
+            this.unauthorized();
+          }
+          if (errStatus == 403) {
+            this.forbidden();
+          }
+          if (
+            errStatus == 400 ||
+            errStatus == 500 ||
+            errStatus == 502 ||
+            errStatus == 503
+          ) {
+            this.serverError();
+          } else {
+            this.serverError();
+          }
         });
     },
     hideLoding() {
@@ -357,6 +425,21 @@ export default {
     notFound() {
       this.$router.push({
         name: "NotFound",
+      });
+    },
+    unauthorized() {
+      this.$router.push({
+        name: "Unauthorized",
+      });
+    },
+    forbidden() {
+      this.$router.push({
+        name: "Forbidden",
+      });
+    },
+    serverError() {
+      this.$router.push({
+        name: "ServerError",
       });
     },
   },
