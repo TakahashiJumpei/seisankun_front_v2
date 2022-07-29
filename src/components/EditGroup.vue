@@ -86,6 +86,13 @@
             >※1文字以上20文字以内でご記入ください</span
           >
         </div>
+        <div class="button-wrapper">
+          <div class="update-button-wrapper">
+            <button class="update-button" @click="doValidation">
+              <span>グループ名を変更</span>
+            </button>
+          </div>
+        </div>
         <div class="input-member-form">
           <label for="add-member">メンバーの追加</label>
           <div class="member-name-box">
@@ -122,14 +129,10 @@
         </div>
 
         <div class="button-wrapper">
-          <div class="update-button-wrapper">
-            <button class="update-button" @click="doValidation">
-              <span>変更を確定</span>
-            </button>
-          </div>
+          <div class="negative-margin"></div>
           <div class="back-button-wrapper">
             <button class="back-button" @click="toGroup">
-              <span>キャンセル</span>
+              <span>グループに戻る</span>
             </button>
           </div>
           <div class="delete-group-button-wrapper">

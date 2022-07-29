@@ -31,6 +31,8 @@
     }
   }
   .update-button-wrapper {
+    margin-top: -56px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,6 +60,9 @@
         background-color: $green;
       }
     }
+  }
+  .negative-margin{
+    margin-top: -32px;
   }
   .back-button-wrapper {
     margin-top: 16px;

@@ -97,7 +97,7 @@
           </div>
           <div class="back-button-wrapper">
             <button class="back-button" @click="toGroup">
-              <span>キャンセル</span>
+              <span>戻る</span>
             </button>
           </div>
         </div>
