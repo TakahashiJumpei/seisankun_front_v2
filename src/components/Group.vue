@@ -42,6 +42,16 @@
             <span>LINEで共有</span>
           </div>
         </div>
+        <div class="share-wrapper copied">
+          <div class="url">
+            <img src="../assets/link.png" alt="" style="visibility: hidden;" />
+            <span>コピー成功！</span>
+          </div>
+          <div class="line" style="visibility: hidden;">
+            <img src="../assets/line.gif" alt="" />
+            <span>LINEで共有</span>
+          </div>
+        </div>
       </div>
 
       <div class="add-payment-button-wrapper">
@@ -461,6 +471,11 @@ export default {
       element.select();
       document.execCommand("copy");
       document.body.removeChild(element);
+      document.querySelector(".copied").style.visibility = "visible";
+      setTimeout(fn, 1000);
+      function fn() {
+        document.querySelector(".copied").style.visibility = "hidden";
+      }
     },
     shareForLine() {
       let url = process.env.VUE_APP_SEISANKUN_WEB_APP_BASE_URL;
@@ -625,11 +640,15 @@ export default {
             margin-left: 4px;
           }
         }
+        &.copied {
+          margin-top: -2px;
+          visibility: hidden;
+        }
       }
     }
 
     .add-payment-button-wrapper {
-      margin-top: 32px;
+      margin-top: 8px;
       display: flex;
       justify-content: center;
       align-items: center;
