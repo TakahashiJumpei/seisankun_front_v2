@@ -1,0 +1,59 @@
+.input-member-form {
+  margin-top: 4px;
+  label {
+    color: $base_text_color;
+    font-size: 12px;
+    @media screen and(min-width: $min-width) {
+      font-size: 16px;
+    }
+  }
+  .member-name-box {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-top: 4px;
+    input {
+      width: calc(100% - 40px);
+      height: $form-h;
+      @media screen and(min-width: $min-width) {
+        @import "../breakpoints/768up";
+        height: $form-h;
+      }
+      color: $base_text_color;
+      font-size: 16px;
+      @media screen and(min-width: $min-width) {
+        font-size: 18px;
+      }
+      text-indent: 1em;
+      background-color: $form-bg;
+      border: 1px solid $form-border;
+      border-radius: 4px 0 0 4px;
+      box-shadow: 0 2px 0 0 #cbcecf;
+    }
+    .add {
+      width: $form-h;
+      height: $form-h;
+      @media screen and(min-width: $min-width) {
+        @import "../breakpoints/768up";
+        width: $form-h;
+        height: $form-h;
+      }
+      background-color: $green;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      pointer-events: auto;
+      span {
+        color: white;
+        font-size: 22px;
+        @media screen and(min-width: $min-width) {
+          font-size: 28px;
+        }
+        font-weight: bold;
+      }
+    }
+  }
+  @import "cationtext";
+}

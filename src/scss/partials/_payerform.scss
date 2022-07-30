@@ -1,0 +1,50 @@
+.pulldown-payer-form {
+  margin-top: 4px;
+  label {
+    color: $base_text_color;
+    font-size: 12px;
+    @media screen and(min-width: $min-width) {
+      font-size: 16px;
+    }
+  }
+  .pulldown-box {
+    position: relative;
+    &:before {
+      display: block;
+      content: "";
+      position: absolute;
+      top: -90%;
+      bottom: -100%;
+      margin: auto;
+      right: 18px;
+      width: 18px;
+      height: 18px;
+      background-size: 18px;
+      z-index: 100;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("#{$image_path}/arrow.png");
+      pointer-events: none;
+    }
+    select {
+      margin-top: 4px;
+      width: 100%;
+      height: $form-h;
+      @media screen and(min-width: $min-width) {
+        @import "../breakpoints/768up";
+        height: $form-h;
+      }
+      color: $base_text_color;
+      font-size: 16px;
+      @media screen and(min-width: $min-width) {
+        font-size: 18px;
+      }
+      text-indent: 1em;
+      background-color: $form-bg;
+      border: 1px solid $form-border;
+      border-radius: 4px;
+      box-shadow: 0 2px 0 0 #cbcecf;
+    }
+  }
+  @import "cationtext";
+}
