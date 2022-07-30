@@ -480,10 +480,9 @@ export default {
       }
     },
     shareForLine() {
-      let url = process.env.VUE_APP_SEISANKUN_WEB_APP_BASE_URL;
       let lineHref =
         "https://social-plugins.line.me/lineit/share?url=" +
-        encodeURIComponent(url + "group/" + this.travel_key);
+        encodeURIComponent(this.url);
       window.open(lineHref, "_blank");
     },
     addPayment() {
@@ -623,7 +622,7 @@ export default {
             margin-left: 4px;
           }
           input {
-            width:1px;
+            width: 1px;
             opacity: 0;
           }
         }
