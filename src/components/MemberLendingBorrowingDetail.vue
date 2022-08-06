@@ -120,10 +120,10 @@
                 class="difference-price"
                 v-bind:class="{
                   plus: differencePricePlus,
-                  minus: !differencePricePlus,
+                  minus: differencePriceMinus,
                 }"
               >
-                <span>{{ differencePricePlus ? "+" : "-" }}</span>
+                <span>{{ differencePricePlus ? "+" : "" }}</span>
                 <span>{{ differencePrice | numberRound | numberFormat }}</span>
                 <span>{{ moneyUnit }}</span>
               </div>
@@ -162,7 +162,8 @@ export default {
       borrowings: [],
       borrowingsSum: 0,
       differencePrice: 0,
-      differencePricePlus: true,
+      differencePricePlus: null,
+      differencePriceMinus: null,
       member_id: 0,
       groupName: "",
       travel_key: "",
@@ -286,9 +287,8 @@ export default {
           this.differencePrice = this.lendingsSum - this.borrowingsSum;
           if (this.differencePrice > 0) {
             this.differencePricePlus = true;
-          } else {
-            this.differencePricePlus = false;
-            this.differencePrice = Math.abs(this.differencePrice);
+          } else if (this.differencePrice < 0) {
+            this.differencePriceMinus = true;
           }
 
           this.hideLoding();

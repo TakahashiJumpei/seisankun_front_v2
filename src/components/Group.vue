@@ -151,7 +151,7 @@
                     class="lending-borrowing-member-money"
                     v-bind:class="{
                       plus: lendingBorrowingItem.plus,
-                      minus: !lendingBorrowingItem.plus,
+                      minus: lendingBorrowingItem.minus,
                     }"
                   >
                     <span>{{ lendingBorrowingItem.plus ? "+" : "" }}</span>
@@ -424,8 +424,8 @@ export default {
               response.data.statuses[i].lend_borrow_money;
             if (_lendingBorrowingItems_unit.price > 0) {
               _lendingBorrowingItems_unit.plus = true;
-            } else {
-              _lendingBorrowingItems_unit.plus = false;
+            } else if (_lendingBorrowingItems_unit.price < 0) {
+              _lendingBorrowingItems_unit.minus = true;
             }
             this.lendingBorrowingItems.push(_lendingBorrowingItems_unit);
           }
