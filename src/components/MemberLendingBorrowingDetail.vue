@@ -26,31 +26,42 @@
         <div class="lending-list-title">
           <span>支払ったもの</span>
         </div>
-        <div class="lending-items">
-          <div
-            v-for="lending in lendings"
-            :key="lending.payment_id"
-            class="lending-item"
-          >
-            <div class="lending-item-left">
-              <div class="lending-item-name">
-                <span>{{ lending.name }}</span>
-              </div>
-            </div>
-            <div class="lending-item-right">
-              <div class="lending-item-price">
-                <span>{{ lending.price | numberRound | numberFormat }}</span>
-                <span>{{ moneyUnit }}</span>
-              </div>
-              <div
-                class="lending-item-edit"
-                @click="toEditPayment(lending.payment_id)"
-              >
-                <img src="../assets/edit.png" alt="" />
+        <template v-if="lendings.length == 0">
+          <div class="payment-none-wrapper">
+            <div class="payment-none-sentence">
+              <div>
+                <span>{{ member }}が立て替えた支払いはありません。</span>
               </div>
             </div>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <div class="lending-items">
+            <div
+              v-for="lending in lendings"
+              :key="lending.payment_id"
+              class="lending-item"
+            >
+              <div class="lending-item-left">
+                <div class="lending-item-name">
+                  <span>{{ lending.name }}</span>
+                </div>
+              </div>
+              <div class="lending-item-right">
+                <div class="lending-item-price">
+                  <span>{{ lending.price | numberRound | numberFormat }}</span>
+                  <span>{{ moneyUnit }}</span>
+                </div>
+                <div
+                  class="lending-item-edit"
+                  @click="toEditPayment(lending.payment_id)"
+                >
+                  <img src="../assets/edit.png" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
         <div class="lending-sum-wrapper">
           <div class="lending-sum-box">
             <div class="lending-sum-title">
@@ -68,34 +79,51 @@
         <div class="borrowing-list-title">
           <span>立て替えられたもの</span>
         </div>
-        <div class="borrowing-items">
-          <div
-            v-for="borrowing in borrowings"
-            :key="borrowing.payment_id"
-            class="borrowing-item"
-          >
-            <div class="borrowing-item-left">
-              <div class="borrowing-item-name">
-                <span>{{ borrowing.name }}</span>
-              </div>
-              <div class="borrowing-item-member">
-                <span>{{ borrowing.member }}が立て替え</span>
-              </div>
-            </div>
-            <div class="borrowing-item-right">
-              <div class="borrowing-item-price">
-                <span>{{ borrowing.price | numberRound | numberFormat }}</span>
-                <span>{{ moneyUnit }}</span>
-              </div>
-              <div
-                class="borrowing-item-edit"
-                @click="toEditPayment(borrowing.payment_id)"
-              >
-                <img src="../assets/edit.png" alt="" />
+        <template v-if="borrowings.length == 0">
+          <div class="payment-none-wrapper">
+            <div class="payment-none-sentence">
+              <div>
+                <span
+                  >{{
+                    member
+                  }}が他のメンバーに立て替えられた支払いはありません。</span
+                >
               </div>
             </div>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <div class="borrowing-items">
+            <div
+              v-for="borrowing in borrowings"
+              :key="borrowing.payment_id"
+              class="borrowing-item"
+            >
+              <div class="borrowing-item-left">
+                <div class="borrowing-item-name">
+                  <span>{{ borrowing.name }}</span>
+                </div>
+                <div class="borrowing-item-member">
+                  <span>{{ borrowing.member }}が立て替え</span>
+                </div>
+              </div>
+              <div class="borrowing-item-right">
+                <div class="borrowing-item-price">
+                  <span>{{
+                    borrowing.price | numberRound | numberFormat
+                  }}</span>
+                  <span>{{ moneyUnit }}</span>
+                </div>
+                <div
+                  class="borrowing-item-edit"
+                  @click="toEditPayment(borrowing.payment_id)"
+                >
+                  <img src="../assets/edit.png" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
         <div class="borrowing-sum-wrapper">
           <div class="borrowing-sum-box">
             <div class="borrowing-sum-title">
@@ -432,6 +460,18 @@ export default {
         }
         font-weight: bold;
       }
+      .payment-none-wrapper {
+        margin-top: 16px;
+        .payment-none-sentence {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 12px;
+          @media screen and(min-width: $min-width) {
+            font-size: 16px;
+          }
+        }
+      }
       .lending-items {
         .lending-item {
           margin-top: 16px;
@@ -541,6 +581,18 @@ export default {
           font-size: $theme-title-size;
         }
         font-weight: bold;
+      }
+      .payment-none-wrapper {
+        margin-top: 16px;
+        .payment-none-sentence {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 12px;
+          @media screen and(min-width: $min-width) {
+            font-size: 16px;
+          }
+        }
       }
       .borrowing-items {
         .borrowing-item {
