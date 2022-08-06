@@ -13,15 +13,15 @@
             <div class="group-title">
               <span>グループ</span>
             </div>
-            <div class="group-name">
-              <span>{{ groupName }}</span>
-            </div>
           </div>
           <div class="group-edit-wrapper">
             <div class="group-edit" @click="toEditGroup">
               <span>グループの編集</span>
             </div>
           </div>
+        </div>
+        <div class="group-name">
+          <span>{{ groupName }}</span>
         </div>
         <div class="member-wrapper">
           <div class="member-title">
@@ -563,12 +563,6 @@ export default {
               font-size: 16px;
             }
           }
-          .group-name {
-            font-size: 20px;
-            @media screen and(min-width: $min-width) {
-              font-size: 28px;
-            }
-          }
         }
         .group-edit-wrapper {
           .group-edit {
@@ -580,6 +574,14 @@ export default {
             cursor: pointer;
             pointer-events: auto;
           }
+        }
+      }
+      .group-name {
+        color: $base_text_color;
+        font-weight: bold;
+        font-size: 20px;
+        @media screen and(min-width: $min-width) {
+          font-size: 28px;
         }
       }
       .member-wrapper {
