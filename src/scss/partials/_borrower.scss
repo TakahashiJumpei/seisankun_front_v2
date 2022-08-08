@@ -1,0 +1,79 @@
+#select-borrower-wrapper {
+  margin-top: 20px;
+  label {
+    color: $base_text_color;
+    font-size: 12px;
+    @media screen and(min-width: $min-width) {
+      font-size: 16px;
+    }
+  }
+  & .select-borrower-box:first-of-type {
+    margin-top: 0;
+  }
+  .select-borrower-box {
+    margin-top: 8px;
+    p {
+      color: $base_text_color;
+      font-size: 12px;
+      @media screen and(min-width: $min-width) {
+        font-size: 16px;
+      }
+    }
+    .member-name-box {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      margin-top: 4px;
+      input {
+        display: none;
+      }
+      label {
+        position: relative;
+        width: 100%;
+        height: $form-h;
+        @media screen and(min-width: $min-width) {
+          @import "../breakpoints/768up";
+          height: $form-h;
+        }
+        text-indent: 1em;
+        background-color: #707070;
+        border: 1px solid $form-border;
+        border-radius: 4px;
+        box-shadow: 0 2px 0 0 #cbcecf;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        text-decoration-line: line-through;
+        span {
+          color: $base_text_color;
+          font-size: 16px;
+          @media screen and(min-width: $min-width) {
+            font-size: 18px;
+          }
+        }
+      }
+      input[type="checkbox"]:checked + label {
+        background-color: $form-bg;
+        text-decoration-line: none;
+      }
+      input[type="checkbox"]:checked + label:before {
+        display: block;
+        content: "";
+        position: absolute;
+        top: -100%;
+        bottom: 0%;
+        margin: auto;
+        right: -8px;
+        width: 24px;
+        height: 24px;
+        background-size: 24px;
+        z-index: 100;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url("#{$image_path}/check.png");
+        pointer-events: none;
+      }
+    }
+  }
+  @import "cationtext";
+}

@@ -1,0 +1,11 @@
+span {
+  color: $light-gray;
+  font-size: 10px;
+  @media screen and(min-width: $min-width) {
+    font-size: 12px;
+  }
+  &.red {
+    color: $error_color;
+    font-weight: bold;
+  }
+}
