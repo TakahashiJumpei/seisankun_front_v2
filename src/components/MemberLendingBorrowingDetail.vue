@@ -280,36 +280,27 @@ export default {
       this.$seisankunApi
         .request(options)
         .then((response) => {
-          for (let i = 0; i < response.data.histories.length; i++) {
-            if (
-              response.data.histories[i].lend.title &&
-              response.data.histories[i].lend.money !== 0
-            ) {
-              let _lendings_unit = {};
-              _lendings_unit.payment_id =
-                response.data.histories[i].lend.payment_id;
-              _lendings_unit.name = response.data.histories[i].lend.title;
-              _lendings_unit.price = response.data.histories[i].lend.money;
-              _lendings_unit.member = response.data.histories[i].member.name;
-              this.lendings.push(_lendings_unit);
-            }
-            if (
-              response.data.histories[i].borrow.title &&
-              response.data.histories[i].borrow.money !== 0
-            ) {
-              let _borrowings_unit = {};
-              _borrowings_unit.payment_id =
-                response.data.histories[i].borrow.payment_id;
-              _borrowings_unit.name = response.data.histories[i].borrow.title;
-              _borrowings_unit.price = response.data.histories[i].borrow.money;
-              _borrowings_unit.member = response.data.histories[i].member.name;
-              this.borrowings.push(_borrowings_unit);
-            }
-          }
-          for (let i = 0; i < this.lendings.length; i++) {
+          for (let i = 0; i < response.data.lend_histories.length; i++) {
+            let _lendings_unit = {};
+            _lendings_unit.payment_id =
+              response.data.lend_histories[i].lend.payment_id;
+            _lendings_unit.name = response.data.lend_histories[i].lend.title;
+            _lendings_unit.price = response.data.lend_histories[i].lend.money;
+            _lendings_unit.member = response.data.lend_histories[i].payer.name;
+            this.lendings.push(_lendings_unit);
             this.lendingsSum += Number(this.lendings[i].price);
           }
-          for (let i = 0; i < this.borrowings.length; i++) {
+          for (let i = 0; i < response.data.borrow_histories.length; i++) {
+            let _borrowings_unit = {};
+            _borrowings_unit.payment_id =
+              response.data.borrow_histories[i].borrow.payment_id;
+            _borrowings_unit.name =
+              response.data.borrow_histories[i].borrow.title;
+            _borrowings_unit.price =
+              response.data.borrow_histories[i].borrow.money;
+            _borrowings_unit.member =
+              response.data.borrow_histories[i].payer.name;
+            this.borrowings.push(_borrowings_unit);
             this.borrowingsSum += Number(this.borrowings[i].price);
           }
           this.differencePrice = this.lendingsSum - this.borrowingsSum;
