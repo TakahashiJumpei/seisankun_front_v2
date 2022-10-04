@@ -1,6 +1,8 @@
 .loding {
   display: none;
+  visibility: hidden;
   &.loding-active {
+    visibility: visible;
     display: flex;
     flex-direction: column;
     align-items: center;

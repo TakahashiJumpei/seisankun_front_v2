@@ -1,6 +1,18 @@
 .button-wrapper {
   padding-top: 60px;
   padding-bottom: 28px;
+  @import "loding";
+  .creating-message {
+    color: $base_text_color;
+    margin-bottom: 8px;
+    visibility: hidden;
+    &.loding-active {
+      visibility: visible;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
   .create-button-wrapper {
     display: flex;
     justify-content: center;
@@ -61,7 +73,7 @@
       }
     }
   }
-  .negative-margin{
+  .negative-margin {
     margin-top: -32px;
   }
   .back-button-wrapper {

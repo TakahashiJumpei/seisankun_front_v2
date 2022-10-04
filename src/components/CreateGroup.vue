@@ -56,13 +56,22 @@
         </div>
 
         <div class="button-wrapper">
+          <div class="loding" v-bind:class="{ 'loding-active': loding }">
+            <img src="../assets/loding.gif" alt="" />
+          </div>
+          <div
+            class="creating-message"
+            v-bind:class="{ 'loding-active': loding }"
+          >
+            <span>グループを作成しています...</span>
+          </div>
           <div class="create-button-wrapper">
-            <button class="create-button" @click="doValidation">
-              <span>作成</span>
+            <button class="create-button" v-bind:disabled="loding" @click="doValidation">
+              <span>{{ create }}</span>
             </button>
           </div>
           <div class="back-button-wrapper">
-            <button class="back-button" @click="toTop">
+            <button class="back-button" v-bind:disabled="loding" @click="toTop">
               <span>戻る</span>
             </button>
           </div>
@@ -86,6 +95,8 @@ export default {
       inputGroupName: "",
       inputGroupNameError: false,
       travel_key: "",
+      loding: false,
+      create: "作成",
     };
   },
   methods: {
@@ -128,6 +139,8 @@ export default {
       }
     },
     async createGroup() {
+      this.loding = true;
+      this.create = "作成中...";
       let _members = [];
       for (let i = 0; i < this.members.length; i++) {
         let _members_unit = {};
@@ -147,6 +160,7 @@ export default {
         .request(options)
         .then((response) => {
           this.travel_key = response.data.travel_key;
+          this.loding = false;
           this.toGroup();
         })
         .catch((err) => {
