@@ -107,7 +107,7 @@
               </p>
             </li>
             <li class="flex">
-              <a href="https://forms.gle/JTpghogv7ncP4o1b9" target="blank"
+              <a href="https://forms.gle/cWG4zq9akpfsVeK87" target="blank"
                 ><p style="color:#cf5271; font-weight:bold;">お問い合わせ</p></a
               >
             </li>

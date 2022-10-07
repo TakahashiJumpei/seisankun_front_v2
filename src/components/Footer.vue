@@ -28,7 +28,7 @@ export default {
     },
     toInquiry() {
       const url =
-        "https://docs.google.com/forms/d/e/1FAIpQLSdcaHWXI4n_lgJXaD4yrGft3_G8-OFI_tqdYhBobbPX8j5j9Q/viewform";
+        "https://forms.gle/cWG4zq9akpfsVeK87";
       window.open(url, "_blank");
     },
   },
